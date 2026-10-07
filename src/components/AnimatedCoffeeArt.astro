@@ -1,0 +1,157 @@
+---
+import { Image } from "astro:assets";
+import { images } from "../lib/images";
+
+// Chuyển động pha cà phê: đặt true để bật lại.
+const ANIMATED = false;
+---
+
+<div class="coffee-art">
+  <Image
+    src={images["home-art-pha-ca-phe"]}
+    alt=""
+    widths={[420, 640, 960]}
+    sizes="(min-width: 700px) 38vw, 90vw"
+  />
+  {ANIMATED && (
+  <svg class="coffee-art__fx" viewBox="0 0 900 863" aria-hidden="true">
+    <g fill="none" stroke="#1d1d1b" stroke-linecap="round" stroke-linejoin="round">
+      <path class="fx-stream" d="M529 490 C536 508 543 530 548 577" stroke-width="2.4"></path>
+
+      <g class="fx-steam fx-steam--1" stroke-width="1.8">
+        <path d="M572 562 C580 552 564 542 572 532 C580 522 564 512 572 502"></path>
+      </g>
+      <g class="fx-steam fx-steam--2" stroke-width="1.8">
+        <path d="M586 566 C594 556 578 546 586 536 C594 526 578 516 586 506"></path>
+      </g>
+      <g class="fx-steam fx-steam--3" stroke-width="1.8">
+        <path d="M558 566 C566 556 550 546 558 536 C566 526 550 516 558 506"></path>
+      </g>
+    </g>
+
+    <circle class="fx-drop fx-drop--1" cx="550" cy="628" r="2.8" fill="#1d1d1b"></circle>
+    <circle class="fx-drop fx-drop--2" cx="550" cy="628" r="2.8" fill="#1d1d1b"></circle>
+    <ellipse class="fx-ripple" cx="550" cy="665" rx="9" ry="2.2" fill="none" stroke="#1d1d1b" stroke-width="1.4"></ellipse>
+  </svg>
+  )}
+</div>
+
+<style>
+  .coffee-art {
+    position: relative;
+    width: 100%;
+  }
+
+  .coffee-art :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .coffee-art__fx {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .fx-stream {
+    stroke-dasharray: 3 9;
+    opacity: 0.9;
+    animation: fx-flow 0.7s linear infinite;
+  }
+
+  @keyframes fx-flow {
+    to {
+      stroke-dashoffset: -12;
+    }
+  }
+
+  .fx-steam {
+    opacity: 0;
+    animation: fx-rise 3.6s ease-out infinite;
+  }
+  .fx-steam--2 {
+    animation-delay: 1.2s;
+  }
+  .fx-steam--3 {
+    animation-delay: 2.4s;
+  }
+
+  @keyframes fx-rise {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    25% {
+      opacity: 0.75;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-34px);
+    }
+  }
+
+  .fx-drop {
+    opacity: 0;
+    animation: fx-fall 1.3s ease-in infinite;
+  }
+  .fx-drop--2 {
+    animation-delay: 0.65s;
+  }
+
+  @keyframes fx-fall {
+    0% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+    15% {
+      opacity: 1;
+    }
+    85% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(34px);
+    }
+  }
+
+  .fx-ripple {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    animation: fx-ripple 1.3s ease-out infinite;
+    animation-delay: 0.25s;
+  }
+
+  @keyframes fx-ripple {
+    0%,
+    60% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    70% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.3);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-stream,
+    .fx-steam,
+    .fx-drop,
+    .fx-ripple {
+      animation: none;
+    }
+    .fx-stream {
+      stroke-dasharray: none;
+      opacity: 0;
+    }
+  }
+</style>

@@ -1,0 +1,223 @@
+{
+  "hero": {
+    "title": "Cà phê",
+    "image": "giongfarm-127"
+  },
+  "singleOrigin": {
+    "title": "Single - Origin",
+    "text": "Gióng tự hào giới thiệu các dòng hạt cà phê Single-Origin rang mộc chất lượng cao. Mỗi gói cà phê là một thước phim văn hóa, một bản giao hưởng được chắt chiu từ những vùng trồng trứ danh của Việt Nam, sẵn sàng đồng hành cùng bạn mỗi ngày."
+  },
+  "buyLabel": "Mua ngay",
+  "buyHref": "",
+  "tabs": [
+    {
+      "id": "hat-bot",
+      "label": "Cà phê hạt/bột"
+    },
+    {
+      "id": "hoa-tan",
+      "label": "Cà phê hòa tan/túi lọc"
+    },
+    {
+      "id": "horeca",
+      "label": "Cà phê HORECA, sỉ"
+    },
+    {
+      "id": "merch",
+      "label": "Merchandise"
+    }
+  ],
+  "series": [
+    {
+      "title": "Classic Series",
+      "intro": "Lấy cảm hứng từ sự kiên cường và bền bỉ của con người Việt, nuôi dưỡng từ thổ nhưỡng trù phú Tây Nguyên, mang đến dải độ rang tinh tế, chiều lòng mọi gu thưởng thức quen thuộc.",
+      "items": [
+        {
+          "name": "Gióng Giả",
+          "image": "giong-gia",
+          "story": "Khí chất kiên cường, vững chãi; cấu trúc mạnh mẽ, hậu vị sâu và đầy đặn.",
+          "bean": "Robusta blend từ vùng Tây Nguyên",
+          "notes": "Sô-cô-la",
+          "price": 195,
+          "href": "https://s.shopee.vn/8V9BQGCf7D",
+          "filters": [
+            "robusta"
+          ]
+        },
+        {
+          "name": "Năng Cán",
+          "image": "nang-can",
+          "story": "Biểu tượng của sự chăm chỉ, cần cù; mộc mạc, đậm đà năng lượng khởi đầu ngày mới.",
+          "bean": "Arabica blend từ vùng Tây Nguyên",
+          "notes": "Trái cây, caramel",
+          "price": 225,
+          "href": "https://s.shopee.vn/3VkVT6lwCk",
+          "filters": [
+            "arabica"
+          ]
+        },
+        {
+          "name": "Thiên Lý",
+          "image": "thien-ly",
+          "story": "Bền bỉ, dẻo dai; hài hòa, thanh thoát, kết nối mọi khoảng cách.",
+          "bean": "Arabica blend từ vùng Tây Nguyên",
+          "notes": "Chanh, chanh dây, bạc hà",
+          "price": 265,
+          "href": "https://s.shopee.vn/1qcHU48n3G",
+          "filters": [
+            "arabica"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Robusta Series",
+      "intro": "Khắc họa trọn vẹn triết lý tự nhiên, thổ nhưỡng và con người qua ba dòng Robusta bản địa độc bản, mang đến trải nghiệm đậm đà, thân dày và êm mượt đặc trưng của đại ngàn.",
+      "items": [
+        {
+          "name": "Thiên",
+          "image": "thien",
+          "story": "Đón trọn nắng gió cao nguyên; đậm vị, hậu ngọt dịu, cân bằng tự nhiên.",
+          "bean": "Robusta – Kontum",
+          "notes": "Cacao, sữa dừa",
+          "price": 280,
+          "href": "https://s.shopee.vn/5fp038LlxD",
+          "filters": [
+            "robusta"
+          ]
+        },
+        {
+          "name": "Địa",
+          "image": "dia",
+          "story": "Đất đỏ bazan, canh tác thuận tự nhiên; thân dày, thanh mát, hậu vị sâu lắng.",
+          "bean": "Robusta – Đắk Nông",
+          "notes": "Trái cam, trái tắc",
+          "price": 280,
+          "href": "https://s.shopee.vn/4Vd2f0KW64",
+          "filters": [
+            "robusta"
+          ]
+        },
+        {
+          "name": "Nhân",
+          "image": "nhan",
+          "story": "Bàn tay tận tâm cùng hạt nhân xanh chọn lọc; êm mượt, tròn vị.",
+          "bean": "Robusta – Di Linh",
+          "notes": "Mật mía, đào",
+          "price": 315,
+          "href": "https://s.shopee.vn/9fL8oVsC5Y",
+          "filters": [
+            "robusta",
+            "organic"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Arabica Series",
+      "intro": "Khi Arabica cao nguyên thăng hoa cùng nghệ thuật biểu diễn truyền thống, Gióng mang đến tuyên ngôn mới qua ba vở diễn độc bản: tinh tế, uy lực và đọng lại dư vị khó quên.",
+      "items": [
+        {
+          "name": "Hò",
+          "image": "ho",
+          "story": "Lời ca mở màn trong trẻo; chua dịu, hương thơm tinh khiết, sảng khoái.",
+          "bean": "Arabica – Măng Đen",
+          "notes": "Quế, cam thảo",
+          "price": 300,
+          "href": "",
+          "filters": [
+            "arabica"
+          ]
+        },
+        {
+          "name": "Chèo",
+          "image": "cheo",
+          "story": "Dung dị, lắng đọng dư vị; chua thanh tao, mơ rừng thoảng nhẹ.",
+          "bean": "Arabica – Điện Biên",
+          "notes": "Hạt điều, mơ rừng",
+          "price": 300,
+          "href": "https://s.shopee.vn/1VzR5YhWLB",
+          "filters": [
+            "arabica"
+          ]
+        },
+        {
+          "name": "Tuồng",
+          "image": "tuong",
+          "story": "Cao trào bùng nổ, đậm kịch tính; hương mít độc bản, nho chín mọng.",
+          "bean": "Arabica – Cầu Đất",
+          "notes": "Trái nho, trái mít",
+          "price": 300,
+          "href": "https://s.shopee.vn/AKapboA6jI",
+          "filters": [
+            "arabica"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Blend Series",
+      "intro": "Sản phẩm mừng 50 năm thống nhất đất nước Việt Nam. Không chỉ là sự kết hợp giữa hai loại cà phê, Quyết Tiến là biểu tượng của sự thống nhất: giữa 2 miền Bắc - Nam, giữa ngôn ngữ, giọng nói, màu da – từ nay là một, Một Việt Nam.",
+      "items": [
+        {
+          "name": "Quyết Tiến",
+          "image": "quyet-tien",
+          "story": "Mừng 50 năm thống nhất đất nước; biểu tượng của một Việt Nam thống nhất.",
+          "bean": "Blend Robusta Di Linh & Arabica Cầu Đất",
+          "notes": "Mít, cam",
+          "price": 295,
+          "href": "https://s.shopee.vn/3B7f4ekCMm",
+          "filters": [
+            "blend"
+          ]
+        }
+      ]
+    }
+  ],
+  "instant": {
+    "title": "Cà phê hòa tan",
+    "items": [
+      {
+        "name": "Cà phê hòa tan 3in1",
+        "image": "hoa-tan-3in1",
+        "price": 85,
+        "story": "Nhanh - nhưng không vội, tiện - nhưng không tạm. Trọn vẹn hương vị đậm đà trong 1 phút 30 giây.",
+        "href": "https://s.shopee.vn/7KxE2L7ONt"
+      }
+    ]
+  },
+  "horeca": {
+    "title": "Cà phê sỉ cho Nhà hàng – Khách sạn – Văn phòng – HORECA",
+    "text": "Ngựa Ô cung cấp cà phê Việt Nam rang mộc, cà phê sạch chất lượng cao cho các quán cà phê, nhà hàng, khách sạn và đối tác thương mại. Với chuỗi cung ứng khép kín từ nông trại đến xưởng rang, Ngựa Ô hướng đến chất lượng ổn định và chính sách cung cấp linh hoạt, nhận đơn từ 5kg.",
+    "cta": "Tìm hiểu cung cấp sỉ",
+    "href": "/ngua-o"
+  },
+  "comingSoon": "Sắp ra mắt",
+  "labels": {
+    "bean": "Hạt",
+    "notes": "Hương vị",
+    "price": "Giá"
+  },
+  "filters": [
+    {
+      "id": "all",
+      "label": "Tất cả"
+    },
+    {
+      "id": "robusta",
+      "label": "Robusta"
+    },
+    {
+      "id": "arabica",
+      "label": "Arabica"
+    },
+    {
+      "id": "blend",
+      "label": "Blend"
+    },
+    {
+      "id": "organic",
+      "label": "Organic"
+    }
+  ]
+}

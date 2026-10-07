@@ -1,0 +1,471 @@
+---
+import { Image } from "astro:assets";
+import { images } from "../lib/images";
+
+// Tâm lá cờ trên ảnh (% theo chiều rộng/cao ảnh) — điểm zoom hướng tới.
+const DESKTOP = { x: 51.46, y: 16.2, ratio: 1916 / 821 };
+// Ảnh dọc cho điện thoại (Hinhdauweb.jpg, 1920 × 2796)
+const MOBILE = { x: 53.47, y: 31.34, ratio: 1920 / 2796 };
+
+---
+
+<div
+  class="splash"
+  id="splash"
+  role="dialog"
+  aria-label="Giới thiệu Gióng"
+>
+  <div
+    class="splash__art splash__art--d"
+    data-splash-art
+    style={`--focus-x: ${DESKTOP.x}%; --focus-y: ${DESKTOP.y}%; --ratio: ${DESKTOP.ratio};`}
+  >
+    <Image
+      src={images["home-intro-thuyen"]}
+      alt=""
+      widths={[960, 1440, 1916]}
+      sizes="max(100vw, 233vh)"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  <div
+    class="splash__art splash__art--m"
+    data-splash-art
+    style={`--focus-x: ${MOBILE.x}%; --focus-y: ${MOBILE.y}%; --ratio: ${MOBILE.ratio};`}
+  >
+    <Image
+      src={images["home-intro-mobile"]}
+      alt=""
+      widths={[640, 960, 1440, 1920]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="splash__mist" id="splash-mist" aria-hidden="true"><i></i><i></i></div>
+  <div class="splash__rings" id="splash-rings" aria-hidden="true">
+    <svg class="ring ring--1" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M6 9C25 -1 70 15 94 4C103 30 88 70 97 95C72 86 28 102 4 92C13 66 -3 30 6 9Z" /></svg><svg class="ring ring--2" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M5 5C32 14 66 -2 95 8C90 34 101 66 94 96C66 90 34 103 6 94C-1 66 12 36 5 5Z" /></svg><svg class="ring ring--3" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M4 8C30 -2 68 14 96 5C98 32 90 68 95 95C70 98 32 88 5 97C14 68 -2 30 4 8Z" /></svg><svg class="ring ring--4" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M7 4C38 12 60 -1 94 9C88 36 100 62 93 97C62 88 38 103 6 92C1 62 14 38 7 4Z" /></svg>
+  </div>
+  <div class="splash__doors" id="splash-doors">
+    <div class="splash__door splash__door--l" id="splash-door-l"></div>
+    <div class="splash__door splash__door--r" id="splash-door-r"></div>
+  </div>
+  <button type="button" class="splash__skip" id="splash-skip">Bỏ qua</button>
+</div>
+<noscript><style>.splash{display:none!important}</style></noscript>
+
+<script is:inline>
+  (function () {
+    var splash = document.getElementById("splash");
+    if (!splash) return;
+    var nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+    var isReload = nav && nav.type === "reload";
+    var forced = /[?&]intro=1/.test(location.search);
+    var seen = false;
+    try {
+      seen = sessionStorage.getItem("giong-intro-seen") === "1";
+    } catch (e) {}
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || (seen && !isReload && !forced)) {
+      splash.remove();
+      return;
+    }
+    document.documentElement.classList.add("splash-active");
+  })();
+</script>
+
+<script>
+  const splash = document.getElementById("splash");
+  // Portrait phones show the tall artwork, everything else the wide one.
+  const art = Array.from(document.querySelectorAll<HTMLElement>("[data-splash-art]")).find(
+    (el) => getComputedStyle(el).display !== "none"
+  );
+  const img = art?.querySelector("img") as HTMLImageElement | null | undefined;
+  const mist = document.getElementById("splash-mist");
+  const rings = document.getElementById("splash-rings");
+  const doors = document.getElementById("splash-doors");
+  const doorL = document.getElementById("splash-door-l");
+  const doorR = document.getElementById("splash-door-r");
+  const skip = document.getElementById("splash-skip");
+
+  if (splash && art && img && mist && rings && doors && doorL && doorR && skip) {
+    const root = document.documentElement;
+    let finished = false;
+    const running: Animation[] = [];
+
+    const finish = (fast = false) => {
+      if (finished) return;
+      finished = true;
+      running.forEach((a) => a.cancel());
+      try {
+        sessionStorage.setItem("giong-intro-seen", "1");
+      } catch {}
+      const done = () => {
+        splash.remove();
+        root.classList.remove("splash-active");
+      };
+      if (fast) {
+        splash
+          .animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, fill: "forwards" })
+          .finished.then(done, done);
+      } else {
+        done();
+      }
+    };
+
+    skip.addEventListener("click", () => finish(true));
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") finish(true);
+    });
+    window.setTimeout(() => finish(true), 14000);
+
+    const play = (el: Element, keyframes: Keyframe[], options: KeyframeAnimationOptions) => {
+      const a = el.animate(keyframes, { fill: "forwards", ...options });
+      running.push(a);
+      return a.finished;
+    };
+    const wait = (ms: number) => new Promise<void>((r) => window.setTimeout(r, ms));
+
+    // Dive toward the flag, then the flag's own rings (blue, yellow, green, red) swell out of its centre
+    // until the red core fills the screen; the patterned doors fade in over that red and pull apart.
+    const ZOOM_MAX = 8;
+    const ZOOM_MS = 1900;
+    const RINGS_AT = 0.42 * ZOOM_MS;
+    const RING_MS = 950;
+    const RING_STAGGER = 120;
+    const RING_START_PX = 38;
+    const RING_ASPECT = 1.18;
+
+    const logKeyframes = (from: number, to: number, ease: (t: number) => number, steps = 48): Keyframe[] =>
+      Array.from({ length: steps + 1 }, (_, i) => {
+        const t = i / steps;
+        const v = from * Math.pow(to / from, ease(t));
+        return { transform: `scale(${v.toFixed(5)})` };
+      });
+    const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+    
+    const run = async () => {
+      try {
+        await Promise.race([img.decode().catch(() => undefined), wait(2500)]);
+        if (finished) return;
+
+        // Mist sits on the visible part of the artwork, dense at the outer edges and clear toward the middle.
+        const box = art.getBoundingClientRect();
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const left = Math.max(0, box.left);
+        const right = Math.min(vw, box.right);
+        const top = Math.max(0, box.top);
+        const bottom = Math.min(vh, box.bottom);
+        mist.style.left = `${left}px`;
+        mist.style.top = `${top}px`;
+        mist.style.width = `${right - left}px`;
+        mist.style.height = `${bottom - top}px`;
+        mist.style.setProperty("--mist-w", `${Math.round((right - left) * 0.2)}px`);
+
+        // Screen position of the flag centre (stays fixed while zooming around it).
+        const cx = box.left + (box.width * parseFloat(art.style.getPropertyValue("--focus-x"))) / 100;
+        const cy = box.top + (box.height * parseFloat(art.style.getPropertyValue("--focus-y"))) / 100;
+        const reach = Math.hypot(Math.max(cx, vw - cx), Math.max(cy, vh - cy));
+        const ringFinal = Math.ceil(reach * 3.2);
+        rings.style.setProperty("--cx", `${cx}px`);
+        rings.style.setProperty("--cy", `${cy}px`);
+
+        splash.classList.add("is-ready");
+        await Promise.all([
+          play(art, [{ opacity: 0, transform: "scale(0.985)" }, { opacity: 1, transform: "scale(1)" }], {
+            duration: 600,
+            easing: "ease-out",
+          }),
+          play(mist, [{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: "ease-out" }),
+        ]);
+        if (finished) return;
+        await wait(220);
+        if (finished) return;
+
+        // 1) zoom toward the flag; the mist thins out as the camera leaves the wide shot.
+        const zoom = play(art, logKeyframes(1, ZOOM_MAX, easeInOut, 40), {
+          duration: ZOOM_MS,
+          easing: "linear",
+        });
+        play(mist, [{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: "ease-in" });
+
+        // 2) the flag's rings swell out of its centre, one after another.
+        doors.style.visibility = "visible";
+        doors.style.opacity = "0";
+        const ringEls = Array.from(rings.querySelectorAll<SVGElement>(".ring"));
+        const grow = wait(RINGS_AT).then(async () => {
+          if (finished) return;
+          rings.style.visibility = "visible";
+          const sizeFrames = (): Keyframe[] =>
+            Array.from({ length: 41 }, (_, i) => {
+              const h = RING_START_PX * Math.pow(ringFinal / RING_START_PX, easeInOut(i / 40));
+              return { width: `${(h * RING_ASPECT).toFixed(1)}px`, height: `${h.toFixed(1)}px` };
+            });
+          const all = ringEls.map((el, i) =>
+            wait(i * RING_STAGGER).then(() => {
+              if (finished) return;
+              el.style.visibility = "visible";
+              return play(el, sizeFrames(), { duration: RING_MS, easing: "linear" });
+            })
+          );
+          // The patterned doors fade in over the red core just before it fills the screen.
+          wait((ringEls.length - 1) * RING_STAGGER + RING_MS * 0.93).then(() => {
+            if (finished) return;
+            play(doors, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: "ease-in-out" });
+          });
+          await Promise.all(all);
+        });
+
+        await Promise.all([zoom, grow]);
+        if (finished) return;
+        await wait(60);
+        if (finished) return;
+
+        // 3) doors pull apart to reveal the site.
+        art.style.visibility = "hidden";
+        rings.style.display = "none";
+        splash.classList.add("is-opening");
+        const open = { duration: 760, easing: "cubic-bezier(0.77, 0, 0.18, 1)" };
+        await Promise.all([
+          play(doorL, [{ transform: "translateX(0)" }, { transform: "translateX(-101%)" }], open),
+          play(doorR, [{ transform: "translateX(0)" }, { transform: "translateX(101%)" }], open),
+        ]);
+        finish();
+      } catch (err) {
+        console.error("[splash]", err);
+        finish();
+      }
+    };
+    run();
+  }
+</script>
+
+<style is:global>
+  html.splash-active,
+  html.splash-active body {
+    overflow: hidden;
+  }
+
+  .splash {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: linear-gradient(#92dbe9, #b7e3e5);
+    overflow: hidden;
+  }
+
+  .splash.is-opening {
+    background: transparent;
+  }
+
+  /* Landscape/desktop: artwork covers the screen. Narrower than 7:5: fits the width, sky fills above/below. */
+  .splash__art {
+    --w: max(100vw, calc(100svh * var(--ratio)));
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--w);
+    aspect-ratio: var(--ratio);
+    margin-left: calc(var(--w) / -2);
+    margin-top: calc(var(--w) / var(--ratio) / -2);
+    transform-origin: var(--focus-x) var(--focus-y);
+    opacity: 0;
+    will-change: transform;
+  }
+
+  @media (max-aspect-ratio: 7/5) {
+    .splash__art {
+      --w: 100vw;
+    }
+  }
+
+  .splash__art--m {
+    display: none;
+  }
+
+  /* Portrait: the tall artwork fits the width; its flat sky colour fills any space above and below. */
+  @media (max-aspect-ratio: 1/1) {
+    .splash {
+      background: #b3e4f3;
+    }
+
+    .splash__art--d {
+      display: none;
+    }
+
+    .splash__art--m {
+      display: block;
+      --w: 100vw;
+    }
+
+    .splash__art--m img {
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+    }
+
+    .splash__mist {
+      display: none;
+    }
+  }
+
+  .splash__art img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Soft see-through mist: solid at the outer edge, fading to nothing toward the centre. */
+  .splash__mist {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    --fog: 230, 245, 248;
+  }
+
+  .splash__mist i {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--mist-w, 20vw);
+  }
+
+  .splash__mist i:first-child {
+    left: 0;
+    background:
+      radial-gradient(ellipse 120% 38% at 0% 22%, rgba(var(--fog), 0.55), transparent 70%),
+      radial-gradient(ellipse 120% 34% at 0% 74%, rgba(var(--fog), 0.5), transparent 70%),
+      linear-gradient(
+        to right,
+        rgba(var(--fog), 1) 0%,
+        rgba(var(--fog), 0.98) 12%,
+        rgba(var(--fog), 0.9) 26%,
+        rgba(var(--fog), 0.72) 42%,
+        rgba(var(--fog), 0.46) 58%,
+        rgba(var(--fog), 0.22) 74%,
+        rgba(var(--fog), 0.07) 88%,
+        rgba(var(--fog), 0) 100%
+      );
+  }
+
+  .splash__mist i:last-child {
+    right: 0;
+    background:
+      radial-gradient(ellipse 120% 36% at 100% 28%, rgba(var(--fog), 0.55), transparent 70%),
+      radial-gradient(ellipse 120% 34% at 100% 70%, rgba(var(--fog), 0.5), transparent 70%),
+      linear-gradient(
+        to left,
+        rgba(var(--fog), 1) 0%,
+        rgba(var(--fog), 0.98) 12%,
+        rgba(var(--fog), 0.9) 26%,
+        rgba(var(--fog), 0.72) 42%,
+        rgba(var(--fog), 0.46) 58%,
+        rgba(var(--fog), 0.22) 74%,
+        rgba(var(--fog), 0.07) 88%,
+        rgba(var(--fog), 0) 100%
+      );
+  }
+
+  /* The flag's own pattern: nested rectangles, tilted like the cloth in the wind. */
+  .splash__rings {
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .splash__rings .ring {
+    position: absolute;
+    left: var(--cx);
+    top: var(--cy);
+    width: 0;
+    height: 0;
+    max-width: none;
+    max-height: none;
+    visibility: hidden;
+    overflow: visible;
+    transform: translate(-50%, -50%) rotate(-7deg);
+    will-change: width, height;
+  }
+
+  .splash__rings .ring path {
+    stroke: #1b1512;
+    stroke-width: 6px;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .ring--1 path {
+    fill: #2f5fb3;
+  }
+  .ring--2 path {
+    fill: #efc22f;
+  }
+  .ring--3 path {
+    fill: #3aa84a;
+  }
+  .ring--4 path {
+    fill: #b04a33;
+  }
+
+  .splash__doors {
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+  }
+
+  .splash__door {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background-color: #8a181a;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56' fill='none' stroke='%23e7c766' stroke-opacity='0.34' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M8 48V8H48V40H20V20H36V32'/%3E%3C/svg%3E"),
+      radial-gradient(120% 90% at 50% 50%, #8a181a 0%, #8a181a 55%, #611113 100%);
+    background-size: 56px 56px, 100% 100%;
+    will-change: transform;
+  }
+
+  .splash__door--l {
+    left: 0;
+    border-right: 2px solid rgba(231, 199, 102, 0.55);
+    background-position: right top, center;
+  }
+
+  .splash__door--r {
+    right: 0;
+    border-left: 2px solid rgba(231, 199, 102, 0.55);
+    background-position: left top, center;
+  }
+
+  .splash__skip {
+    position: absolute;
+    right: clamp(16px, 3vw, 32px);
+    bottom: clamp(16px, 3vw, 32px);
+    z-index: 2;
+    padding: 0.55em 1.1em;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fffdf8;
+    background: rgba(27, 21, 18, 0.55);
+    border: 1px solid rgba(255, 253, 248, 0.4);
+    border-radius: 999px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+  }
+
+  .splash__skip:hover,
+  .splash__skip:focus-visible {
+    background: rgba(27, 21, 18, 0.8);
+  }
+
+  .splash.is-opening .splash__skip {
+    display: none;
+  }
+</style>

@@ -1,0 +1,201 @@
+---
+import { Image } from "astro:assets";
+import TextLink from "./TextLink.astro";
+import OrnamentFrame from "./OrnamentFrame.astro";
+import AnimatedFlag from "./AnimatedFlag.astro";
+import { images, type ImageSlug } from "../lib/images";
+import type { Section } from "../lib/content-types";
+
+interface Props {
+  section: Section;
+  reverse?: boolean;
+  index: number;
+  /** Pull the headline up closer to the image on mobile (smaller gap between the stacked image and text). */
+  tightMobileGap?: boolean;
+  /** Laptop: align the top of the text block with the top of the photo. */
+  alignTop?: boolean;
+  /** Laptop: show the waving flag-bearer artwork under the CTA, right-aligned with the headline. */
+  flag?: boolean;
+}
+
+const { section, reverse = false, tightMobileGap = false, alignTop = false, flag = false } = Astro.props;
+const slugs = section.images && section.images.length > 1 ? section.images : section.image ? [section.image] : [];
+const isRotator = slugs.length > 1;
+---
+
+<article
+  class:list={[
+    "story",
+    { "story--reverse": reverse, "story--tight-mobile-gap": tightMobileGap, "story--align-top": alignTop },
+  ]}
+>
+  {
+    slugs.length > 0 && (
+      <div
+        class:list={["story__media", { "story__media--rotator": isRotator }]}
+        data-story-rotator={isRotator ? String(section.rotateMs ?? 3000) : undefined}
+      >
+        {slugs.map((slug, si) => (
+          <Image
+            class="story__slide"
+            data-story-slide
+            data-active={si === 0 ? "true" : "false"}
+            src={images[slug as ImageSlug]}
+            alt=""
+            widths={[480, 768, 1080, 1440]}
+            sizes="(min-width: 900px) 50vw, 100vw"
+            loading="lazy"
+          />
+        ))}
+      </div>
+    )
+  }
+  <div class="story__text">
+    <OrnamentFrame tone="ink">
+      <p class="eyebrow">{section.label}</p>
+      <h2 class="font-heading story__headline">{section.headline}</h2>
+      {section.body.map((p) => <p class="story__body">{p}</p>)}
+      {
+        section.cta && section.ctaHref && (
+          <TextLink href={section.ctaHref}>{section.cta}</TextLink>
+        )
+      }
+      {
+        flag && (
+          <div class="story__flag" data-story-flag aria-hidden="true">
+            <div class="story__flag-box">
+              <AnimatedFlag />
+            </div>
+          </div>
+        )
+      }
+    </OrnamentFrame>
+  </div>
+</article>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-story-rotator]").forEach((media) => {
+    const slides = Array.from(media.querySelectorAll("[data-story-slide]"));
+    if (slides.length < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ms = Number(media.dataset.storyRotator) || 3000;
+    let index = 0;
+    setInterval(() => {
+      slides[index]?.setAttribute("data-active", "false");
+      index = (index + 1) % slides.length;
+      slides[index]?.setAttribute("data-active", "true");
+    }, ms);
+  });
+</script>
+
+<script>
+  // The flag artwork sits under the CTA with its right edge on the right edge of the headline text.
+  document.querySelectorAll<HTMLElement>("[data-story-flag]").forEach((flag) => {
+    const headline = flag.closest(".story")?.querySelector<HTMLElement>(".story__headline");
+    if (!headline) return;
+    const align = () => {
+      const range = document.createRange();
+      range.selectNodeContents(headline);
+      let right = 0;
+      for (const r of Array.from(range.getClientRects())) right = Math.max(right, r.right);
+      flag.style.width = `${Math.max(0, right - flag.getBoundingClientRect().left)}px`;
+    };
+    align();
+    window.addEventListener("resize", align);
+    document.fonts?.ready.then(align);
+  });
+</script>
+
+<style>
+  .story {
+    display: grid;
+    gap: var(--space-md);
+    align-items: center;
+  }
+
+  .story__media {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .story__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .story__media--rotator {
+    position: relative;
+  }
+
+  .story__media--rotator :global(.story__slide) {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-standard);
+  }
+
+  .story__media--rotator :global(.story__slide[data-active="true"]) {
+    opacity: 1;
+  }
+
+  .story__headline {
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+    color: var(--color-primary);
+    margin-block: var(--space-sm) var(--space-sm);
+    max-width: 18ch;
+  }
+
+  .story__body {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-lg);
+    max-width: 52ch;
+    margin-bottom: var(--space-md);
+  }
+
+  @media (max-width: 899px) {
+    .story--tight-mobile-gap {
+      gap: var(--space-2xs);
+    }
+
+    .story--tight-mobile-gap :global(.ornament-frame) {
+      padding-top: var(--space-2xs);
+    }
+
+    .story--tight-mobile-gap .story__headline {
+      margin-block-start: var(--space-3xs);
+    }
+  }
+
+  .story__flag {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .story--align-top {
+      align-items: start;
+    }
+
+    .story__flag {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: var(--space-md);
+    }
+
+    .story__flag-box {
+      position: relative;
+      width: clamp(120px, 11vw, 170px);
+      aspect-ratio: 1828 / 2508;
+    }
+
+    .story {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+    .story--reverse .story__media {
+      order: 2;
+    }
+  }
+</style>

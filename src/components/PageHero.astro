@@ -1,0 +1,271 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  image?: ImageMetadata;
+  /** Provide 2+ images to render an auto-rotating hero (crossfade). */
+  images?: ImageMetadata[];
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  compact?: boolean;
+  /** "wordmark" renders the title in the DDT brand typeface — use only for the literal "Gióng" wordmark. */
+  titleStyle?: "wordmark" | "heading";
+  /** Photo only: the title stays in the DOM for screen readers/SEO but is not shown. */
+  hideText?: boolean;
+}
+
+const {
+  image,
+  images,
+  eyebrow,
+  title,
+  subtitle,
+  compact = false,
+  titleStyle = "heading",
+  hideText = false,
+} = Astro.props;
+
+const slides = images && images.length > 0 ? images : image ? [image] : [];
+const isCarousel = slides.length > 1;
+---
+
+<section class:list={["hero", { "hero--compact": compact }]}>
+  <div class="hero__media" data-hero-media>
+    {
+      slides.map((src, i) => (
+        <Image
+          class="hero__image"
+          data-hero-slide
+          data-active={i === 0 ? "true" : "false"}
+          src={src}
+          alt=""
+          widths={[640, 1024, 1440, 1920]}
+          sizes="100vw"
+          loading={i === 0 ? "eager" : "lazy"}
+          fetchpriority={i === 0 ? "high" : "low"}
+        />
+      ))
+    }
+  </div>
+  {!hideText && <div class="hero__scrim" aria-hidden="true" />}
+  <div class:list={["hero__content container", { "visually-hidden": hideText }]}>
+    {eyebrow && <p class="eyebrow hero__eyebrow">{eyebrow}</p>}
+    <h1
+      class:list={[
+        "hero__title",
+        titleStyle === "wordmark"
+          ? "font-wordmark hero__title--wordmark"
+          : "font-heading",
+      ]}
+    >
+      {title}
+    </h1>
+    {subtitle && <p class="hero__subtitle">{subtitle}</p>}
+    <slot />
+    {
+      isCarousel && (
+        <div class="hero__dots" role="tablist" aria-label="Ảnh nền">
+          {slides.map((_, i) => (
+            <button
+              type="button"
+              class="hero__dot"
+              data-hero-dot
+              data-index={i}
+              aria-label={`Ảnh ${i + 1}`}
+              aria-selected={i === 0 ? "true" : "false"}
+            />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+{
+  isCarousel && (
+    <script>
+      document.querySelectorAll("[data-hero-media]").forEach((media) => {
+        const slidesEls = Array.from(
+          media.querySelectorAll("[data-hero-slide]")
+        );
+        const dotsWrap = media.parentElement?.querySelector(
+          "[role='tablist']"
+        );
+        const dots = dotsWrap
+          ? Array.from(dotsWrap.querySelectorAll("[data-hero-dot]"))
+          : [];
+        if (slidesEls.length < 2) return;
+
+        let index = 0;
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        // Replay the slow zoom-in on a slide each time it becomes active again,
+        // instead of leaving it frozen at its final (most zoomed-in) frame.
+        function restartZoom(el: Element | undefined) {
+          if (!(el instanceof HTMLElement)) return;
+          el.style.animation = "none";
+          void el.offsetWidth; // force reflow so the removal takes effect first
+          el.style.animation = "";
+        }
+
+        function show(next: number) {
+          slidesEls[index]?.setAttribute("data-active", "false");
+          dots[index]?.setAttribute("aria-selected", "false");
+          index = next;
+          slidesEls[index]?.setAttribute("data-active", "true");
+          dots[index]?.setAttribute("aria-selected", "true");
+          restartZoom(slidesEls[index]);
+        }
+
+        let timer: ReturnType<typeof setInterval> | undefined;
+        function start() {
+          timer = setInterval(() => {
+            show((index + 1) % slidesEls.length);
+          }, 6000);
+        }
+        function stop() {
+          clearInterval(timer);
+          timer = undefined;
+        }
+
+        // Clicking a dot is the explicit user control: jump to that slide
+        // and stop auto-advancing (satisfies WCAG 2.2.2 pause requirement
+        // without the earlier bug where merely resting the mouse over the
+        // hero silently paused rotation forever).
+        dots.forEach((dot, i) => {
+          dot.addEventListener("click", () => {
+            show(i);
+            stop();
+          });
+        });
+
+        if (prefersReducedMotion) return;
+
+        start();
+      });
+    </script>
+  )
+}
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 88vh;
+    color: var(--color-inverse-text);
+    overflow: hidden;
+  }
+
+  .hero--compact {
+    min-height: 56vh;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1);
+    transform-origin: center;
+    transition: opacity 1.5s var(--ease-standard);
+    /* Slow, subtle Ken Burns zoom-in on the cover photo (à la hennessy.com) — plays once and
+       holds at the zoomed-in frame; .hero overflow:hidden clips the slight overscale. */
+    animation: hero-zoom 16s var(--ease-standard) forwards;
+  }
+
+  .hero__image[data-active="true"] {
+    opacity: 1;
+  }
+
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.08);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__image {
+      animation: none;
+    }
+  }
+
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(27, 21, 18, 0.15) 0%,
+      rgba(27, 21, 18, 0.35) 55%,
+      rgba(27, 21, 18, 0.85) 100%
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    padding-block: var(--space-xl) var(--space-lg);
+  }
+
+  .hero__eyebrow {
+    color: var(--color-accent);
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero__title {
+    font-size: var(--text-display);
+    line-height: var(--leading-tight);
+    max-width: 22ch;
+  }
+
+  .hero__title--wordmark {
+    font-size: var(--text-hero);
+    max-width: 16ch;
+  }
+
+  .hero__subtitle {
+    margin-top: var(--space-sm);
+    font-size: var(--text-body-lg);
+    max-width: 48ch;
+    color: color-mix(in srgb, var(--color-paper) 90%, transparent);
+  }
+
+  .hero__dots {
+    display: flex;
+    gap: var(--space-2xs);
+    margin-top: var(--space-lg);
+  }
+
+  .hero__dot {
+    width: 28px;
+    height: 3px;
+    padding: 0;
+    border: none;
+    background: color-mix(in srgb, var(--color-paper) 40%, transparent);
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-standard);
+  }
+
+  .hero__dot[aria-selected="true"] {
+    background: var(--color-accent);
+  }
+
+  @media (min-width: 900px) {
+    .hero__content {
+      padding-block: var(--space-2xl) var(--space-xl);
+    }
+  }
+</style>

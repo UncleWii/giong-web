@@ -1,0 +1,48 @@
+{
+  "hero": {
+    "image": "giong-197",
+    "eyebrow": "Câu chuyện Gióng",
+    "title": "Khát vọng mang hồn Việt vào từng hạt cà phê"
+  },
+  "sections": [
+    {
+      "id": "about-gióng",
+      "ribbon": "Về Gióng",
+      "title": "Hành trình định vị cà phê thuần Việt",
+      "body": [
+        "Gióng Café ra đời từ tinh thần \"Gióng trống mở cờ\" biểu tượng của sự khởi đầu mạnh mẽ, dám nghĩ, dám làm và khát vọng mang chất Việt vươn xa trong hành trình 60 năm. Mang định vị \"High-quality Vietnamese Coffee\", Gióng không chỉ phục vụ những thức uống xuất sắc mà còn kiến tạo một không gian văn hóa, nơi giao thoa giữa di sản truyền thống và nhịp sống hiện đại. Hình ảnh thương hiệu mượn nét vẽ mộc mạc của dòng tranh Đông Hồ, kết hợp cùng gam màu đất bazan và sắc kim loại sang trọng, khắc họa trọn vẹn sự cao cấp nhưng vẫn đậm đà bản sắc dân tộc.",
+        "Gióng cam kết không thỏa hiệp với những giá trị rập khuôn. Để hiện thực hóa giấc mơ ấy, đội ngũ Gióng đã miệt mài đi sâu vào các vùng bản địa, không ngừng tìm kiếm những giống hạt hảo hạng nhất. Bằng việc tối ưu phương pháp chế biến và hoàn thiện kỹ thuật rang xay, Gióng tự hào mang đến những tách cà phê thuần Việt trọn vẹn hương vị, đậm đà bản sắc."
+      ],
+      "image": "giong-186",
+      "alt": "Đội ngũ Gióng"
+    },
+    {
+      "id": "brand-story",
+      "ribbon": "Câu chuyện thương hiệu",
+      "title": "Từ một chữ \"Duyên\" đến tinh thần \"Gióng trống mở cờ\"",
+      "body": [
+        "Câu chuyện của Gióng bắt đầu bằng một điều giản dị mà người Việt vẫn thường gọi là chữ ‘duyên’. Đó là khoảnh khắc hai người bạn từ thời tiểu học, giữa lúc đang 'vật lộn' tìm kiếm hướng đi cho riêng mình, đã vô tình hội ngộ trong một đám cưới.",
+        "Những câu chuyện hàn huyên ngẫu nhiên hôm ấy đã đánh thức một đam mê chung và dẫn đến một quyết định táo bạo: Cùng nhau \"Gióng trống mở cờ\". Chúng tôi lấy hình ảnh cái khí thế hừng hực, quyết liệt và khao khát bứt phá ấy để chốt hạ việc dấn thân vào con đường làm cà phê. Và từ đấy cái tên \"Gióng\" chính thức ra đời.",
+        "Nhưng Gióng không chỉ là câu chuyện của riêng hai người sáng lập. Chúng tôi luôn tin rằng: “Gióng là mảnh ghép của từng cá nhân làm nên tập thể này.”",
+        "Sau ngày phất cờ khởi nghiệp, chúng tôi may mắn gặp gỡ và nhận được sự đồng hành từ những người bạn chung chí hướng. Từ những cá nhân xa lạ, tất cả đã sát cánh bên nhau, trở thành đội ngũ nòng cốt của Gióng trên hành trình mang \"chất Việt\" chân thực nhất trao gửi đến mọi người."
+      ],
+      "image": "dilinh-ngay2-10",
+      "alt": "Hành trình của đội ngũ Gióng"
+    },
+    {
+      "id": "high-quality-vietnamese-coffee",
+      "ribbon": "High-quality Vietnamese Coffee",
+      "title": "High-quality Vietnamese Coffee & Rethink Robusta",
+      "body": [
+        "Với triết lý \"Rethink Robusta\" và kiên định theo đuổi dòng cà phê bản địa (Single Origin), chúng tôi đã đi khắp dải đất hình chữ S để tìm kiếm những vùng nguyên liệu xuất chúng nhất. Để chạm đến tiêu chuẩn cao cấp tuyệt đối, Gióng tự chủ hoàn toàn nguồn nguyên liệu với nông trại canh tác hữu cơ (Organic) đặt tại Di Linh, Lâm Đồng. Đây là vùng đất màu mỡ nơi những hạt cà phê được phát triển thuận tự nhiên, chắt lọc trọn vẹn tinh hoa thổ nhưỡng nguyên bản và tôn vinh công sức của người nông dân Việt.",
+        "Hành trình của hạt cà phê \"High-quality\" được tiếp nối khi những hạt xanh chất lượng nhất từ Di Linh chuyển trực tiếp đến xưởng rang trang bị máy Giesen hiện đại của Gióng tại Nha Trang và Thủ Dầu Một. Tại đây, chúng tôi tự tay kiểm soát từng mẻ rang, không ngừng nghiên cứu và phát triển các sơ đồ rang chuyên biệt. Từng công đoạn khép kín từ nông trại đến xưởng rang đều nhằm một mục đích duy nhất: đánh thức mọi nốt hương tiềm ẩn, đưa hạt cà phê bản địa Việt Nam trở thành một trải nghiệm thưởng thức tinh tế và cao cấp."
+      ],
+      "image": "giong-150",
+      "alt": "Cà phê Gióng"
+    }
+  ],
+  "cta": {
+    "label": "Khám phá hành trình Đường Thiên Lý",
+    "href": "/duong-thien-ly"
+  }
+}

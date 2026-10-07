@@ -1,0 +1,130 @@
+{
+  "hero": {
+    "image": "giong-caphesi-vanphong",
+    "eyebrow": "Cung cấp sỉ",
+    "title": "Cà phê sỉ Ngựa Ô cho F&B, HORECA & Văn phòng",
+    "subtitle": "Rang xay tự nhiên — không tẩm, không ướp, không hương liệu. Giá sỉ từ 3kg."
+  },
+  "intro": {
+    "ribbon": "Giới thiệu Ngựa Ô",
+    "title": "Cà phê sỉ Ngựa Ô cho F&B, HORECA & Văn phòng",
+    "image": "giong-caphesi",
+    "alt": "Cà phê sỉ Ngựa Ô cho nhà hàng, khách sạn và văn phòng",
+    "paragraphs": [
+      "Ngựa Ô, thương hiệu trực thuộc Công ty Cổ phần Eco Gióng, chuyên cung cấp cà phê sỉ cho quán cà phê, nhà hàng, khách sạn, F&B, HORECA và văn phòng.",
+      "Sản phẩm sử dụng Robusta Bảo Lâm và Arabica Cầu Đất, theo hướng cà phê rang xay tự nhiên, rang mộc, không tẩm, không ướp và không sử dụng hương vị nhân tạo.",
+      "Ngựa Ô áp dụng giá sỉ từ 3kg, phù hợp với nhiều quy mô vận hành, từ quán cà phê nhỏ, nhà hàng, khách sạn đến văn phòng và doanh nghiệp có nhu cầu sử dụng cà phê thường xuyên."
+    ],
+    "stats": [
+      {
+        "value": "Rang xay tự nhiên",
+        "label": "Rang mộc nguyên chất"
+      },
+      {
+        "value": "Không tẩm, không ướp",
+        "label": "Không hương liệu nhân tạo"
+      },
+      {
+        "value": "Từ 3kg",
+        "label": "MOQ — giá liên hệ"
+      }
+    ],
+    "cta": "Liên hệ nhận báo giá",
+    "ctaHref": "#lien-he"
+  },
+  "gallery": [
+    {
+      "image": "giongfarm-217",
+      "alt": "Trái cà phê chín trên cây tại vùng nguyên liệu của Gióng",
+      "caption": "Vùng nguyên liệu"
+    },
+    {
+      "image": "dilinh-ngay1-38",
+      "alt": "Sân phơi sơ chế hạt cà phê",
+      "caption": "Sơ chế & phơi"
+    },
+    {
+      "image": "home-xuong-rang",
+      "alt": "Rang cà phê trên máy Giesen tại xưởng rang Gióng",
+      "caption": "Rang Giesen"
+    }
+  ],
+  "catalog": {
+    "ribbon": "Danh mục sản phẩm",
+    "lines": [
+      {
+        "name": "Robusta Bảo Lâm",
+        "tag": "100% Robusta Bảo Lâm",
+        "notes": "Sô-cô-la đen",
+        "roast": "Rang đậm · Natural · 800m",
+        "brew": "Phin & Espresso",
+        "fit": "Đồ sữa, breakfast, pantry — lực vị rõ, dễ chuẩn hoá.",
+        "image": "product-ngua-o-tui-si",
+        "alt": "Túi cà phê sỉ Ngựa Ô 1kg — Robusta Bảo Lâm"
+      },
+      {
+        "name": "Arabica Cầu Đất",
+        "tag": "100% Arabica Cầu Đất",
+        "notes": "Trái cây & caramel",
+        "roast": "Vừa/đậm · Honey & Washed · 1.400m",
+        "brew": "Espresso",
+        "fit": "Cà phê đen premium, meeting và boutique hospitality.",
+        "image": "product-ngua-o-tui-si",
+        "alt": "Túi cà phê sỉ Ngựa Ô 1kg — Arabica Cầu Đất"
+      }
+    ],
+    "cta": "Đặt mẫu thử",
+    "ctaHref": "#lien-he",
+    "imageCaption": "Quy cách túi 1kg dùng chung cho cả hai dòng: Robusta Bảo Lâm & Arabica Cầu Đất."
+  },
+  "contact": {
+    "ribbon": "Liên hệ nhận báo giá",
+    "text": "Gọi, email hoặc gửi yêu cầu — đội ngũ Ngựa Ô sẽ tư vấn chính sách giá sỉ (MOQ từ 3kg) và mẫu thử phù hợp cho nhà hàng, khách sạn, văn phòng của bạn.",
+    "hotline": "094 105 9999",
+    "hotlineTel": "+84941059999",
+    "email": "eco@ecogiong.com",
+    "formCta": "Gửi yêu cầu báo giá"
+  },
+  "leadForm": {
+    "title": "Yêu cầu báo giá cà phê sỉ",
+    "description": "Để lại thông tin, đội ngũ Ngựa Ô sẽ liên hệ tư vấn giá và mẫu thử trong thời gian sớm nhất.",
+    "endpoint": "https://formsubmit.co/ajax/quy.nn@ecogiong.com",
+    "subject": "Yêu cầu báo giá cà phê sỉ — Ngựa Ô",
+    "fields": {
+      "name": {
+        "label": "Họ và tên",
+        "placeholder": "Nguyễn Văn A"
+      },
+      "phone": {
+        "label": "Số điện thoại",
+        "placeholder": "09xx xxx xxx"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "ban@congty.com"
+      },
+      "company": {
+        "label": "Đơn vị / Tên doanh nghiệp",
+        "placeholder": "Quán, nhà hàng, khách sạn, công ty..."
+      },
+      "quantity": {
+        "label": "Số lượng muốn mua",
+        "placeholder": "Ví dụ: 5kg/tháng"
+      },
+      "region": {
+        "label": "Khu vực",
+        "placeholder": "Tỉnh / thành phố"
+      }
+    },
+    "useLabel": "Nhu cầu sử dụng",
+    "useOptions": [
+      "Kinh doanh (quán, nhà hàng, khách sạn...)",
+      "Văn phòng"
+    ],
+    "submitLabel": "Gửi yêu cầu",
+    "sendingLabel": "Đang gửi...",
+    "successTitle": "Đã gửi yêu cầu!",
+    "successText": "Cảm ơn bạn. Đội ngũ Ngựa Ô sẽ liên hệ lại trong thời gian sớm nhất.",
+    "errorText": "Gửi không thành công. Vui lòng thử lại hoặc gọi hotline bên dưới."
+  }
+}

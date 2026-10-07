@@ -1,0 +1,111 @@
+---
+import { Image, getImage } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { images } from "../lib/images";
+import menuImage from "../assets/images/Giong-caphe-menu2026-web.png";
+
+const full = await getImage({ src: menuImage, format: "webp", width: 3200, quality: 85 });
+---
+
+<BaseLayout
+  title="Menu"
+  description="Menu thức uống tại cửa hàng Gióng 2026: cà phê, trà, trà sữa, đá xay, cold brew, artisan menu và topping."
+>
+  <PageHero
+    image={images["giong-236"]}
+    eyebrow="Tại cửa hàng"
+    title="Menu 2026"
+    compact
+  />
+
+  <section class="menu container" aria-labelledby="menu-title">
+    <h2 id="menu-title" class="visually-hidden">Menu thức uống tại cửa hàng</h2>
+
+    <p class="menu__hint" aria-hidden="true">Vuốt ngang để xem toàn bộ menu</p>
+
+    <div class="menu__scroller" tabindex="0" role="region" aria-label="Menu thức uống, cuộn ngang để xem">
+      <Image
+        class="menu__img"
+        src={menuImage}
+        alt="Menu thức uống Gióng 2026: Cà phê (Cà phê Ta 100% Robusta, Cà phê Bạn 100% Arabica, đá xay, cà phê ủ lạnh), Trà, Trà sữa, Bình trà, Artisan Menu chọn hạt và dụng cụ pha, đồ uống khác và topping. Giá tính theo đơn vị nghìn đồng, đã gồm VAT."
+        widths={[800, 1200, 1600, 2400, 3200]}
+        sizes="(min-width: 1320px) 1320px, (min-width: 900px) 100vw, 1100px"
+        format="webp"
+        loading="eager"
+      />
+    </div>
+
+    <p class="menu__actions">
+      <a class="menu__open" href={full.src} target="_blank" rel="noopener noreferrer">
+        Xem menu kích thước đầy đủ
+      </a>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .menu {
+    padding-block: var(--space-lg) var(--space-xl);
+  }
+
+  .menu__hint {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2xs);
+  }
+
+  /* Mobile: keep the menu legible (≈1100px wide) and let people swipe sideways. */
+  .menu__scroller {
+    overflow-x: auto;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .menu__img {
+    display: block;
+    width: 1100px;
+    max-width: none;
+    height: auto;
+  }
+
+  .menu__actions {
+    margin-top: var(--space-sm);
+    text-align: center;
+  }
+
+  .menu__open {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5em 1.4em;
+    font-weight: 700;
+    font-size: var(--text-small);
+    text-decoration: none;
+    color: var(--color-accent);
+    background: var(--color-primary);
+    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .menu__open:hover {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  @media (min-width: 900px) {
+    .menu__hint {
+      display: none;
+    }
+
+    .menu__scroller {
+      overflow: visible;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+
+    .menu__img {
+      width: 100%;
+    }
+  }
+</style>

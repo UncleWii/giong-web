@@ -1,0 +1,55 @@
+---
+import { images } from "../lib/images";
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+const frame = images["khung-farm-to-cup"];
+---
+
+<div class="ribbon">
+  <img src={frame.src} class="ribbon__frame" alt="" />
+  <span class="font-wordmark ribbon__text" style={`--chars:${Math.max(text.length, 1)}`}>{text}</span>
+</div>
+
+<style>
+  .ribbon {
+    position: relative;
+    width: min(820px, 95%);
+    aspect-ratio: 4934 / 594;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+  .ribbon__frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ribbon__text {
+    position: relative;
+    display: block;
+    width: 100%;
+    /* Small on mobile so the frame keeps its printed proportions — bumped up at desktop below. */
+    font-size: min(clamp(0.8rem, 0.55rem + 2vw, 1.15rem), calc(56cqw / (var(--chars) * 0.5)));
+    color: var(--color-inverse-text);
+    padding-inline: 18%;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 700px) {
+    .ribbon__text {
+      /* Never wider than the band between the frame's ornaments, whatever the text length. */
+      font-size: min(var(--text-h1), calc(56cqw / (var(--chars) * 0.5)));
+    }
+  }
+</style>

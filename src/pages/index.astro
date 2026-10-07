@@ -1,0 +1,213 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import StorySection from "../components/StorySection.astro";
+import BestSellers from "../components/BestSellers.astro";
+import ThienLySection from "../components/ThienLySection.astro";
+import QuickTeasers from "../components/QuickTeasers.astro";
+import IntroSplash from "../components/IntroSplash.astro";
+import TextLink from "../components/TextLink.astro";
+import AnimatedCoffeeArt from "../components/AnimatedCoffeeArt.astro";
+import { images } from "../lib/images";
+import homeData from "../content/home.json";
+import type { PageContent } from "../lib/content-types";
+
+// Gióng-story block (photo + card "Khát vọng mang hồn Việt...") in the 3-up row.
+//   false = hidden; its button "Tìm hiểu câu chuyện Gióng" moves up under the intro text.
+//   true  = back to the previous layout (3 cards, no button under the intro).
+const SHOW_GIONG_STORY_CARD = false;
+
+const { sections } = homeData as PageContent;
+const [intro, firstStory, ...restAll] = sections;
+
+// These three read fastest as a compact "Gióng — Farm to Cup" summary
+// row rather than full alternating image sections — keeps the page
+// shorter to scroll. Order here is deliberate (farm → store → brand
+// story), not the sheet order.
+const compactOrder = [
+  "farm-xuong-rang",
+  "cau-chuyen-cua-hang",
+  ...(SHOW_GIONG_STORY_CARD ? ["cau-chuyen-giong"] : []),
+];
+const compactItems = compactOrder
+  .map((id) => restAll.find((s) => s.id === id))
+  .filter((s): s is (typeof restAll)[number] => Boolean(s));
+
+const giongStory = restAll.find((s) => s.id === "cau-chuyen-giong");
+
+// Cung cấp sỉ reads before Đường Thiên Lý on the home page.
+const restOrder = ["cung-cap-si", "duong-thien-ly"];
+const rest = restOrder
+  .map((id) => restAll.find((s) => s.id === id))
+  .filter((s): s is (typeof restAll)[number] => Boolean(s));
+---
+
+<BaseLayout
+  title="Gióng"
+  description="Gióng rang và pha cà phê Việt chất lượng cao, phục vụ bạn trong không gian trải nghiệm văn hoá."
+>
+  <IntroSplash />
+  <PageHero
+    images={[images["giong-236"], images["home-xuong-rang"]]}
+    eyebrow="High-quality Vietnamese Coffee"
+    title="Gióng"
+    titleStyle="wordmark"
+    subtitle="Đội ngũ Gióng rang và pha cà phê Việt chất lượng cao, phục vụ bạn trong không gian trải nghiệm văn hoá."
+  />
+
+  <section class="intro section">
+    <div class="container intro__inner">
+      <div class="intro__art">
+        <AnimatedCoffeeArt />
+      </div>
+      <div class="intro__divider" aria-hidden="true"></div>
+      <div class="intro__text-col">
+        {intro.body.map((p) => <p class="intro__text">{p}</p>)}
+        {
+          !SHOW_GIONG_STORY_CARD && giongStory?.cta && giongStory.ctaHref && (
+            <div class="intro__cta">
+              <TextLink href={giongStory.ctaHref}>{giongStory.cta}</TextLink>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    firstStory && (
+      <div class="stories stories--first">
+        <div class="container stories__item">
+          <StorySection
+            section={firstStory}
+            reverse={false}
+            index={0}
+            tightMobileGap={firstStory.id === "cau-chuyen-san-pham"}
+            alignTop={firstStory.id === "cau-chuyen-san-pham"}
+            flag={firstStory.id === "cau-chuyen-san-pham"}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  <BestSellers />
+
+  <QuickTeasers items={compactItems} />
+
+  <div class="stories">
+    {
+      rest.map((section, i) =>
+        section.id === "duong-thien-ly" ? (
+          <ThienLySection section={section} />
+        ) : (
+          <div class="container stories__item">
+            <StorySection section={section} reverse={i % 2 === 1} index={i} />
+          </div>
+        )
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .intro.section {
+    padding-block: var(--space-md) var(--space-sm);
+  }
+
+  .intro__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+
+  .intro__art {
+    width: min(420px, 90%);
+  }
+
+  .intro__art :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .intro__divider {
+    width: 64px;
+    height: var(--border-width);
+    background: var(--color-border);
+  }
+
+  .intro__text-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .intro__cta {
+    margin-top: var(--space-sm);
+  }
+
+  .intro__text {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: clamp(1.1rem, 0.9rem + 1vw, 1.5rem);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-primary);
+  }
+
+  @media (min-width: 700px) {
+    /*
+      Grid matches StorySection's exact pattern (same .container cap,
+      1fr/1fr, same gap) so the divider — sitting at the column
+      boundary — lands at the identical x-position as the right edge
+      of the story images below, regardless of viewport width.
+    */
+    .intro__inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+
+    .intro__art {
+      width: 100%;
+      max-width: 480px;
+      justify-self: end;
+    }
+
+    .intro__divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(50% - var(--space-xl) / 2);
+      width: var(--border-width);
+      height: auto;
+    }
+
+    .intro__text-col {
+      text-align: center;
+    }
+  }
+
+  .stories {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    padding-block: var(--space-md) var(--space-xl);
+  }
+
+  .stories--first {
+    padding-block: var(--space-sm) var(--space-lg);
+  }
+
+  /* Mobile: CTA → Best Seller badge is 68px (half of the previous 136px). */
+  @media (max-width: 699px) {
+    .stories--first {
+      padding-bottom: 28px;
+    }
+  }
+
+</style>

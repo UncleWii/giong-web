@@ -1,0 +1,120 @@
+---
+// Compact "liên hệ báo giá" touchpoint: phone, email and the quote-request button.
+// Reused at every spot on a wholesale/B2B page where visitors might want to reach out,
+// not just in the page's single big contact section.
+interface Props {
+  hotline: string;
+  hotlineTel: string;
+  email: string;
+  formCta: string;
+}
+
+const { hotline, hotlineTel, email, formCta } = Astro.props;
+---
+
+<div class="quote-cta">
+  <a class="quote-cta__item" href={`tel:${hotlineTel}`}>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linejoin="round"></path>
+    </svg>
+    {hotline}
+  </a>
+  <a class="quote-cta__item" href={`mailto:${email}`}>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+      <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path>
+    </svg>
+    {email}
+  </a>
+  <button type="button" class="quote-cta__btn" data-open-lead-form>
+    <span>{formCta}</span>
+    <svg class="quote-cta__arrow" width="16" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+      <path
+        d="M1 6H17M17 6L12 1M17 6L12 11"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .quote-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm) var(--space-md);
+  }
+
+  .quote-cta__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .quote-cta__item:hover {
+    color: var(--color-primary-strong);
+  }
+
+  /* The clickable "ask for a quote" button: nudges gently so it reads as interactive, not just text. */
+  .quote-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    font: inherit;
+    font-weight: 700;
+    font-size: var(--text-small);
+    cursor: pointer;
+    min-height: 44px;
+    padding: 0.65em 1.4em;
+    color: var(--color-accent);
+    background: var(--color-primary);
+    border: none;
+    animation: quote-cta-pulse 2.6s ease-in-out infinite;
+    transition: background var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+  }
+
+  .quote-cta__btn:hover,
+  .quote-cta__btn:focus-visible {
+    animation-play-state: paused;
+    background: var(--color-primary-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  }
+
+  .quote-cta__btn:active {
+    transform: translateY(0);
+  }
+
+  .quote-cta__arrow {
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .quote-cta__btn:hover .quote-cta__arrow {
+    transform: translateX(3px);
+  }
+
+  @keyframes quote-cta-pulse {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .quote-cta__btn {
+      animation: none;
+    }
+  }
+</style>

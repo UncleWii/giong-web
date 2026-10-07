@@ -1,0 +1,122 @@
+{
+  "hero": {
+    "image": "giong-hoian",
+    "title": "Những trạm dừng mang hồn cốt vùng miền",
+    "subtitle": "Mỗi không gian của Gióng không chỉ là nơi thưởng thức cà phê, mà là một điểm chạm văn hóa độc bản nơi kiến trúc hòa quyện trọn vẹn vào nhịp thở đặc trưng của từng vùng đất."
+  },
+  "hotlineFallback": "(+84) 28 3622 2084",
+  "cities": [
+    "Hồ Chí Minh",
+    "Hà Nội",
+    "Hội An",
+    "Nha Trang"
+  ],
+  "amenities": [
+    {
+      "id": "outside",
+      "label": "Outside"
+    },
+    {
+      "id": "pet",
+      "label": "Pet friendly"
+    },
+    {
+      "id": "roastery",
+      "label": "Roastery & coffee"
+    },
+    {
+      "id": "ac",
+      "label": "Máy lạnh"
+    }
+  ],
+  "stores": [
+    {
+      "id": "hang-thung",
+      "name": "Gióng Hàng Thùng",
+      "city": "Hà Nội",
+      "image": "Giong-caphe-cuahang-20hangthung.jpg",
+      "description": "Nơi ký ức 36 phố phường thu gọn qua ô cửa sổ, mang chút hoài niệm tinh tế giữa lòng thủ đô ngàn năm văn hiến.",
+      "address": "20 Hàng Thùng, P. Hoàn Kiếm, Hà Nội",
+      "hotline": "",
+      "hours": "07:00 – 22:00",
+      "tags": [
+        "outside",
+        "pet",
+        "ac"
+      ],
+      "mapUrl": "https://maps.app.goo.gl/2G4gSupLnXEgsANG8"
+    },
+    {
+      "id": "nguyen-du",
+      "name": "Gióng 57 Nguyễn Du",
+      "city": "Hồ Chí Minh",
+      "image": "Giong-caphe-cuahang-57nguyendu.jpg",
+      "description": "Tọa lạc tại trụ sở Imprimerie de l’Union xưa: tường vàng viền xanh, quầy đỏ cao đụng trần và nội thất gỗ nâu hoài niệm. Cách nhà thờ Đức Bà 30 giây đi bộ.",
+      "address": "57 Nguyễn Du, P. Sài Gòn, TP. Hồ Chí Minh",
+      "hotline": "(+84) 28 3535 3457",
+      "hours": "07:00 – 22:00",
+      "tags": [
+        "outside",
+        "pet",
+        "ac"
+      ],
+      "mapUrl": "https://maps.app.goo.gl/bSVzZrS8diVsFBPb7"
+    },
+    {
+      "id": "diamond-plaza",
+      "name": "Gióng Diamond Plaza",
+      "city": "Hồ Chí Minh",
+      "image": "Giong-caphe-cuahang-34LeDuan.jpg",
+      "description": "Tọa độ đương đại với tầm nhìn panorama, nơi hội tụ của những nguồn cảm hứng bứt phá và thời thượng. Cách nhà thờ Đức Bà 30 giây đi bộ.",
+      "address": "Tầng 5 - Diamond Plaza, 34 Lê Duẩn, P. Sài Gòn, TP. Hồ Chí Minh",
+      "hotline": "(+84) 28 3535 9661",
+      "hours": "08:00 – 22:00",
+      "tags": [
+        "ac"
+      ],
+      "mapUrl": "https://maps.app.goo.gl/qPKzzVfBuAuVraUw8"
+    },
+    {
+      "id": "hoi-an",
+      "name": "Gióng Hội An",
+      "city": "Hội An",
+      "image": "Giong-caphe-cuahang-09nguyenthaihoc2.jpg",
+      "description": "Ngôi nhà rêu phong dưới mái ngói thâm nâu, nơi hồn phố Hội mộc mạc giao thoa cùng văn hóa specialty hiện đại.",
+      "address": "09 Nguyễn Thái Học, P. Hội An, TP. Đà Nẵng",
+      "hotline": "(+84) 235 3777 109",
+      "hours": "08:00 – 21:30",
+      "tags": [
+        "outside",
+        "pet"
+      ],
+      "mapUrl": "https://maps.app.goo.gl/mxYkJH9tB4MKiaAg9"
+    },
+    {
+      "id": "nha-trang",
+      "name": "Gióng Nha Trang",
+      "city": "Nha Trang",
+      "image": "Giong-caphe-cuahang-15tranhungdao2.png",
+      "description": "Bản hòa tấu giữa nắng gió đại dương và tiếng máy rang xay tại chỗ, nơi bạn chạm tay vào hương vị cà phê nguyên bản.",
+      "address": "15 Trần Hưng Đạo, P. Nha Trang, tỉnh Khánh Hòa",
+      "hotline": "(+84) 258 3901 515",
+      "hours": "07:00 – 22:00",
+      "tags": [
+        "outside",
+        "pet",
+        "roastery",
+        "ac"
+      ],
+      "mapUrl": "https://maps.app.goo.gl/DwMnTLqznRpifuAMA"
+    }
+  ],
+  "labels": {
+    "cityGroup": "Theo thành phố",
+    "amenityGroup": "Tiện ích",
+    "all": "Tất cả",
+    "empty": "Chưa có cửa hàng phù hợp với bộ lọc này.",
+    "hours": "Giờ mở cửa",
+    "hotline": "Hotline",
+    "map": "Xem đường đi trên Google Maps",
+    "directions": "Xem đường đi"
+  }
+}

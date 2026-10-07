@@ -1,0 +1,134 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import { images } from "../../lib/images";
+
+const legs = (await getCollection("thienLy", (p) => !p.data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<BaseLayout
+  title="Hành trình Thiên Lý"
+  description="Hành trình Thiên Lý của Gióng: xuyên 5 tỉnh Tây Nguyên tìm hạt cà phê Single Origin, từ chọn vùng đất đến khảo sát thực tế cùng người nông dân."
+>
+  <PageHero
+    image={images["giongfarm-9"]}
+    eyebrow="Câu chuyện"
+    title="Hành trình Thiên Lý"
+    subtitle="Một hành trình đi qua những vùng đất, gặp những con người và khám phá những câu chuyện làm nên một Việt Nam đa dạng, giàu bản sắc."
+    compact
+  />
+
+  <section class="list container" aria-label="Các chặng trong hành trình">
+    <ul class="list__grid">
+      {
+        legs.map((leg, i) => (
+          <li class="post">
+            <a class="post__link" href={`/duong-thien-ly/${leg.id}`}>
+              <div class="post__media">
+                <Image
+                  src={leg.data.cover}
+                  alt={leg.data.coverAlt}
+                  widths={[480, 768, 1080]}
+                  sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+                  loading="lazy"
+                />
+              </div>
+              <span class="post__step">Chặng 0{i + 1}</span>
+              <h2 class="font-heading post__title">{leg.data.title}</h2>
+              <p class="post__desc">{leg.data.description}</p>
+              <span class="post__more">Đọc tiếp</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .list {
+    padding-block: var(--space-xl);
+  }
+
+  .list__grid {
+    display: grid;
+    gap: var(--space-lg) var(--space-md);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .post__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .post__media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--color-ink) 4%, transparent);
+    margin-bottom: var(--space-sm);
+  }
+
+  .post__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+
+  .post__link:hover .post__media :global(img) {
+    transform: scale(1.03);
+  }
+
+  .post__step {
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--space-3xs);
+  }
+
+  .post__title {
+    font-size: var(--text-h3);
+    line-height: var(--leading-snug);
+    color: var(--color-primary);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .post__desc {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xs);
+  }
+
+  .post__more {
+    margin-top: auto;
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    border-bottom: var(--border-width) solid currentColor;
+    align-self: flex-start;
+    padding-bottom: 0.2em;
+  }
+
+  @media (min-width: 640px) {
+    .list__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .list__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

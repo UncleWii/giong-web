@@ -1,0 +1,201 @@
+---
+import { Image } from "astro:assets";
+import Ribbon from "./Ribbon.astro";
+import OrnamentFrame from "./OrnamentFrame.astro";
+import TextLink from "./TextLink.astro";
+import AnimatedFlag from "./AnimatedFlag.astro";
+import { images, type ImageSlug } from "../lib/images";
+import type { Section } from "../lib/content-types";
+
+interface Props {
+  section: Section;
+}
+
+const { section } = Astro.props;
+const slugs = section.images && section.images.length > 1 ? section.images : section.image ? [section.image] : [];
+const isRotator = slugs.length > 1;
+const title = section.ribbon ?? section.headline;
+---
+
+<section class="thienly" aria-label={title}>
+  <div class="thienly__ribbon">
+    <Ribbon text={title} />
+  </div>
+
+  <div class="container thienly__grid">
+    {
+      slugs.length > 0 && (
+        <div
+          class:list={["thienly__media", { "thienly__media--rotator": isRotator }]}
+          data-thienly-rotator={isRotator ? String(section.rotateMs ?? 3000) : undefined}
+        >
+          {slugs.map((slug, si) => (
+            <Image
+              class="thienly__slide"
+              data-thienly-slide
+              data-active={si === 0 ? "true" : "false"}
+              src={images[slug as ImageSlug]}
+              alt=""
+              widths={[480, 768, 1080, 1440]}
+              sizes="(min-width: 900px) 50vw, 100vw"
+              loading="lazy"
+            />
+          ))}
+        </div>
+      )
+    }
+    <div class="thienly__text">
+      <OrnamentFrame tone="ink">
+        {section.accent && <h2 class="font-heading thienly__accent">{section.accent}</h2>}
+        <div class="thienly__copy">
+          {section.body.map((p) => <p class="thienly__body">{p}</p>)}
+          {
+            section.cta && section.ctaHref && (
+              <TextLink href={section.ctaHref}>{section.cta}</TextLink>
+            )
+          }
+        </div>
+      </OrnamentFrame>
+      <div class="thienly__art-cell">
+        <AnimatedFlag />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-thienly-rotator]").forEach((media) => {
+    const slides = Array.from(media.querySelectorAll("[data-thienly-slide]"));
+    if (slides.length < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ms = Number(media.dataset.thienlyRotator) || 3000;
+    let index = 0;
+    setInterval(() => {
+      slides[index]?.setAttribute("data-active", "false");
+      index = (index + 1) % slides.length;
+      slides[index]?.setAttribute("data-active", "true");
+    }, ms);
+  });
+</script>
+
+<style>
+  .thienly__ribbon {
+    margin-bottom: var(--space-md);
+  }
+
+  .thienly__grid {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .thienly__media {
+    aspect-ratio: 7 / 6;
+    overflow: hidden;
+  }
+
+  .thienly__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .thienly__media--rotator {
+    position: relative;
+  }
+
+  .thienly__media--rotator :global(.thienly__slide) {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-standard);
+  }
+
+  /* active slide is fully visible */
+  .thienly__media--rotator :global(.thienly__slide[data-active="true"]) {
+    opacity: 1;
+  }
+
+  .thienly__text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .thienly__accent {
+    font-size: clamp(2.2rem, 1.3rem + 3vw, 3.6rem);
+    line-height: var(--leading-tight);
+    color: var(--color-primary);
+    white-space: pre-line;
+    margin-bottom: var(--space-sm);
+  }
+
+  .thienly__body {
+    font-size: var(--text-body);
+    max-width: 40ch;
+    margin-bottom: var(--space-sm);
+  }
+
+  .thienly__art-cell {
+    position: relative;
+    width: min(60%, 260px);
+    aspect-ratio: 1828 / 2508;
+    align-self: center;
+    margin-top: var(--space-md);
+  }
+
+  /* Mobile: same 4-corner frame as the wholesale (Cà phê sỉ) block. */
+  .thienly__text :global(.ornament-frame) {
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .thienly__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    /*
+      Laptop: no frame. Text starts at the same x as the framed Cà phê sỉ text
+      (frame padding = --space-md) so left edges line up while scrolling.
+    */
+    .thienly__text :global(.ornament-frame),
+    .thienly__text :global(.ornament-frame__content) {
+      display: contents;
+    }
+
+    .thienly__text :global(.corner) {
+      display: none;
+    }
+
+    /* Accent on top; copy left, flag artwork right — artwork fills the space left under the accent. */
+    .thienly__text {
+      padding-left: var(--space-md);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 44%);
+      grid-template-rows: auto minmax(0, 1fr);
+      column-gap: var(--space-sm);
+      align-items: stretch;
+    }
+
+    .thienly__accent {
+      grid-column: 1 / -1;
+    }
+
+    .thienly__copy {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .thienly__art-cell {
+      grid-column: 2;
+      grid-row: 2;
+      width: auto;
+      aspect-ratio: auto;
+      align-self: stretch;
+      margin: 0;
+      min-height: 0;
+    }
+  }
+</style>

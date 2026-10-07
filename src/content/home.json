@@ -1,0 +1,99 @@
+{
+  "page": "Home page",
+  "sections": [
+    {
+      "id": "khong-gian-chung",
+      "order": 1,
+      "label": "Không gian chung",
+      "headline": "Cùng cà phê và không gian trải nghiệm văn hoá",
+      "body": [
+        "Gióng là nơi cà phê gặp gỡ không gian và những trải nghiệm văn hoá Việt.",
+        "Một nơi để thưởng thức cà phê, gặp gỡ và cảm nhận những câu chuyện Việt theo một cách gần gũi hơn."
+      ],
+      "image": "giong-236"
+    },
+    {
+      "id": "cau-chuyen-san-pham",
+      "order": 2,
+      "label": "Câu chuyện Sản Phẩm",
+      "headline": "Chất Việt trong từng gói cà phê",
+      "body": [
+        "Mỗi sản phẩm của Gióng không chỉ là một thức uống ngon mà còn mang theo một phần câu chuyện về vùng đất, con người và tâm huyết của người làm nghề."
+      ],
+      "image": "home-giong-gia-robusta",
+      "cta": "Khám phá sản phẩm",
+      "ctaHref": "/san-pham"
+    },
+    {
+      "id": "cau-chuyen-giong",
+      "order": 3,
+      "label": "Câu chuyện Gióng",
+      "headline": "Khát vọng mang hồn Việt vào từng hạt cà phê",
+      "body": [
+        "Gióng không đơn thuần là một thương hiệu F&B, mà là nơi hội tụ của những con người mang chung một tình yêu sâu sắc với di sản nông nghiệp nước nhà. Mọi nỗ lực của chúng tôi đều bắt nguồn từ một khát khao duy nhất: Đưa hạt cà phê Việt Nam chất lượng cao vươn ra thế giới."
+      ],
+      "image": "giong-197",
+      "teaser": "Câu chuyện những người làm nên Gióng",
+      "cta": "Tìm hiểu câu chuyện Gióng",
+      "ctaHref": "/cau-chuyen-giong"
+    },
+    {
+      "id": "duong-thien-ly",
+      "order": 4,
+      "label": "Đường Thiên Lý",
+      "headline": "Hành trình khởi nguồn cafe tại Gióng",
+      "body": [
+        "Một hành trình đi qua những vùng đất, gặp những con người và khám phá những câu chuyện làm nên một Việt Nam đa dạng, giàu bản sắc."
+      ],
+      "image": "dilinh-ngay1-89",
+      "images": ["dilinh-ngay1-89", "thienly-caphe"],
+      "rotateMs": 2000,
+      "ribbon": "Hành trình Thiên Lý",
+      "accent": "Tiến Lên,\nCùng Tiến Lên",
+      "cta": "Khám phá hành trình Đường thiên lý",
+      "ctaHref": "/duong-thien-ly"
+    },
+    {
+      "id": "farm-xuong-rang",
+      "order": 5,
+      "label": "Farm / Xưởng Rang",
+      "headline": "Khám phá nông trại và xưởng rang của GIÓNG",
+      "body": [
+        "Gióng chủ động trong hành trình tạo nên hạt cà phê của mình từ những vùng đất trồng cà phê đến xưởng rang. Mỗi công đoạn được kiểm soát để giữ chất lượng và sự ổn định trong từng mẻ hạt."
+      ],
+      "image": "giongfarm-231",
+      "images": ["giongfarm-231", "home-xuong-rang", "giong-farm"],
+      "teaser": "Không chỉ là nơi trồng và rang, đây là trạm nghiên cứu của Gióng về trồng và rang cà phê.",
+      "cta": "Xem nông trại, xưởng rang của Gióng",
+      "ctaHref": "/farm-xuong-rang"
+    },
+    {
+      "id": "cau-chuyen-cua-hang",
+      "order": 6,
+      "label": "Câu chuyện Cửa Hàng",
+      "headline": "Hệ thống chi nhánh GIÓNG",
+      "body": [
+        "Mỗi cửa hàng Gióng là một \"trạm dừng\" mang ngôn ngữ kiến trúc riêng, ôm trọn lấy hơi thở văn hóa của vùng đất mà nó hiện diện."
+      ],
+      "image": "giong-hoian",
+      "images": ["giong-hoian", "giong-nhatrang", "giong-57"],
+      "teaser": "Mỗi quán một câu chuyện riêng, nơi không gian kể chuyện và kết nối",
+      "cta": "Tìm trạm Gióng gần nhất",
+      "ctaHref": "/cua-hang"
+    },
+    {
+      "id": "cung-cap-si",
+      "order": 7,
+      "label": "Cung cấp sỉ",
+      "headline": "Cà phê sỉ cho Nhà hàng – Khách sạn – Văn phòng – HORECA",
+      "image": "giong-caphesi-vanphong",
+      "images": ["giong-caphesi-vanphong", "giong-caphesi", "giong-caphesi-2"],
+      "rotateMs": 1500,
+      "body": [
+        "Ngựa Ô cung cấp cà phê Việt Nam rang mộc, cà phê sạch chất lượng cao cho các quán cà phê, nhà hàng, khách sạn và đối tác thương mại. Với chuỗi cung ứng khép kín từ nông trại đến xưởng rang, Ngựa Ô hướng đến chất lượng ổn định và chính sách cung cấp linh hoạt, nhận đơn từ 5kg."
+      ],
+      "cta": "Tìm hiểu cung cấp sỉ",
+      "ctaHref": "/ngua-o"
+    }
+  ]
+}

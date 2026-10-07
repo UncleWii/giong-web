@@ -1,0 +1,398 @@
+---
+import { images } from "../lib/images";
+
+type NavItem = {
+  label: string;
+  href?: string;
+  children?: { label: string; href: string }[];
+};
+
+const navItems: NavItem[] = [
+  { label: "Trang chủ", href: "/" },
+  { label: "Farm / Xưởng Rang", href: "/farm-xuong-rang" },
+  { label: "Sản Phẩm", href: "/san-pham" },
+  { label: "Cửa Hàng", href: "/cua-hang" },
+  { label: "Mua Sỉ", href: "/ngua-o" },
+  { label: "Menu", href: "/menu" },
+  {
+    label: "Câu chuyện",
+    children: [
+      { label: "Câu chuyện Gióng", href: "/cau-chuyen-giong" },
+      { label: "Hành trình Thiên Lý", href: "/duong-thien-ly" },
+      { label: "Kiến thức cà phê", href: "/kien-thuc-ca-phe" },
+    ],
+  },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="site-header__bar container">
+    <a href="/" class="site-header__logo" aria-label="Gióng — trang chủ">
+      <img src={images.logo.src} width="44" height="44" alt="" />
+      <span class="font-wordmark site-header__wordmark">Gióng</span>
+    </a>
+
+    <nav class="site-header__nav" aria-label="Điều hướng chính">
+      <ul>
+        {
+          navItems.map((item) =>
+            item.children ? (
+              <li class="has-dropdown" data-dropdown>
+                <button
+                  type="button"
+                  class="dropdown-trigger"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                >
+                  {item.label}
+                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                    <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+                <ul class="dropdown">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        aria-current={currentPath === child.href ? "page" : undefined}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={currentPath === item.href ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            )
+          )
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <button
+        class="site-header__toggle"
+        id="nav-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span class="visually-hidden">Mở menu</span>
+        <span class="site-header__toggle-bars">
+          <span class="site-header__toggle-bar"></span>
+          <span class="site-header__toggle-bar"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav" data-open="false">
+    <ul>
+      {
+        navItems.map((item) =>
+          item.children ? (
+            <li class="mobile-group">
+              <span class="mobile-group__label">{item.label}</span>
+              <ul>
+                {item.children.map((child) => (
+                  <li>
+                    <a href={child.href}>{child.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          )
+        )
+      }
+    </ul>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("nav-toggle");
+  const nav = document.getElementById("mobile-nav");
+  toggle?.addEventListener("click", () => {
+    const isOpen = nav?.getAttribute("data-open") === "true";
+    nav?.setAttribute("data-open", String(!isOpen));
+    toggle.setAttribute("aria-expanded", String(!isOpen));
+    document.body.style.overflow = isOpen ? "" : "hidden";
+  });
+
+  // Desktop dropdown: opens on hover/focus via CSS, and on click/Enter via aria-expanded (touch + keyboard).
+  const dropdowns = document.querySelectorAll<HTMLElement>("[data-dropdown]");
+  const closeAll = () =>
+    dropdowns.forEach((d) =>
+      d.querySelector(".dropdown-trigger")?.setAttribute("aria-expanded", "false")
+    );
+  dropdowns.forEach((d) => {
+    const trigger = d.querySelector(".dropdown-trigger");
+    trigger?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = trigger.getAttribute("aria-expanded") === "true";
+      closeAll();
+      trigger.setAttribute("aria-expanded", String(!open));
+    });
+  });
+  document.addEventListener("click", closeAll);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeAll();
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-primary);
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    height: 72px;
+  }
+
+  .site-header__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    text-decoration: none;
+    color: var(--color-inverse-text);
+    flex-shrink: 0;
+  }
+
+  .site-header__wordmark {
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--color-inverse-text);
+  }
+
+  .site-header__nav {
+    display: none;
+  }
+
+  .site-header__nav ul {
+    display: flex;
+    gap: clamp(1.1rem, 2.4vw, 2rem);
+    align-items: center;
+  }
+
+  .site-header__nav a {
+    display: block;
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-paper) 92%, transparent);
+    padding-block: 0.5rem;
+    border-bottom: 2px solid transparent;
+    transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .site-header__nav a:hover,
+  .site-header__nav a[aria-current="page"] {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* ---- Dropdown (Câu chuyện) ---- */
+  .has-dropdown {
+    position: relative;
+  }
+
+  .dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: color-mix(in srgb, var(--color-paper) 88%, transparent);
+    padding-block: 0.5rem;
+    transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .dropdown-trigger svg {
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .has-dropdown:hover .dropdown-trigger,
+  .has-dropdown:focus-within .dropdown-trigger,
+  .dropdown-trigger[aria-expanded="true"] {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .has-dropdown:hover .dropdown-trigger svg,
+  .dropdown-trigger[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+
+  .site-header__nav .dropdown {
+    position: absolute;
+    top: 100%;
+    left: -1rem;
+    min-width: calc(100% + 2rem);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding-block: var(--space-2xs);
+    background: var(--color-primary-strong);
+    border: 1px solid color-mix(in srgb, var(--color-paper) 22%, transparent);
+    border-top: 2px solid var(--color-accent);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard), visibility var(--duration-fast);
+    z-index: 60;
+  }
+
+  .has-dropdown:hover .dropdown,
+  .has-dropdown:focus-within .dropdown,
+  .dropdown-trigger[aria-expanded="true"] + .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .site-header__nav .dropdown a {
+    padding: var(--space-2xs) 1rem;
+    text-align: left;
+    border-bottom: none;
+  }
+
+  .site-header__nav .dropdown a:hover,
+  .site-header__nav .dropdown a[aria-current="page"] {
+    background: color-mix(in srgb, var(--color-paper) 10%, transparent);
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .site-header__toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    min-height: 44px;
+    padding-inline: var(--space-2xs);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .site-header__toggle-bars {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 24px;
+  }
+
+  .site-header__toggle-bar {
+    display: block;
+    height: 2px;
+    background: var(--color-inverse-text);
+    transition: transform var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .site-header__toggle[aria-expanded="true"] .site-header__toggle-bar:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .site-header__toggle[aria-expanded="true"] .site-header__toggle-bar:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  .mobile-nav {
+    position: fixed;
+    inset: 72px 0 0 0;
+    background: var(--color-primary);
+    transform: translateY(-8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard), visibility var(--duration-base);
+    z-index: 40;
+    overflow-y: auto;
+  }
+
+  .mobile-nav[data-open="true"] {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .mobile-nav ul {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-lg) var(--gutter);
+  }
+
+  .mobile-nav a {
+    display: block;
+    padding: var(--space-sm) 0;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-inverse-text);
+    border-bottom: var(--border-width) solid var(--color-border-on-primary);
+  }
+
+  .mobile-group__label {
+    display: block;
+    padding: var(--space-sm) 0 var(--space-3xs);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-accent);
+  }
+
+  .mobile-nav .mobile-group ul {
+    padding: 0 0 var(--space-2xs) var(--space-sm);
+  }
+
+  .mobile-nav .mobile-group a {
+    font-size: 1.2rem;
+    padding: var(--space-2xs) 0;
+    border-bottom: none;
+  }
+
+  @media (min-width: 1024px) {
+    .site-header__nav {
+      display: block;
+    }
+    .site-header__toggle {
+      display: none;
+    }
+    .mobile-nav {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,300 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Ribbon from "../components/Ribbon.astro";
+import PinIcon from "../components/PinIcon.astro";
+import TextLink from "../components/TextLink.astro";
+import { images, type ImageSlug } from "../lib/images";
+import data from "../content/farm-xuong-rang.json";
+
+const { hero, chain, station, roastery, cta } = data;
+
+const farmFiles = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/images/Giong-ca*-nongtrai*.jpg",
+  { eager: true }
+);
+const farmImage = (file: string) => farmFiles[`../assets/images/${file}`].default;
+---
+
+<BaseLayout
+  title="Farm / Xưởng Rang"
+  description="Chuỗi cung ứng khép kín của Gióng: từ nông trại Arabica Cầu Đất, Trạm Gióng Đà Lạt đến xưởng rang Giesen tại Nha Trang và Thủ Dầu Một, đạt chứng nhận ISO 22000:2018."
+>
+  <PageHero
+    image={images[hero.image as ImageSlug]}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    subtitle={hero.subtitle}
+    compact
+  />
+
+  <!-- 1. Nông trại cà phê của Gióng (Trạm Gióng) -->
+  <section class="block block--top" aria-labelledby="station-title">
+    <Ribbon text={station.ribbon} />
+    <div class="container block__grid">
+      <div class="mosaic">
+        {
+          station.images.map((im, i) => (
+            <div class:list={["mosaic__item", { "mosaic__item--wide": i === 0 }]}>
+              <Image
+                src={farmImage(im.file)}
+                alt={im.alt}
+                widths={[360, 540, 768, 1080]}
+                sizes={i === 0 ? "(min-width: 900px) 50vw, 100vw" : "(min-width: 900px) 25vw, 50vw"}
+                loading="lazy"
+              />
+            </div>
+          ))
+        }
+      </div>
+      <div class="block__text">
+        <h2 id="station-title" class="visually-hidden">{station.ribbon}</h2>
+        <p class="block__body">{station.text}</p>
+        <ul class="places" aria-label="Địa điểm">
+          {station.locations.map((l) => <li><PinIcon />{l}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Rang Giesen & ISO -->
+  <section class="block block--reverse" aria-labelledby="roastery-title">
+    <Ribbon text={roastery.ribbon} />
+    <div class="container block__grid">
+      <div class="block__media">
+        <Image
+          src={images[roastery.image as ImageSlug]}
+          alt="Xưởng rang Gióng với hệ thống máy Giesen"
+          widths={[480, 768, 1080, 1440]}
+          sizes="(min-width: 900px) 50vw, 100vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="block__text">
+        <h2 id="roastery-title" class="visually-hidden">{roastery.ribbon}</h2>
+        <p class="block__body">{roastery.text}</p>
+        <p class="block__body">{roastery.text2}</p>
+        <ul class="places" aria-label="Địa điểm">
+          {roastery.locations.map((l) => <li><PinIcon />{l}</li>)}
+        </ul>
+        <div class="certs">
+          {
+            roastery.certs.map((c) => (
+              <figure class="cert">
+                <Image
+                  src={images[c.image as ImageSlug]}
+                  alt={c.alt}
+                  widths={[240, 360, 540]}
+                  sizes="200px"
+                  loading="lazy"
+                />
+                <figcaption>{c.caption}</figcaption>
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Chuỗi cung ứng khép kín -->
+  <section class="block" aria-labelledby="chain-title">
+    <Ribbon text={chain.ribbon} />
+    <div class="container block__grid">
+      <div class="block__media">
+        <Image
+          src={images[chain.image as ImageSlug]}
+          alt="Thu hái cà phê thủ công tại nông trại Gióng"
+          widths={[480, 768, 1080, 1440]}
+          sizes="(min-width: 900px) 50vw, 100vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="block__text">
+        <h2 id="chain-title" class="font-heading block__title">{chain.title}</h2>
+        <ol class="steps">
+          {
+            chain.steps.map((s, i) => (
+              <li>
+                <span class="steps__num" aria-hidden="true">0{i + 1}</span>
+                <div>
+                  <h3 class="steps__name">{s.name}</h3>
+                  <p>{s.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <p class="cta"><TextLink href={cta.href}>{cta.label}</TextLink></p>
+</BaseLayout>
+
+<style>
+  .block {
+    padding-top: var(--space-xl);
+  }
+
+  .block__grid {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    align-items: center;
+  }
+
+  .block__media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .block__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xs);
+    align-content: start;
+  }
+
+  .mosaic__item {
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .mosaic__item--wide {
+    grid-column: 1 / -1;
+    aspect-ratio: 3 / 2;
+  }
+
+  .mosaic__item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .block__title {
+    font-size: var(--text-h2);
+    line-height: var(--leading-snug);
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .block__body {
+    margin-bottom: var(--space-sm);
+    max-width: 52ch;
+  }
+
+  .steps {
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .steps li {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    align-items: baseline;
+    font-size: var(--text-small);
+  }
+
+  .steps__num {
+    font-weight: 700;
+    color: color-mix(in srgb, var(--color-ink) 35%, transparent);
+  }
+
+  .steps__name {
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: var(--leading-snug);
+    margin-bottom: var(--space-3xs);
+  }
+
+  .places {
+    display: grid;
+    gap: var(--space-3xs);
+    font-size: var(--text-small);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .places li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5em;
+  }
+
+  .places li :global(svg) {
+    flex: none;
+    margin-top: 0.15em;
+  }
+
+  .certs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+  }
+
+  .methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  .methods li {
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: 0.4em 1.1em;
+    color: var(--color-accent);
+    background: var(--color-primary);
+  }
+
+  .cert {
+    margin: 0;
+    width: 160px;
+  }
+
+  .cert :global(img) {
+    width: 100%;
+    height: auto;
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .cert figcaption {
+    margin-top: var(--space-3xs);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .cta {
+    text-align: center;
+    padding-block: var(--space-xl);
+  }
+
+  @media (min-width: 900px) {
+    .block__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    .block--reverse .block__media {
+      order: 2;
+    }
+
+    /* Text top edge lines up with the top edge of the photos. */
+    .block--top .block__grid {
+      align-items: start;
+    }
+  }
+</style>

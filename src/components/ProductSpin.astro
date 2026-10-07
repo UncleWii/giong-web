@@ -1,0 +1,723 @@
+---
+import { images } from "../lib/images";
+import type { BestSellerSlide } from "../lib/best-sellers";
+
+interface Props {
+  slides: BestSellerSlide[];
+}
+
+const { slides } = Astro.props;
+
+const shapes = [
+  "M421 74c62 38 109 112 101 187-9 76-72 154-143 203-70 49-148 69-221 38C85 470 38 389 50 313c12-77 83-141 154-194 70-53 156-86 217-45Z",
+  "M455 104c58 52 85 130 66 201-19 72-84 137-158 168-74 31-157 28-212-22C95 401 68 321 92 247c25-74 96-141 177-166 79-25 127-29 186 23Z",
+  "M388 58c78 20 132 94 143 174 10 80-23 166-90 215-67 50-168 63-242 21C124 426 78 343 84 266 90 190 148 119 218 85c69-34 92-47 170-27Z",
+];
+
+/*
+  The bag is a 3D object built from two photos (all sizes in "u" = photo pixels at bag height 1359):
+    front photo 1001 × 1359, side photo 399 × 1358.
+  The front photo is cut into horizontal slices that follow the real taper of the bag (its top is pinched,
+  the belly is full) so the front and the side panels meet without a gap while the bag turns.
+  FRONT_Z = how far the front surface sits in front of the bag's centre line, measured on the side photo.
+*/
+const FRONT_H = 1359;
+const SIDE_W = 399;
+const FRONT_Z = [5.5, 23.5, 39.5, 51.5, 78.5, 103.5, 127.5, 145.5, 158.5, 167.5, 173.5, 178.5, 180.5, 181.5, 180.5, 181.5, 185];
+const N = FRONT_Z.length - 1;
+const SLICE_H = FRONT_H / N;
+const slicesGeometry = Array.from({ length: N }, (_, i) => {
+  const z0 = FRONT_Z[i];
+  const z1 = FRONT_Z[i + 1];
+  return {
+    y: i * SLICE_H,
+    z: (z0 + z1) / 2,
+    angle: (Math.atan2(z1 - z0, SLICE_H) * 180) / Math.PI,
+  };
+});
+---
+
+<section class="ps" id="product-spin" style={`--bg: ${slides[0].bg}; --ink: ${slides[0].ink};`}>
+  <div class="ps__stage" data-ps-stage>
+    <div class="ps__bgs" aria-hidden="true">
+      {
+        slides.map((s, i) => (
+          <div class="ps__bg" data-ps-bg data-active={i === 0 ? "true" : "false"} style={`background:${s.bg}`}></div>
+        ))
+      }
+    </div>
+
+    <div class="ps__blobs" aria-hidden="true">
+      {
+        slides.map((s, i) => (
+          <svg class="ps__blob" data-ps-blob data-active={i === 0 ? "true" : "false"} viewBox="0 0 600 600">
+            <path d={shapes[i % shapes.length]} fill={s.blob}></path>
+          </svg>
+        ))
+      }
+    </div>
+
+    <div class="ps__names" aria-hidden="true">
+      {
+        slides.map((s, i) => (
+          <span class="ps__name font-heading" data-ps-name data-active={i === 0 ? "true" : "false"} style={`color:${s.ink}`}>
+            {s.name}
+          </span>
+        ))
+      }
+    </div>
+
+    <div class="ps__bags" data-ps-bags>
+      {
+        slides.map((s, i) => (
+          <figure class="ps__bag" data-ps-bag data-active={i === 0 ? "true" : "false"}>
+            <div class="ps__bag-tilt">
+              <div class="ps__bag-move" data-ps-move>
+                <div class="ps__box" data-ps-spin role="img" aria-label={`Gói cà phê ${s.name}`}>
+                  <div class="ps__front">
+                    {slicesGeometry.map((g) => (
+                      <div
+                        class="ps__slice"
+                        style={`top:calc(${g.y.toFixed(2)} * var(--u));height:calc(${(SLICE_H + 7).toFixed(2)} * var(--u));background-image:url('${images[s.front].src}');background-position:0 calc(${(-g.y).toFixed(2)} * var(--u));transform:translateZ(calc(${g.z.toFixed(2)} * var(--u))) rotateX(${g.angle.toFixed(3)}deg);`}
+                      />
+                    ))}
+                  </div>
+                  <div class="ps__panel ps__panel--left">
+                    <img src={images[s.side].src} width={SIDE_W} height="1358" alt="" decoding="async" />
+                  </div>
+                  <div class="ps__panel ps__panel--right">
+                    <img src={images[s.side].src} width={SIDE_W} height="1358" alt="" decoding="async" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        ))
+      }
+    </div>
+
+    <div class="ps__copy">
+      {
+        slides.map((s, i) => (
+          <div class="ps__info" data-ps-info data-active={i === 0 ? "true" : "false"} style={`color:${s.ink}`}>
+            <div class="ps__left">
+              <p class="ps__kind">{s.kind}</p>
+              <p class="ps__desc">{s.desc}</p>
+            </div>
+            <div class="ps__right">
+              <ul class="ps__specs">
+                {s.specs.map((t) => (
+                  <li>{t}</li>
+                ))}
+              </ul>
+              <a class="ps__cta" href={s.href} style={`color:${s.ink}`}>
+                {s.cta}
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+                  <path d="M1 6H17M17 6L12 1M17 6L12 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="ps__nav">
+      <button type="button" class="ps__arrow" data-ps-prev aria-label="Sản phẩm trước">
+        <svg width="22" height="14" viewBox="0 0 22 14" fill="none" aria-hidden="true"><path d="M21 7H1M1 7L7 1M1 7L7 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </button>
+      <button type="button" class="ps__arrow ps__toggle" data-ps-toggle aria-label="Tạm dừng tự chuyển" aria-pressed="false">
+        <svg class="ps__icon-pause" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3.6" height="12" rx="1" fill="currentColor" /><rect x="9.4" y="2" width="3.6" height="12" rx="1" fill="currentColor" /></svg>
+        <svg class="ps__icon-play" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.2v11.6L13.6 8 4 2.2Z" fill="currentColor" /></svg>
+      </button>
+      <button type="button" class="ps__arrow" data-ps-next aria-label="Sản phẩm kế tiếp">
+        <svg width="22" height="14" viewBox="0 0 22 14" fill="none" aria-hidden="true"><path d="M1 7H21M21 7L15 1M21 7L15 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <script type="application/json" id="product-spin-data" set:html={JSON.stringify(slides.map((s) => ({ ink: s.ink })))} />
+</section>
+
+<script>
+  const root = document.getElementById("product-spin");
+  if (root) {
+    const stage = root.querySelector<HTMLElement>("[data-ps-stage]")!;
+    const bags = Array.from(root.querySelectorAll<HTMLElement>("[data-ps-bag]"));
+    const names = Array.from(root.querySelectorAll<HTMLElement>("[data-ps-name]"));
+    const infos = Array.from(root.querySelectorAll<HTMLElement>("[data-ps-info]"));
+    const bgs = Array.from(root.querySelectorAll<HTMLElement>("[data-ps-bg]"));
+    const blobs = Array.from(root.querySelectorAll<SVGElement>("[data-ps-blob]"));
+    const toggle = root.querySelector<HTMLButtonElement>("[data-ps-toggle]")!;
+    const palette: { ink: string }[] = JSON.parse(document.getElementById("product-spin-data")!.textContent || "[]");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const count = bags.length;
+
+    const AUTO_MS = 1500;
+    let MS = 1150;
+    let current = 0;
+    let busy = false;
+    let playing = !reduced;
+    let inView = false;
+    let timer = 0;
+
+    root.querySelectorAll<HTMLImageElement>(".ps__bags img").forEach((im) => {
+      im.decoding = "async";
+      im.decode?.().catch(() => undefined);
+    });
+
+    const setActive = (i: number) => {
+      bags.forEach((b, k) => b.setAttribute("data-active", String(k === i)));
+      names.forEach((n, k) => n.setAttribute("data-active", String(k === i)));
+      infos.forEach((n, k) => n.setAttribute("data-active", String(k === i)));
+      bgs.forEach((n, k) => n.setAttribute("data-active", String(k === i)));
+      blobs.forEach((n, k) => n.setAttribute("data-active", String(k === i)));
+    };
+
+    const schedule = () => {
+      window.clearTimeout(timer);
+      if (!playing || !inView || document.hidden || count < 2) return;
+      timer = window.setTimeout(() => goTo((current + 1) % count, 1), AUTO_MS);
+    };
+
+    const goTo = async (next: number, dir: 1 | -1) => {
+      if (busy || next === current || next < 0 || next >= count) return;
+      busy = true;
+      window.clearTimeout(timer);
+      const from = current;
+      const outBag = bags[from];
+      const inBag = bags[next];
+      const outSpin = outBag.querySelector<HTMLElement>("[data-ps-spin]")!;
+      const inSpin = inBag.querySelector<HTMLElement>("[data-ps-spin]")!;
+      const outMoveEl = outBag.querySelector<HTMLElement>("[data-ps-move]")!;
+      const inMoveEl = inBag.querySelector<HTMLElement>("[data-ps-move]")!;
+
+      // Background colour and blob swap with the spin (cross-faded layers, GPU-composited).
+      root.style.setProperty("--ink", palette[next].ink);
+      bgs.forEach((n, k) => n.setAttribute("data-active", String(k === next)));
+      blobs.forEach((n, k) => n.setAttribute("data-active", String(k === next)));
+
+      if (reduced) {
+        setActive(next);
+        current = next;
+        busy = false;
+        return;
+      }
+
+      // Title / copy slide away then in.
+      const slide = (el: HTMLElement, out: boolean) =>
+        el.animate(
+          out
+            ? [
+                { opacity: 1, transform: "translateX(0)" },
+                { opacity: 0, transform: `translateX(${-7 * dir}%)` },
+              ]
+            : [
+                { opacity: 0, transform: `translateX(${7 * dir}%)` },
+                { opacity: 1, transform: "translateX(0)" },
+              ],
+          { duration: MS * 0.5, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "both" }
+        );
+
+      outBag.setAttribute("data-active", "leaving");
+      slide(names[from], true);
+      slide(infos[from], true);
+
+      // The bag turns on its vertical axis to show a side; the next bag takes over from the (mirrored,
+      // identical) side and turns to face the viewer. Only transforms are animated — GPU only.
+      const half = MS * 0.5;
+      const outAnim = outSpin.animate(
+        [{ transform: "rotateY(0deg)" }, { transform: `rotateY(${90 * dir}deg)` }],
+        { duration: half, easing: "cubic-bezier(0.45, 0.05, 0.85, 0.6)", fill: "forwards" }
+      );
+      const outMove = outMoveEl.animate(
+        [{ transform: "translateX(0)" }, { transform: `translateX(${-3 * dir}vw)` }],
+        { duration: half, easing: "cubic-bezier(0.45, 0.05, 0.85, 0.6)", fill: "forwards" }
+      );
+      await outAnim.finished;
+
+      // Swap while both bags are side-on.
+      setActive(next);
+      outBag.setAttribute("data-active", "false");
+      outAnim.cancel();
+      outMove.cancel();
+      inBag.setAttribute("data-active", "true");
+      slide(names[next], false);
+      slide(infos[next], false);
+
+      const inDur = half * 1.2;
+      inMoveEl.animate(
+        [{ transform: `translateX(${3 * dir}vw)` }, { transform: "translateX(0)" }],
+        { duration: inDur, easing: "cubic-bezier(0.15, 0.7, 0.3, 1)", fill: "both" }
+      );
+      await inSpin.animate(
+        [{ transform: `rotateY(${-90 * dir}deg)` }, { transform: "rotateY(0deg)" }],
+        { duration: inDur, easing: "cubic-bezier(0.15, 0.7, 0.3, 1)", fill: "both" }
+      ).finished;
+      inSpin.getAnimations().forEach((a) => a.cancel());
+      inMoveEl.getAnimations().forEach((a) => a.cancel());
+      current = next;
+      busy = false;
+      schedule();
+    };
+
+    const next = () => goTo((current + 1) % count, 1);
+    const prev = () => goTo((current - 1 + count) % count, -1);
+    root.querySelector("[data-ps-next]")?.addEventListener("click", next);
+    root.querySelector("[data-ps-prev]")?.addEventListener("click", prev);
+
+    const renderToggle = () => {
+      toggle.setAttribute("aria-pressed", String(!playing));
+      toggle.setAttribute("aria-label", playing ? "Tạm dừng tự chuyển" : "Tiếp tục tự chuyển");
+      toggle.classList.toggle("is-paused", !playing);
+    };
+    toggle.addEventListener("click", () => {
+      playing = !playing;
+      renderToggle();
+      if (playing) schedule();
+      else window.clearTimeout(timer);
+    });
+    renderToggle();
+
+    root.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") prev();
+    });
+
+    // Swipe
+    let sx = 0;
+    let sy = 0;
+    stage.addEventListener("pointerdown", (e) => {
+      sx = e.clientX;
+      sy = e.clientY;
+    });
+    stage.addEventListener("pointerup", (e) => {
+      const dx = e.clientX - sx;
+      const dy = e.clientY - sy;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) (dx < 0 ? next : prev)();
+    });
+
+    // Autoplay only while the section is on screen and the tab is visible.
+    new IntersectionObserver(
+      (entries) => {
+        inView = entries.some((e) => e.isIntersecting);
+        if (inView) schedule();
+        else window.clearTimeout(timer);
+      },
+      { threshold: 0.35 }
+    ).observe(root);
+    document.addEventListener("visibilitychange", schedule);
+
+    // Run one full turn invisibly and fast so the GPU layers exist before the first real turn.
+    const warmUp = async () => {
+      if (reduced || count < 2 || busy) return;
+      stage.style.opacity = "0.01";
+      const keep = MS;
+      MS = 260;
+      await goTo(1, 1);
+      await goTo(0, -1);
+      MS = keep;
+      stage.style.opacity = "";
+      schedule();
+    };
+    window.setTimeout(warmUp, 700);
+  }
+</script>
+
+<style>
+  .ps {
+    --bg: #f3ece0;
+    --ink: #2a1f1a;
+    position: relative;
+    background: var(--bg);
+    color: var(--ink);
+    overflow: hidden;
+  }
+
+  .ps__stage {
+    position: relative;
+    min-height: clamp(660px, 84svh, 800px);
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+    touch-action: pan-y;
+    contain: layout paint;
+  }
+
+  /* One layer per product: colour changes are opacity cross-fades (GPU only, no repaint). */
+  .ps__bgs,
+  .ps__blobs {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .ps__bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: opacity;
+  }
+
+  .ps__bg[data-active="true"] {
+    opacity: 1;
+  }
+
+  .ps__blob {
+    --blob-w: min(54vw, 560px);
+    position: absolute;
+    width: var(--blob-w);
+    left: 50%;
+    top: 50%;
+    margin-left: calc(var(--blob-w) / -2);
+    margin-top: calc(var(--blob-w) / -2 - 3%);
+    opacity: 0;
+    transform: scale(0.6) rotate(-24deg);
+    transition: opacity 0.45s ease-in, transform 0.6s cubic-bezier(0.5, 0, 0.75, 0.5);
+    will-change: transform, opacity;
+  }
+
+  .ps__blob[data-active="true"] {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    transition: opacity 0.5s ease-out 0.4s, transform 0.85s cubic-bezier(0.2, 0.8, 0.3, 1) 0.35s;
+  }
+
+  /* Product name sits above the middle of the stage; the copy blocks hang below it. */
+  .ps__names {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    justify-items: center;
+    align-items: start;
+    padding-top: clamp(36px, 8vh, 84px);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .ps__name {
+    grid-area: 1 / 1;
+    font-size: clamp(3.2rem, 1.2rem + 9.6vw, 9.6rem);
+    line-height: 1;
+    letter-spacing: 0.005em;
+    white-space: nowrap;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  .ps__name[data-active="true"] {
+    opacity: 1;
+  }
+
+  /*
+    3D bag. --bh = bag height on screen; every other size follows from it
+    (front 1001 × 1359 and side 399 × 1358 photo pixels → --u screen pixels per photo pixel).
+  */
+  .ps__bags {
+    --bh: clamp(290px, 45vh, 420px);
+    --u: calc(var(--bh) / 1359);
+    --w: calc(1001 * var(--u));
+    --d: calc(399 * var(--u));
+    position: relative;
+    z-index: 2;
+    width: var(--w);
+    height: var(--bh);
+    margin-top: clamp(40px, 7vh, 80px);
+    perspective: 2400px;
+    perspective-origin: 50% 30%;
+  }
+
+  .ps__bags::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -3%;
+    width: 125%;
+    height: 11%;
+    translate: -50% 0;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--ink) 30%, transparent), transparent);
+    pointer-events: none;
+  }
+
+  .ps__bag {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform-style: preserve-3d;
+  }
+
+  .ps__bag[data-active="true"],
+  .ps__bag[data-active="leaving"] {
+    visibility: visible;
+  }
+
+  .ps__bag-tilt,
+  .ps__bag-move {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+
+  .ps__bag-tilt {
+    transform: rotate(-9deg);
+  }
+
+  .ps__bag-move {
+    will-change: transform;
+  }
+
+  .ps__box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .ps__front {
+    position: absolute;
+    left: 0;
+    top: calc(var(--bh) / -2);
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+  }
+
+  .ps__slice {
+    position: absolute;
+    left: calc(var(--w) / -2);
+    top: 0;
+    width: var(--w);
+    background-repeat: no-repeat;
+    background-size: var(--w) var(--bh);
+    backface-visibility: hidden;
+  }
+
+  .ps__panel {
+    position: absolute;
+    top: calc(var(--bh) / -2);
+    left: calc(var(--d) / -2);
+    width: var(--d);
+    height: var(--bh);
+    backface-visibility: hidden;
+  }
+
+  .ps__panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+  }
+
+  .ps__panel--left {
+    transform: translateX(calc(var(--w) / -2 + 0.6px)) rotateY(-90deg);
+  }
+
+  .ps__panel--right {
+    transform: translateX(calc(var(--w) / 2 - 0.6px)) rotateY(90deg);
+  }
+
+  .ps__panel--right img {
+    transform: scaleX(-1);
+  }
+
+  /* Copy: description left of the bag, coffee facts right of the bag, both below the name. */
+  .ps__copy {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .ps__info {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .ps__info[data-active="true"] {
+    opacity: 1;
+  }
+
+  .ps__left,
+  .ps__right {
+    position: absolute;
+    top: 56%;
+    pointer-events: none;
+  }
+
+  .ps__info[data-active="true"] .ps__right {
+    pointer-events: auto;
+  }
+
+  .ps__left {
+    left: clamp(20px, 6vw, 110px);
+    width: min(310px, 26vw);
+  }
+
+  .ps__right {
+    right: clamp(20px, 6vw, 110px);
+    width: min(270px, 24vw);
+  }
+
+  .ps__kind {
+    font-weight: 700;
+    font-size: var(--text-small, 0.875rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.7rem;
+    opacity: 0.8;
+  }
+
+  .ps__desc {
+    font-size: var(--text-body, 1rem);
+    line-height: 1.55;
+  }
+
+  .ps__specs {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.3rem;
+    font-size: var(--text-small, 0.9rem);
+  }
+
+  .ps__specs li {
+    padding-block: 0.45rem;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  }
+
+  .ps__specs li:first-child {
+    border-top: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  }
+
+  .ps__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: var(--text-small, 0.875rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1.5px solid currentColor;
+    padding-bottom: 0.3em;
+  }
+
+  .ps__nav {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(18px, 3.5vh, 36px);
+    translate: -50% 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .ps__arrow {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color 0.25s, color 0.25s;
+  }
+
+  .ps__arrow:hover,
+  .ps__arrow:focus-visible {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  .ps__toggle .ps__icon-play {
+    display: none;
+  }
+
+  .ps__toggle.is-paused .ps__icon-pause {
+    display: none;
+  }
+
+  .ps__toggle.is-paused .ps__icon-play {
+    display: block;
+  }
+
+  @media (max-width: 899px) {
+    .ps__stage {
+      min-height: 752px;
+    }
+
+    .ps__names {
+      padding-top: 32px;
+    }
+
+    .ps__name {
+      font-size: clamp(2.6rem, 13.5vw, 5.4rem);
+    }
+
+    .ps__bags {
+      --bh: clamp(250px, 38vh, 330px);
+      margin-top: -148px;
+    }
+
+    .ps__blob {
+      --blob-w: 86vw;
+      margin-top: calc(var(--blob-w) / -2 - 11% - 19px);
+    }
+
+    .ps__left,
+    .ps__right {
+      position: static;
+      width: auto;
+      text-align: center;
+    }
+
+    .ps__info {
+      inset: auto 20px 92px 20px;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .ps__desc {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .ps__specs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.35rem 0.9rem;
+      margin: 0;
+      font-size: 0.82rem;
+    }
+
+    .ps__specs li,
+    .ps__specs li:first-child {
+      border: 0;
+      padding: 0;
+    }
+
+    .ps__cta {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ps__bg,
+    .ps__blob {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,74 @@
+{
+  "hero": {
+    "image": "dilinh-ngay1-4",
+    "eyebrow": "Farm / Xưởng Rang",
+    "title": "Nơi bắt đầu của một hành trình cà phê",
+    "subtitle": "Để mang đến những trải nghiệm cà phê đỉnh cao, Gióng kiên định theo đuổi chuỗi cung ứng khép kín và minh bạch. Khác biệt hoàn toàn với mô hình thương mại mua đi bán lại thông thường trên thị trường, Gióng trực tiếp kiểm soát toàn bộ quy trình từ nông trại Arabica Cầu Đất danh tiếng đến xưởng rang, đảm bảo mỗi hạt cà phê đều đạt tiêu chuẩn chất lượng cao cấp."
+  },
+  "chain": {
+    "ribbon": "Chuỗi cung ứng khép kín",
+    "title": "Tuyệt đối không qua trung gian",
+    "image": "giongfarm-231",
+    "steps": [
+      {
+        "name": "Trồng trọt",
+        "text": "Gióng trực tiếp quản lý và phát triển các vùng trồng Arabica tại Cầu Đất, “thánh địa” cà phê với điều kiện khí hậu và thổ nhưỡng lý tưởng. Cây cà phê được canh tác hoàn toàn thuận tự nhiên, chắt lọc trọn vẹn tinh hoa nguyên bản của đất trời."
+      },
+      {
+        "name": "Thu hái",
+        "text": "Quá trình thu hoạch được thực hiện thủ công vô cùng khắt khe, chỉ tuyển chọn chính xác những trái cà phê chín mọng đạt độ hoàn hảo để làm nền tảng cho chất lượng thượng hạng."
+      },
+      {
+        "name": "Sơ chế",
+        "text": "Hạt cà phê sau khi thu hái được đưa vào quy trình sơ chế khép kín, kiểm soát nghiêm ngặt từng công đoạn nhằm giữ lại trọn vẹn hương vị đặc trưng, chuẩn hóa định vị “High-quality Vietnamese Coffee” mà Gióng kiêu hãnh theo đuổi."
+      }
+    ]
+  },
+  "station": {
+    "ribbon": "Nông trại của Gióng",
+    "images": [
+      {
+        "file": "Giong-cafe-nongtrai1.jpg",
+        "alt": "Nông trại cà phê Trạm Gióng"
+      },
+      {
+        "file": "Giong-caphe-nongtrai2.jpg",
+        "alt": "Cây cà phê tại Trạm Gióng"
+      },
+      {
+        "file": "Giong-caphe-nongtrai3.jpg",
+        "alt": "Hạt cà phê tại Trạm Gióng"
+      }
+    ],
+    "text": "Đây là trái tim nguồn liệu và được canh tác theo phương pháp hữu cơ, nơi đây cũng là trạm nghiên cứu và phát triển các giống cà, kỹ thuật trồng trọt và phương pháp sơ chế cà phê của Gióng.",
+    "locations": [
+      "Trạm Hành, Đà Lạt, Lâm Đồng."
+    ]
+  },
+  "roastery": {
+    "ribbon": "Xưởng rang của Gióng",
+    "image": "home-xuong-rang",
+    "text": "Khai phóng hương vị độc bản, Hạt xanh chuyển trực tiếp đến xưởng rang Nha Trang & Thủ Dầu Một. Đội ngũ thợ rang làm chủ sơ đồ rang (Roast Profile) trên hệ thống máy Giesen cao cấp, được bảo chứng chất lượng toàn cầu với chứng nhận ISO 22000:2018 & FDA.",
+    "text2": "Ngoài việc rang, nơi đây còn là 'lò' nghiên cứu và phát triển các sơ đồ rang cà phê của Gióng, để khai phá các nốt hương vị tiềm ẩn có trong hạt cà phê Việt Nam.",
+    "locations": [
+      "15 Trần Hưng Đạo, P. Nha Trang, tỉnh Khánh Hoà.",
+      "170 Lê Hồng Phong, phường Phú Lợi, P. Phú Lợi, TP. Hồ Chí Minh"
+    ],
+    "certs": [
+      {
+        "image": "badge-iso",
+        "alt": "Giấy chứng nhận ISO 22000:2018 của Công ty Cổ phần Eco Gióng",
+        "caption": "ISO 22000:2018"
+      },
+      {
+        "image": "badge-fda",
+        "alt": "Chứng nhận đăng ký FDA của Công ty Cổ phần Eco Gióng",
+        "caption": "FDA Registered"
+      }
+    ]
+  },
+  "cta": {
+    "label": "Khám phá cà phê Gióng",
+    "href": "/san-pham"
+  }
+}

@@ -1,0 +1,120 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const legs = (await getCollection("thienLy", (p) => !p.data.draft)).sort(
+    (a, b) => a.data.order - b.data.order
+  );
+  return legs.map((leg, i) => ({
+    params: { slug: leg.id },
+    props: { leg, index: i, prev: legs[i - 1], next: legs[i + 1] },
+  }));
+}
+
+const { leg, index, prev, next } = Astro.props;
+const { Content } = await render(leg);
+const url = new URL(Astro.url.pathname, Astro.site).toString();
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: leg.data.title,
+  description: leg.data.description,
+  datePublished: leg.data.date.toISOString(),
+  mainEntityOfPage: url,
+  publisher: { "@type": "Organization", name: "Gióng" },
+};
+---
+
+<BaseLayout title={leg.data.title} description={leg.data.description} ogType="article">
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article class="post container-narrow">
+    <nav class="post__crumbs" aria-label="Breadcrumb">
+      <a href="/duong-thien-ly">Hành trình Thiên Lý</a>
+    </nav>
+    <span class="post__step">Chặng 0{index + 1}</span>
+    <h1 class="font-heading post__title">{leg.data.title}</h1>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <nav class="post__pager" aria-label="Chặng khác">
+      {prev && <a class="post__prev" href={`/duong-thien-ly/${prev.id}`}>← {prev.data.title}</a>}
+      {next && <a class="post__next" href={`/duong-thien-ly/${next.id}`}>{next.data.title} →</a>}
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    padding-block: var(--space-lg) var(--space-xl);
+  }
+
+  .post__crumbs a {
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .post__step {
+    display: block;
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-top: var(--space-sm);
+  }
+
+  .post__title {
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+    color: var(--color-primary);
+    margin-block: var(--space-2xs) var(--space-md);
+  }
+
+  .prose :global(p) {
+    margin-bottom: var(--space-sm);
+    font-size: var(--text-body-lg);
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    color: var(--color-primary);
+    margin: var(--space-md) 0 var(--space-xs);
+  }
+
+  .prose :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-block: var(--space-md);
+  }
+
+  .post__pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+    padding-top: var(--space-sm);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .post__pager a {
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .post__next {
+    margin-left: auto;
+    text-align: right;
+  }
+</style>

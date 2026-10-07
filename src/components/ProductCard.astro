@@ -1,0 +1,116 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  image: ImageMetadata;
+  name: string;
+  tagline: string;
+  href: string;
+  ctaLabel?: string;
+  /** Fraction (0-1) of the image height that is transparent at the bottom of the PNG — lets mobile pull text up to the visible product. */
+  padBottom?: number;
+}
+
+const { image, name, tagline, href, ctaLabel = "Click để xem", padBottom = 0 } = Astro.props;
+---
+
+<a href={href} class="product-card" style={`--pad-b: ${padBottom}`}>
+  <span class="product-card__media">
+    <Image
+      src={image}
+      alt=""
+      widths={[280, 420, 560]}
+      sizes="(min-width: 900px) 30vw, 80vw"
+      loading="lazy"
+    />
+  </span>
+  <span class="product-card__body">
+    <span class="product-card__name">{name}</span>
+    <span class="product-card__tagline">{tagline}</span>
+    <span class="product-card__cta">{ctaLabel}</span>
+  </span>
+</a>
+
+<style>
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .product-card__media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    margin-bottom: var(--space-2xs);
+  }
+
+  .product-card__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .product-card:hover .product-card__media :global(img) {
+    transform: scale(1.04);
+  }
+
+  /*
+    Mobile: the PNGs carry a lot of transparent padding, so the *visible* gap
+    between bag and text is much larger than the CSS margin. Cut that visible
+    gap by 70%: gap = margin + pad * H, with H = 4/3 * width (margin % = width).
+  */
+  @media (max-width: 699px) {
+    .product-card__media {
+      margin-bottom: calc(0.3 * var(--space-2xs) - var(--pad-b) * 93.33%);
+    }
+  }
+
+  .product-card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-card__name {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: var(--text-h3);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-primary);
+    margin-bottom: var(--space-3xs);
+  }
+
+  .product-card__tagline {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    max-width: 26ch;
+    margin-bottom: var(--space-2xs);
+  }
+
+  .product-card__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-small);
+    font-weight: 700;
+    color: var(--color-ink);
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: var(--space-2xs) var(--space-md);
+    transition: background var(--duration-fast) var(--ease-standard);
+  }
+
+  .product-card:hover .product-card__cta,
+  .product-card:focus-visible .product-card__cta {
+    background: var(--color-accent-strong);
+  }
+</style>

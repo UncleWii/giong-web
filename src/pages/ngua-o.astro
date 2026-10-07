@@ -1,0 +1,675 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Ribbon from "../components/Ribbon.astro";
+import QuoteCta from "../components/QuoteCta.astro";
+import { images, type ImageSlug } from "../lib/images";
+import data from "../content/ngua-o.json";
+
+const { hero, intro, gallery, catalog, contact, leadForm } = data;
+---
+
+<BaseLayout
+  title="Cung cấp sỉ — Ngựa Ô"
+  description="Ngựa Ô: giải pháp cà phê sỉ chuyên nghiệp cho F&B. Robusta Bảo Lâm & Arabica Cầu Đất rang mộc, đóng gói 1kg, MOQ từ 3kg."
+>
+  <PageHero
+    image={images[hero.image as ImageSlug]}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    subtitle={hero.subtitle}
+    compact
+  />
+
+  <!-- 1. Giới thiệu Ngựa Ô -->
+  <section class="block" aria-labelledby="intro-title">
+    <Ribbon text={intro.ribbon} />
+    <div class="container block__grid">
+      <div class="block__media">
+        <Image
+          src={images[intro.image as ImageSlug]}
+          alt={intro.alt}
+          widths={[480, 768, 1080, 1440]}
+          sizes="(min-width: 900px) 50vw, 100vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="block__text">
+        <h2 id="intro-title" class="font-heading block__title">{intro.title}</h2>
+        {intro.paragraphs.map((p) => (
+          <p class="block__body">{p}</p>
+        ))}
+        <ul class="stats" aria-label="Chính sách cung cấp">
+          {
+            intro.stats.map((s) => (
+              <li>
+                <span class="stats__value">{s.value}</span>
+                <span class="stats__label">{s.label}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <QuoteCta hotline={contact.hotline} hotlineTel={contact.hotlineTel} email={contact.email} formCta={contact.formCta} />
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Danh mục sản phẩm -->
+  <section class="block" aria-labelledby="catalog-title">
+    <Ribbon text={catalog.ribbon} />
+    <h2 id="catalog-title" class="visually-hidden">{catalog.ribbon}</h2>
+
+    <div class="container">
+      <ul class="beans">
+        {
+          catalog.lines.map((l) => (
+            <li class="bean">
+              <div class="bean__media">
+                <Image
+                  src={images[l.image as ImageSlug]}
+                  alt={l.alt}
+                  widths={[280, 360, 480]}
+                  sizes="(min-width: 900px) 220px, 45vw"
+                  loading="lazy"
+                />
+              </div>
+              <p class="bean__tag">{l.tag}</p>
+              <h3 class="font-heading bean__name">{l.name}</h3>
+              <dl class="bean__spec">
+                <div>
+                  <dt>Key notes</dt>
+                  <dd>{l.notes}</dd>
+                </div>
+                <div>
+                  <dt>Độ rang</dt>
+                  <dd>{l.roast}</dd>
+                </div>
+                <div>
+                  <dt>Pha chế</dt>
+                  <dd>{l.brew}</dd>
+                </div>
+                <div>
+                  <dt>Phù hợp</dt>
+                  <dd>{l.fit}</dd>
+                </div>
+              </dl>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="catalog__caption">{catalog.imageCaption}</p>
+      <div class="catalog__cta">
+        <QuoteCta hotline={contact.hotline} hotlineTel={contact.hotlineTel} email={contact.email} formCta={catalog.cta} />
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Liên hệ nhận báo giá -->
+  <section id="lien-he" class="contact" aria-labelledby="contact-title">
+    <Ribbon text={contact.ribbon} />
+    <h2 id="contact-title" class="visually-hidden">{contact.ribbon}</h2>
+    <div class="container-narrow contact__body">
+      <p class="contact__text">{contact.text}</p>
+      <div class="contact__grid">
+        <a class="contact__item" href={`tel:${contact.hotlineTel}`}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+          </svg>
+          {contact.hotline}
+        </a>
+        <a class="contact__item" href={`mailto:${contact.email}`}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8" />
+            <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+          </svg>
+          {contact.email}
+        </a>
+      </div>
+      <button type="button" class="form-open" data-open-lead-form>{contact.formCta}</button>
+    </div>
+  </section>
+
+  <!-- Dải ảnh: vùng nguyên liệu, sơ chế, rang -->
+  <section class="gallery" aria-label="Hành trình hạt cà phê Ngựa Ô">
+    <ul class="gallery__grid container">
+      {
+        gallery.map((g) => (
+          <li class="gallery__item">
+            <Image
+              src={images[g.image as ImageSlug]}
+              alt={g.alt}
+              widths={[320, 480, 640]}
+              sizes="(min-width: 900px) 30vw, 80vw"
+              loading="lazy"
+            />
+            <span class="gallery__caption">{g.caption}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Form yêu cầu báo giá -->
+  <dialog id="lead-dialog" class="lead" aria-labelledby="lead-title">
+    <form id="lead-form" method="dialog" class="lead__form">
+      <button type="button" class="lead__close" data-close-lead-form aria-label="Đóng">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+
+      <div data-lead-step="form">
+        <h2 id="lead-title" class="font-heading lead__title">{leadForm.title}</h2>
+        <p class="lead__desc">{leadForm.description}</p>
+
+        <div class="lead__grid">
+          <label class="lead__field">
+            <span>{leadForm.fields.name.label} *</span>
+            <input type="text" name="name" required placeholder={leadForm.fields.name.placeholder} autocomplete="name" />
+          </label>
+          <label class="lead__field">
+            <span>{leadForm.fields.phone.label} *</span>
+            <input type="tel" name="phone" required placeholder={leadForm.fields.phone.placeholder} autocomplete="tel" />
+          </label>
+          <label class="lead__field">
+            <span>{leadForm.fields.email.label}</span>
+            <input type="email" name="email" placeholder={leadForm.fields.email.placeholder} autocomplete="email" />
+          </label>
+          <label class="lead__field">
+            <span>{leadForm.fields.company.label}</span>
+            <input type="text" name="company" placeholder={leadForm.fields.company.placeholder} autocomplete="organization" />
+          </label>
+          <label class="lead__field">
+            <span>{leadForm.fields.quantity.label}</span>
+            <input type="text" name="quantity" placeholder={leadForm.fields.quantity.placeholder} />
+          </label>
+          <label class="lead__field">
+            <span>{leadForm.fields.region.label} *</span>
+            <input type="text" name="region" required placeholder={leadForm.fields.region.placeholder} />
+          </label>
+        </div>
+
+        <fieldset class="lead__use">
+          <legend>{leadForm.useLabel} *</legend>
+          {
+            leadForm.useOptions.map((opt, i) => (
+              <label class="lead__radio">
+                <input type="radio" name="use" value={opt} checked={i === 0} />
+                <span>{opt}</span>
+              </label>
+            ))
+          }
+        </fieldset>
+
+        {/* Honeypot: hidden from people, catches bots. */}
+        <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off" />
+        <input type="hidden" name="_subject" value={leadForm.subject} />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+
+        <button type="submit" class="lead__submit" data-lead-submit>{leadForm.submitLabel}</button>
+        <p class="lead__status" data-lead-status role="status" aria-live="polite"></p>
+      </div>
+
+      <div data-lead-step="success" hidden>
+        <h2 class="font-heading lead__title">{leadForm.successTitle}</h2>
+        <p class="lead__desc">{leadForm.successText}</p>
+        <button type="button" class="lead__submit" data-close-lead-form>Đóng</button>
+      </div>
+    </form>
+  </dialog>
+</BaseLayout>
+
+<script define:vars={{ endpoint: leadForm.endpoint, errorText: leadForm.errorText, sendingLabel: leadForm.sendingLabel, submitLabel: leadForm.submitLabel }}>
+  const dialog = document.getElementById("lead-dialog");
+  const form = document.getElementById("lead-form");
+  const openBtns = document.querySelectorAll("[data-open-lead-form]");
+  const closeBtns = document.querySelectorAll("[data-close-lead-form]");
+  const submitBtn = form?.querySelector("[data-lead-submit]");
+  const status = form?.querySelector("[data-lead-status]");
+  const stepForm = form?.querySelector('[data-lead-step="form"]');
+  const stepSuccess = form?.querySelector('[data-lead-step="success"]');
+
+  const reset = () => {
+    form?.reset();
+    if (status) status.textContent = "";
+    if (stepForm) stepForm.hidden = false;
+    if (stepSuccess) stepSuccess.hidden = true;
+  };
+
+  openBtns.forEach((b) =>
+    b.addEventListener("click", () => {
+      reset();
+      dialog?.showModal();
+    })
+  );
+  closeBtns.forEach((b) => b.addEventListener("click", () => dialog?.close()));
+  dialog?.addEventListener("click", (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!submitBtn) return;
+    submitBtn.disabled = true;
+    submitBtn.textContent = sendingLabel;
+    if (status) status.textContent = "";
+
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      if (!res.ok) throw new Error("bad status");
+      if (stepForm) stepForm.hidden = true;
+      if (stepSuccess) stepSuccess.hidden = false;
+    } catch {
+      if (status) status.textContent = errorText;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitLabel;
+    }
+  });
+</script>
+
+<style>
+  .block {
+    padding-top: var(--space-xl);
+  }
+
+  .block__grid {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    align-items: center;
+  }
+
+  .block__media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .block__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .block__title {
+    font-size: var(--text-h2);
+    line-height: var(--leading-snug);
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .block__body {
+    margin-bottom: var(--space-sm);
+    max-width: 52ch;
+  }
+
+  .stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+  }
+
+  .stats li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .stats__value {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--text-h3);
+    color: var(--color-primary);
+  }
+
+  .stats__label {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  /* ---- Gallery strip ---- */
+  .gallery {
+    padding-block: var(--space-xl);
+  }
+
+  .gallery__grid {
+    display: grid;
+    gap: var(--space-xs);
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gallery__item {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .gallery__item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gallery__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--text-small);
+    font-weight: 700;
+    color: var(--color-inverse-text);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+  }
+
+  /* ---- Catalog: two product cards, each with its own cutout bag photo ---- */
+  .beans {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .bean {
+    padding: var(--space-md);
+    text-align: center;
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .bean__media {
+    width: min(200px, 60%);
+    margin: 0 auto var(--space-sm);
+  }
+
+  .bean__media :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .bean__tag,
+  .bean__name {
+    text-align: center;
+  }
+
+  .catalog__caption {
+    text-align: center;
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-top: var(--space-lg);
+  }
+
+  .catalog__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-sm);
+  }
+
+  .bean__tag {
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3xs);
+  }
+
+  .bean__name {
+    font-size: var(--text-h2);
+    line-height: var(--leading-snug);
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .bean__spec {
+    display: grid;
+    gap: var(--space-xs);
+    text-align: left;
+  }
+
+  .bean__spec dt {
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-ink) 45%, transparent);
+    margin-bottom: 0.15em;
+  }
+
+  .bean__spec dd {
+    margin: 0;
+  }
+
+  /* ---- Contact ---- */
+  .contact {
+    padding-block: var(--space-xl);
+    text-align: center;
+  }
+
+  .contact__text {
+    color: var(--color-text-muted);
+    max-width: 56ch;
+    margin: var(--space-md) auto var(--space-lg);
+  }
+
+  .contact__grid {
+    display: grid;
+    gap: var(--space-md);
+    justify-items: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  .contact__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  a.contact__item:hover {
+    color: var(--color-primary-strong);
+  }
+
+  .form-open {
+    font: inherit;
+    font-weight: 700;
+    font-size: var(--text-body-lg);
+    cursor: pointer;
+    min-height: 48px;
+    padding: 0.7em 2em;
+    color: var(--color-accent);
+    background: var(--color-primary);
+    border: none;
+    animation: quote-cta-pulse 2.6s ease-in-out infinite;
+    transition: background var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+  }
+
+  .form-open:hover,
+  .form-open:focus-visible {
+    animation-play-state: paused;
+    background: var(--color-primary-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  }
+
+  .form-open:active {
+    transform: translateY(0);
+  }
+
+  @keyframes quote-cta-pulse {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .form-open {
+      animation: none;
+    }
+  }
+
+  /* ---- Lead form dialog ---- */
+  .lead {
+    width: min(560px, calc(100vw - 2rem));
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding: 0;
+    border: none;
+    background: var(--color-paper);
+  }
+
+  .lead::backdrop {
+    background: rgba(26, 15, 15, 0.55);
+  }
+
+  .lead__form {
+    position: relative;
+    padding: var(--space-lg) var(--space-md) var(--space-md);
+  }
+
+  .lead__close {
+    position: absolute;
+    top: var(--space-xs);
+    right: var(--space-xs);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  .lead__title {
+    font-size: var(--text-h2);
+    color: var(--color-primary);
+    margin-bottom: var(--space-2xs);
+    padding-right: var(--space-lg);
+  }
+
+  .lead__desc {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .lead__grid {
+    display: grid;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+  }
+
+  .lead__field {
+    display: grid;
+    gap: 0.35rem;
+    font-size: var(--text-small);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .lead__field input {
+    font: inherit;
+    font-weight: 400;
+    min-height: 44px;
+    padding: 0.5em 0.8em;
+    color: var(--color-ink);
+    background: var(--color-paper);
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .lead__field input:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+
+  .lead__use {
+    border: none;
+    padding: 0;
+    margin: 0 0 var(--space-md);
+  }
+
+  .lead__use legend {
+    font-size: var(--text-small);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--space-2xs);
+    padding: 0;
+  }
+
+  .lead__radio {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: var(--text-small);
+    margin-bottom: var(--space-3xs);
+  }
+
+  .lead__submit {
+    width: 100%;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 48px;
+    color: var(--color-accent);
+    background: var(--color-primary);
+    border: none;
+    transition: background var(--duration-fast) var(--ease-standard);
+  }
+
+  .lead__submit:hover {
+    background: var(--color-primary-strong);
+  }
+
+  .lead__submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  .lead__status {
+    margin-top: var(--space-xs);
+    font-size: var(--text-small);
+    color: var(--color-primary);
+    text-align: center;
+  }
+
+  @media (min-width: 540px) {
+    .lead__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .block__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    .beans {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .contact__grid {
+      grid-auto-flow: column;
+      justify-content: center;
+      gap: var(--space-xl);
+    }
+  }
+</style>

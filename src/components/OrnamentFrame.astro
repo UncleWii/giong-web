@@ -1,0 +1,78 @@
+---
+// Decorative corner-bracket ornament, echoing the fretwork motif used
+// throughout the existing GIÓNG brand. Wraps its children in a relative
+// box and overlays four corner marks.
+interface Props {
+  tone?: "gold" | "ink";
+  class?: string;
+}
+const { tone = "gold", class: className = "" } = Astro.props;
+---
+
+<div class:list={["ornament-frame", `ornament-frame--${tone}`, className]}>
+  <span class="corner corner--tl" aria-hidden="true"></span>
+  <span class="corner corner--tr" aria-hidden="true"></span>
+  <span class="corner corner--bl" aria-hidden="true"></span>
+  <span class="corner corner--br" aria-hidden="true"></span>
+  <div class="ornament-frame__content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .ornament-frame {
+    position: relative;
+    padding: var(--space-md);
+  }
+
+  .corner {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    pointer-events: none;
+  }
+
+  .corner::before,
+  .corner::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+
+  /* horizontal + vertical strokes forming an L bracket */
+  .corner::before {
+    width: 100%;
+    height: 2px;
+  }
+  .corner::after {
+    width: 2px;
+    height: 100%;
+  }
+
+  .ornament-frame--gold .corner {
+    color: var(--color-accent);
+  }
+  .ornament-frame--ink .corner {
+    color: var(--color-ink);
+  }
+
+  .corner--tl {
+    top: var(--space-2xs);
+    left: var(--space-2xs);
+  }
+  .corner--tr {
+    top: var(--space-2xs);
+    right: var(--space-2xs);
+    transform: scaleX(-1);
+  }
+  .corner--bl {
+    bottom: var(--space-2xs);
+    left: var(--space-2xs);
+    transform: scaleY(-1);
+  }
+  .corner--br {
+    bottom: var(--space-2xs);
+    right: var(--space-2xs);
+    transform: scale(-1, -1);
+  }
+</style>

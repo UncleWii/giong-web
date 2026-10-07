@@ -1,0 +1,239 @@
+---
+import site from "../content/site.json";
+
+const { contact } = site;
+const phoneIcon =
+  "M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z";
+---
+
+<aside class="cw" data-cw aria-label="Liên hệ nhanh">
+  <ul class="cw__rows" id="cw-rows" hidden>
+    <li class="cw__row">
+      <a class="cw__pill" href={contact.messengerUrl} target="_blank" rel="noopener noreferrer">
+        <span class="cw__pill-label">{contact.messengerLabel}</span>
+      </a>
+      <a class="cw__round" href={contact.messengerUrl} target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3C6.9 3 3 6.8 3 11.5c0 2.6 1.2 4.9 3.2 6.4V21l3-1.7c.9.3 1.8.4 2.8.4 5.1 0 9-3.8 9-8.5S17.1 3 12 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+          <path d="m7.5 13.5 3.2-3.4 2.3 2.2 3.5-2.3-3.3 3.6-2.3-2.2-3.4 2.1Z" fill="currentColor" />
+        </svg>
+      </a>
+    </li>
+    {
+      contact.hotlines.map((h) => (
+        <li class="cw__row">
+          <a class="cw__zalo" href={`${contact.zaloBase}${h.zalo}`} target="_blank" rel="noopener noreferrer" aria-label={`Zalo: ${h.label}`}>
+            {contact.zaloLabel}
+          </a>
+          <a class="cw__pill" href={`tel:${h.tel}`}>
+            <span class="cw__pill-label">{h.label}</span>
+            <span class="cw__pill-number">{h.display}</span>
+          </a>
+          <a class="cw__round" href={`tel:${h.tel}`} tabindex="-1" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d={phoneIcon} stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="cw__row cw__row--toggle">
+    <span class="cw__pill cw__pill--tag" aria-hidden="true">
+      <span class="cw__pill-label" data-cw-tag>{contact.toggleLabel}</span>
+    </span>
+    <button type="button" class="cw__round cw__round--toggle" aria-expanded="false" aria-controls="cw-rows" data-cw-toggle>
+      <span class="visually-hidden" data-cw-toggle-label>Mở danh sách liên hệ</span>
+      <svg class="cw__icon cw__icon--open" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d={phoneIcon} stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" />
+      </svg>
+      <svg class="cw__icon cw__icon--close" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+</aside>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-cw]");
+  if (root) {
+    const toggle = root.querySelector<HTMLButtonElement>("[data-cw-toggle]")!;
+    const rows = root.querySelector<HTMLElement>("#cw-rows")!;
+    const label = root.querySelector<HTMLElement>("[data-cw-toggle-label]")!;
+    const set = (open: boolean) => {
+      rows.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      label.textContent = open ? "Đóng danh sách liên hệ" : "Mở danh sách liên hệ";
+    };
+    toggle.addEventListener("click", () => set(rows.hidden));
+    document.addEventListener("click", (e) => {
+      if (!rows.hidden && !root.contains(e.target as Node)) set(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !rows.hidden) {
+        set(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .cw {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+    pointer-events: none;
+  }
+
+  .cw > *,
+  .cw__row {
+    pointer-events: auto;
+  }
+
+  .cw__rows {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+    animation: cw-in 0.22s var(--ease-standard);
+  }
+
+  .cw__rows[hidden] {
+    display: none;
+  }
+
+  @keyframes cw-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cw__rows {
+      animation: none;
+    }
+  }
+
+  .cw__row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* White label pill: always readable, so people know what we offer. */
+  .cw__pill {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.35rem 1rem;
+    border-radius: 12px;
+    background: #fff;
+    color: var(--color-primary);
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    line-height: 1.25;
+  }
+
+  .cw__pill--tag {
+    cursor: default;
+  }
+
+  .cw__pill-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .cw__pill-number {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  a.cw__pill:hover {
+    background: var(--color-accent);
+  }
+
+  .cw__round {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-primary);
+    color: var(--color-accent);
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .cw__round:hover {
+    transform: scale(1.06);
+  }
+
+  .cw__round--toggle {
+    width: 52px;
+    height: 52px;
+    background: var(--color-accent);
+    color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary), 0 6px 18px rgba(0, 0, 0, 0.3);
+  }
+
+  .cw__icon--close,
+  .cw__round--toggle[aria-expanded="true"] .cw__icon--open {
+    display: none;
+  }
+
+  .cw__round--toggle[aria-expanded="true"] .cw__icon--close {
+    display: block;
+  }
+
+  .cw__zalo {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff;
+    color: #0068ff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .cw__zalo:hover {
+    background: #0068ff;
+    color: #fff;
+  }
+
+  @media (max-width: 599px) {
+    .cw__pill-label {
+      font-size: 0.8125rem;
+    }
+
+    .cw__pill {
+      padding-inline: 0.8rem;
+    }
+  }
+
+  @media print {
+    .cw {
+      display: none;
+    }
+  }
+</style>

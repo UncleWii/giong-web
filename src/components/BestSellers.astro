@@ -1,0 +1,130 @@
+---
+import Ribbon from "./Ribbon.astro";
+import ProductSpin from "./ProductSpin.astro";
+import { images } from "../lib/images";
+import { bestSellerSlides } from "../lib/best-sellers";
+
+const badgeFrame = images["khung-best-seller"];
+---
+
+<section class="best-sellers">
+  <div class="best-sellers__badge">
+    <img src={badgeFrame.src} class="best-sellers__badge-frame" alt="" />
+    <span class="best-sellers__badge-text">Best Seller</span>
+  </div>
+
+  <ProductSpin slides={bestSellerSlides} />
+
+  <div class="best-sellers__ribbon">
+    <Ribbon text="Gióng - Farm to Cup" />
+  </div>
+</section>
+
+<style>
+  .best-sellers {
+    padding-block: calc(var(--space-lg) / 2) var(--space-lg);
+  }
+
+  .best-sellers__badge {
+    position: relative;
+    width: min(360px, 80%);
+    aspect-ratio: 2804 / 728;
+    margin-inline: auto;
+    margin-bottom: calc(var(--space-md) / 2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .best-sellers__badge-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .best-sellers__badge-text {
+    position: relative;
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-primary);
+    font-size: clamp(1rem, 0.7rem + 1.2vw, 1.5rem);
+  }
+
+  .best-sellers__stripe {
+    display: none;
+  }
+
+  .best-sellers__grid {
+    position: relative;
+    display: grid;
+    gap: var(--space-lg);
+    padding-block: calc(var(--space-sm) / 2) var(--space-sm);
+  }
+
+  .best-sellers__grid > :global(.product-card) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /*
+    Mobile: halve (a) the gap from the story CTA above to the badge and (b) the
+    *visible* gap from the badge to the first bag. The Arabica PNG has 22.6%
+    transparent padding on top, so pull the grid up by half of
+    (margin 32px + 0.226 * 4/3 * card width).
+  */
+  @media (max-width: 699px) {
+    .best-sellers {
+      padding-top: 0;
+    }
+
+    .best-sellers__grid {
+      margin-top: calc(-16px - 0.1507 * (100vw - 2 * var(--gutter)));
+    }
+  }
+
+  .best-sellers__ribbon {
+    margin-top: var(--space-lg);
+  }
+
+  @media (min-width: 700px) {
+    /* ~80% bigger than the mobile badge — mobile size already reads well, this is desktop-only. */
+    .best-sellers__badge {
+      width: min(648px, 85%);
+    }
+
+    .best-sellers__badge-text {
+      font-size: clamp(1.8rem, 1.25rem + 2.2vw, 2.7rem);
+    }
+
+    .best-sellers__grid {
+      container-type: inline-size;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xl);
+      align-items: end;
+      /*
+        Column width and image height derived from the grid's own
+        rendered width (via container query units) so the stripe
+        always lines up with the image area — regardless of viewport
+        width — instead of being thrown off by the variable-height
+        text block below each image.
+      */
+      --col-w: calc((100cqw - 2 * var(--space-xl)) / 3);
+      --img-h: calc(var(--col-w) * 4 / 3);
+    }
+
+    .best-sellers__stripe {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(var(--space-sm) / 2 + var(--img-h) * 0.39);
+      height: calc(var(--img-h) * 0.56);
+      background: var(--color-primary);
+      z-index: 0;
+    }
+  }
+</style>

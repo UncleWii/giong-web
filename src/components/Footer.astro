@@ -1,0 +1,223 @@
+---
+import { images } from "../lib/images";
+import site from "../content/site.json";
+
+const stores = [
+  { region: "Hà Nội", branches: ["20 Hàng Thùng, P. Hoàn Kiếm (07:00 – 22:00)"] },
+  {
+    region: "Hồ Chí Minh",
+    branches: [
+      "57 Nguyễn Du, P. Sài Gòn (07:00 – 22:00)",
+      "F5 Diamond Plaza - 34 Lê Duẩn, P. Sài Gòn (08:00 – 22:00)",
+    ],
+  },
+  { region: "Đà Nẵng", branches: ["09 Nguyễn Thái Học, P. Hội An (08:00 – 21:30)"] },
+  { region: "Khánh Hòa", branches: ["15 Trần Hưng Đạo, P. Nha Trang (07:00 – 22:00)"] },
+];
+
+const offices = [
+  { city: "Hà Nội", address: "Heritage Westlake 677 Lạc Long Quân, Tây Hồ, Hà Nội" },
+  { city: "Hồ Chí Minh", address: "38/5 Trần Khắc Chân, P. Tân Định, TP. HCM" },
+];
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <img src={images.logo.src} width="112" height="112" alt="" />
+      <p class="font-wordmark site-footer__wordmark">Gióng</p>
+    </div>
+
+    <div class="site-footer__stores">
+      <div class="site-footer__delivery">
+        <p class="site-footer__heading">{site.delivery.heading}</p>
+        <ul class="delivery">
+          {
+            site.delivery.links.map((l) => (
+              <li>
+                <a class={`delivery__link delivery__link--${l.id}`} href={l.href} target="_blank" rel="noopener noreferrer" aria-label={l.label}>
+                  <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+                    {l.id === "grab" ? (
+                      <>
+                        <rect width="44" height="44" rx="10" fill="#00B14F" />
+                        <text x="22" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="12" fill="#fff">Grab</text>
+                      </>
+                    ) : (
+                      <>
+                        <rect width="44" height="44" rx="10" fill="#EE4D2D" />
+                        <path d="M14 17h16l-1.2 12a2 2 0 0 1-2 1.8H17.2a2 2 0 0 1-2-1.8L14 17Z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" />
+                        <path d="M18 17v-1.5a4 4 0 0 1 8 0V17" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+                      </>
+                    )}
+                  </svg>
+                  <span>{l.label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <p class="site-footer__heading">Hệ thống cửa hàng</p>
+      {
+        stores.map((s) => (
+          <div class="site-footer__region">
+            <p class="site-footer__region-name">{s.region}</p>
+            <ul>
+              {s.branches.map((b) => <li>{b}</li>)}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="site-footer__contact">
+      <p class="site-footer__heading">Liên hệ</p>
+      <p class="site-footer__region-name">Công ty cổ phần Eco Gióng.</p>
+      <p>170 Lê Hồng Phong, P. Phú Lợi, TP. HCM</p>
+      <p>MST: 3702867127</p>
+      <p>Hotline: <a href="tel:+842836222084">(+84) 28 3622 2084</a></p>
+      <p>E-mail: <a href="mailto:eco@ecogiong.com">eco@ecogiong.com</a></p>
+      <p class="site-footer__region-name site-footer__office-title">Văn phòng:</p>
+      {
+        offices.map((o) => (
+          <p>{o.city}: {o.address}</p>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="site-footer__bottom container">
+    <p>Bản quyền {new Date().getFullYear()}, ECO Gióng</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-ink);
+    color: var(--color-inverse-text);
+  }
+
+  .site-footer__grid {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: 3rem 3.25rem;
+    font-size: 0.875rem;
+    line-height: 1.75;
+  }
+
+  .site-footer__brand img {
+    margin-bottom: var(--space-2xs);
+  }
+
+  .site-footer__contact .site-footer__heading {
+    color: var(--color-accent);
+  }
+
+  .site-footer__stores ul,
+  .site-footer__region ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .site-footer__region {
+    margin-bottom: 1rem;
+  }
+
+  .site-footer__stores li,
+  .site-footer__contact p {
+    color: color-mix(in srgb, var(--color-paper) 85%, transparent);
+  }
+
+  .site-footer__region-name {
+    font-weight: 700;
+    color: var(--color-inverse-text);
+    margin-bottom: 0.25rem;
+  }
+
+  .site-footer__contact .site-footer__region-name {
+    color: var(--color-inverse-text);
+  }
+
+  .site-footer__office-title {
+    margin-top: var(--space-sm);
+  }
+
+  .site-footer__wordmark {
+    font-size: 2.6rem;
+    line-height: 1.05;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .site-footer__stores .delivery {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .delivery__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: color-mix(in srgb, var(--color-paper) 85%, transparent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .delivery__link:hover {
+    color: var(--color-accent);
+  }
+
+  .delivery__link svg {
+    flex: none;
+  }
+
+  .site-footer__heading {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+
+  .site-footer__contact a {
+    text-decoration: none;
+    color: color-mix(in srgb, var(--color-paper) 85%, transparent);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .site-footer__contact a:hover {
+    color: var(--color-accent);
+  }
+
+  .site-footer__contact p {
+    color: color-mix(in srgb, var(--color-paper) 85%, transparent);
+    margin-bottom: 0.5rem;
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2xs);
+    padding-block: 1.25rem;
+    border-top: var(--border-width) solid var(--color-border-on-primary);
+    font-size: 0.8125rem;
+    color: color-mix(in srgb, var(--color-paper) 60%, transparent);
+  }
+
+  .site-footer__delivery {
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr 1.3fr 1.2fr;
+      align-items: start;
+    }
+  }
+</style>

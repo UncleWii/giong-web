@@ -1,0 +1,48 @@
+{
+  "contact": {
+    "messengerUrl": "https://m.me/",
+    "zaloBase": "https://zalo.me/",
+    "callLabel": "Gọi",
+    "zaloLabel": "Zalo",
+    "hotlines": [
+      {
+        "id": "si",
+        "label": "Hotline mua sỉ / HORECA",
+        "display": "094 105 9999",
+        "tel": "+84941059999",
+        "zalo": "0941059999"
+      },
+      {
+        "id": "qua",
+        "label": "Hotline quà doanh nghiệp",
+        "display": "094 105 9999",
+        "tel": "+84941059999",
+        "zalo": "0941059999"
+      },
+      {
+        "id": "cua-hang",
+        "label": "Hotline cửa hàng",
+        "display": "094 105 9999",
+        "tel": "+84941059999",
+        "zalo": "0941059999"
+      }
+    ],
+    "messengerLabel": "Nhắn tin Messenger",
+    "toggleLabel": "Liên hệ"
+  },
+  "delivery": {
+    "heading": "Có mặt trên",
+    "links": [
+      {
+        "id": "grab",
+        "label": "Grab Food",
+        "href": "https://food.grab.com/vn/vi/"
+      },
+      {
+        "id": "shopee",
+        "label": "Shopee Food",
+        "href": "https://shopee.vn/"
+      }
+    ]
+  }
+}
