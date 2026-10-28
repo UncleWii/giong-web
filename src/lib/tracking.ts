@@ -95,7 +95,7 @@ export function track(event: string, params: Params = {}) {
   const spec = EVENTS[event];
   if (!spec) return;
   const data = clean(params);
-  if (debug) console.info("[tracking]", event, "→ Meta:", spec.meta, "| GA4:", spec.ga === false ? "(không)" : event, JSON.stringify(data));
+  if (debug) console.info("[tracking]", event, "→ Meta:", spec.meta, "| GA4:", spec.ga === false ? "(không)" : event, JSON.stringify(data), "| URL:", location.href);
   if (!active) return;
 
   if (spec.ga !== false && w.gtag) {
@@ -149,6 +149,7 @@ function init() {
     loadMetaPixel();
     loadGoogleAnalytics();
     // 1 lần xem trang = 1 PageView + 1 page_view.
+    if (debug) console.info("[tracking] PageView / page_view → URL:", location.href);
     w.fbq("track", "PageView");
     w.gtag("event", "page_view", {
       page_title: document.title,
