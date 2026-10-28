@@ -5,11 +5,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import Ribbon from "../components/Ribbon.astro";
 import PinIcon from "../components/PinIcon.astro";
-import TextLink from "../components/TextLink.astro";
+import PageActions from "../components/PageActions.astro";
 import { images, type ImageSlug } from "../lib/images";
 import data from "../content/farm-xuong-rang.json";
 
-const { hero, chain, station, roastery, cta } = data;
+const { hero, chain, station, roastery, cta, cta2 } = data;
 
 const farmFiles = import.meta.glob<{ default: ImageMetadata }>(
   "../assets/images/Giong-ca*-nongtrai*.jpg",
@@ -19,6 +19,7 @@ const farmImage = (file: string) => farmFiles[`../assets/images/${file}`].defaul
 ---
 
 <BaseLayout
+  pageCategory="farm"
   title="Farm / Xưởng Rang"
   description="Chuỗi cung ứng khép kín của Gióng: từ nông trại Arabica Cầu Đất, Trạm Gióng Đà Lạt đến xưởng rang Giesen tại Nha Trang và Thủ Dầu Một, đạt chứng nhận ISO 22000:2018."
 >
@@ -131,7 +132,12 @@ const farmImage = (file: string) => farmFiles[`../assets/images/${file}`].defaul
     </div>
   </section>
 
-  <p class="cta"><TextLink href={cta.href}>{cta.label}</TextLink></p>
+  <PageActions
+    actions={[
+      { label: cta.label, href: cta.href, variant: "primary" },
+      { label: cta2.label, href: cta2.href, variant: "secondary" },
+    ]}
+  />
 </BaseLayout>
 
 <style>

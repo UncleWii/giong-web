@@ -37,9 +37,10 @@ const full = await getImage({ src: menuImage, format: "webp", width: 3200, quali
     </div>
 
     <p class="menu__actions">
-      <a class="menu__open" href={full.src} target="_blank" rel="noopener noreferrer">
+      <a class="menu__open" href={full.src} target="_blank" rel="noopener noreferrer" data-track="xem_menu">
         Xem menu kích thước đầy đủ
       </a>
+      <a class="menu__find" href="/cua-hang">Tìm quán gần bạn</a>
     </p>
   </section>
 </BaseLayout>
@@ -72,7 +73,10 @@ const full = await getImage({ src: menuImage, format: "webp", width: 3200, quali
 
   .menu__actions {
     margin-top: var(--space-sm);
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2xs);
   }
 
   .menu__open {
@@ -86,6 +90,25 @@ const full = await getImage({ src: menuImage, format: "webp", width: 3200, quali
     color: var(--color-accent);
     background: var(--color-primary);
     transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .menu__find {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5em 1.4em;
+    font-weight: 700;
+    font-size: var(--text-small);
+    text-decoration: none;
+    color: var(--color-primary);
+    border: var(--border-width) solid var(--color-primary);
+    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .menu__find:hover,
+  .menu__find:focus-visible {
+    background: var(--color-primary);
+    color: var(--color-accent);
   }
 
   .menu__open:hover {

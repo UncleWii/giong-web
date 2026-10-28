@@ -1,0 +1,91 @@
+---
+// Hàng nút hành động ở cuối các trang nội dung (dẫn khách sang sản phẩm / cửa hàng / báo giá sỉ).
+interface Action {
+  label: string;
+  href: string;
+  /** "primary" = nút đặc, "secondary" = nút viền. */
+  variant?: "primary" | "secondary";
+  /** Tên sự kiện đo lường (data-track), nếu cần. */
+  track?: string;
+}
+
+interface Props {
+  actions: Action[];
+}
+
+const { actions } = Astro.props;
+---
+
+<div class="page-actions container">
+  {
+    actions.map((a) => (
+      <a
+        class:list={["page-actions__btn", `page-actions__btn--${a.variant ?? "primary"}`]}
+        href={a.href}
+        data-track={a.track}
+      >
+        <span>{a.label}</span>
+        <svg width="16" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+          <path d="M1 6H17M17 6L12 1M17 6L12 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding-block: var(--space-lg) var(--space-md);
+  }
+
+  .page-actions__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    min-height: 48px;
+    padding: 0.7em 1.6em;
+    font-weight: 700;
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    text-decoration: none;
+    border: var(--border-width) solid var(--color-primary);
+    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .page-actions__btn--primary {
+    background: var(--color-primary);
+    color: var(--color-accent);
+  }
+
+  .page-actions__btn--secondary {
+    background: transparent;
+    color: var(--color-primary);
+  }
+
+  .page-actions__btn:hover,
+  .page-actions__btn:focus-visible {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  .page-actions__btn svg {
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .page-actions__btn:hover svg {
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 599px) {
+    .page-actions__btn {
+      width: 100%;
+    }
+  }
+</style>

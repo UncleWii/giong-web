@@ -4,7 +4,7 @@
     "title": "Những trạm dừng mang hồn cốt vùng miền",
     "subtitle": "Mỗi không gian của Gióng không chỉ là nơi thưởng thức cà phê, mà là một điểm chạm văn hóa độc bản nơi kiến trúc hòa quyện trọn vẹn vào nhịp thở đặc trưng của từng vùng đất."
   },
-  "hotlineFallback": "(+84) 28 3622 2084",
+  "hotlineFallback": "028 7300 2883",
   "cities": [
     "Hồ Chí Minh",
     "Hà Nội",
@@ -37,14 +37,15 @@
       "image": "Giong-caphe-cuahang-20hangthung.jpg",
       "description": "Nơi ký ức 36 phố phường thu gọn qua ô cửa sổ, mang chút hoài niệm tinh tế giữa lòng thủ đô ngàn năm văn hiến.",
       "address": "20 Hàng Thùng, P. Hoàn Kiếm, Hà Nội",
-      "hotline": "",
+      "hotline": "(+84) 274 730 0084",
       "hours": "07:00 – 22:00",
       "tags": [
         "outside",
         "pet",
         "ac"
       ],
-      "mapUrl": "https://maps.app.goo.gl/2G4gSupLnXEgsANG8"
+      "mapUrl": "https://maps.app.goo.gl/2G4gSupLnXEgsANG8",
+      "trackId": "HangThung"
     },
     {
       "id": "nguyen-du",
@@ -60,7 +61,8 @@
         "pet",
         "ac"
       ],
-      "mapUrl": "https://maps.app.goo.gl/bSVzZrS8diVsFBPb7"
+      "mapUrl": "https://maps.app.goo.gl/bSVzZrS8diVsFBPb7",
+      "trackId": "57NguyenDu"
     },
     {
       "id": "diamond-plaza",
@@ -74,7 +76,8 @@
       "tags": [
         "ac"
       ],
-      "mapUrl": "https://maps.app.goo.gl/qPKzzVfBuAuVraUw8"
+      "mapUrl": "https://maps.app.goo.gl/qPKzzVfBuAuVraUw8",
+      "trackId": "DiamondPlaza"
     },
     {
       "id": "hoi-an",
@@ -89,7 +92,8 @@
         "outside",
         "pet"
       ],
-      "mapUrl": "https://maps.app.goo.gl/mxYkJH9tB4MKiaAg9"
+      "mapUrl": "https://maps.app.goo.gl/mxYkJH9tB4MKiaAg9",
+      "trackId": "HoiAn"
     },
     {
       "id": "nha-trang",
@@ -106,7 +110,8 @@
         "roastery",
         "ac"
       ],
-      "mapUrl": "https://maps.app.goo.gl/DwMnTLqznRpifuAMA"
+      "mapUrl": "https://maps.app.goo.gl/DwMnTLqznRpifuAMA",
+      "trackId": "NhaTrang"
     }
   ],
   "labels": {
@@ -116,7 +121,9 @@
     "empty": "Chưa có cửa hàng phù hợp với bộ lọc này.",
     "hours": "Giờ mở cửa",
     "hotline": "Hotline",
-    "map": "Xem đường đi trên Google Maps",
-    "directions": "Xem đường đi"
+    "map": "Chỉ đường tới quán",
+    "directions": "Chỉ đường tới quán",
+    "call": "Gọi quán",
+    "menu": "Xem menu"
   }
 }

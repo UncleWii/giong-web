@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Chính sách quyền riêng tư"
+  description="Chính sách quyền riêng tư của Gióng: web dùng cookie, Meta Pixel và Google Analytics để đo lường và quảng cáo; cách bạn kiểm soát dữ liệu của mình."
+>
+  <article class="policy container-narrow">
+    <h1 class="font-heading policy__title">Chính sách quyền riêng tư</h1>
+    <p class="policy__date">Cập nhật lần cuối: 28/10/2026</p>
+
+    <div class="prose">
+      <p>
+        Trang web giong.cafe do Công ty Cổ phần Eco Gióng (MST 3702867127, 170 Lê Hồng Phong, P. Phú Lợi, TP. Hồ Chí Minh) vận hành.
+        Chính sách này giải thích chúng tôi thu thập thông tin gì khi bạn truy cập trang web, dùng vào việc gì và bạn có thể kiểm soát
+        như thế nào.
+      </p>
+
+      <h2>1. Cookie và công cụ đo lường</h2>
+      <p>Trang web sử dụng cookie và hai công cụ đo lường để hiểu cách khách truy cập sử dụng web và để chạy quảng cáo hiệu quả hơn:</p>
+      <ul>
+        <li><strong>Meta Pixel (Facebook/Instagram)</strong>: ghi nhận lượt xem trang và các thao tác như bấm sang Shopee, Zalo, gọi điện, chỉ đường; dùng để đo hiệu quả quảng cáo, tiếp cận lại người đã ghé web (remarketing) và tìm nhóm khách tương tự (lookalike).</li>
+        <li><strong>Google Analytics 4</strong>: thống kê lượt truy cập, nguồn truy cập và các thao tác trên web ở dạng tổng hợp.</li>
+      </ul>
+      <p>
+        Các công cụ này có thể đặt cookie trên trình duyệt của bạn và gửi dữ liệu ẩn danh (địa chỉ IP rút gọn, loại thiết bị, trang đã xem, nút đã bấm)
+        cho Meta và Google.
+      </p>
+
+      <h2>2. Thông tin bạn chủ động gửi</h2>
+      <p>
+        Khi bạn gửi biểu mẫu “Yêu cầu báo giá cà phê sỉ” ở trang Ngựa Ô, chúng tôi nhận họ tên, số điện thoại, email (nếu có), đơn vị, số lượng
+        dự kiến, khu vực và nhu cầu của bạn để liên hệ tư vấn. Những thông tin này <strong>không</strong> được gửi vào Meta Pixel hay Google Analytics.
+      </p>
+
+      <h2>3. Chúng tôi dùng thông tin để làm gì</h2>
+      <ul>
+        <li>Phản hồi yêu cầu báo giá, mẫu thử và các liên hệ của bạn.</li>
+        <li>Cải thiện nội dung, trải nghiệm trên trang web.</li>
+        <li>Đo lường và tối ưu quảng cáo trên Facebook, Instagram và Google.</li>
+      </ul>
+
+      <h2>4. Chia sẻ với bên thứ ba</h2>
+      <p>
+        Chúng tôi không bán thông tin cá nhân. Dữ liệu chỉ đi qua các đơn vị cần thiết để trang web hoạt động: Meta, Google (đo lường và quảng cáo),
+        dịch vụ gửi biểu mẫu, nhà cung cấp lưu trữ web (Vercel). Khi bạn bấm sang Shopee, Zalo hoặc Google Maps, bạn sẽ rời khỏi trang web của
+        chúng tôi và chịu sự điều chỉnh bởi chính sách của các nền tảng đó.
+      </p>
+
+      <h2>5. Thời gian lưu trữ</h2>
+      <p>
+        Thông tin liên hệ bạn gửi được lưu trong thời gian cần thiết để tư vấn và chăm sóc khách hàng. Dữ liệu đo lường được lưu theo thời hạn mặc định
+        của Meta và Google.
+      </p>
+
+      <h2>6. Cách kiểm soát và từ chối</h2>
+      <ul>
+        <li>Xóa hoặc chặn cookie trong phần cài đặt của trình duyệt.</li>
+        <li>Tắt quảng cáo được cá nhân hóa trong <em>Tùy chọn quảng cáo</em> của Facebook/Instagram và <em>Cài đặt quảng cáo</em> của Google.</li>
+        <li>Cài tiện ích tắt Google Analytics của Google (Google Analytics Opt-out Browser Add-on).</li>
+      </ul>
+
+      <h2>7. Quyền của bạn</h2>
+      <p>
+        Bạn có quyền yêu cầu xem, chỉnh sửa hoặc xóa thông tin cá nhân bạn đã gửi cho chúng tôi. Hãy liên hệ qua email
+        <a href="mailto:eco@ecogiong.com">eco@ecogiong.com</a>.
+      </p>
+
+      <h2>8. Thay đổi chính sách</h2>
+      <p>Chúng tôi có thể cập nhật chính sách này khi cần. Ngày cập nhật gần nhất được ghi ở đầu trang.</p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .policy {
+    padding-block: var(--space-lg) var(--space-xl);
+  }
+
+  .policy__title {
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+    color: var(--color-primary);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .policy__date {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .policy :global(.prose h2) {
+    font-size: var(--text-h3);
+    color: var(--color-primary);
+    margin-block: var(--space-md) var(--space-2xs);
+  }
+
+  .policy :global(.prose ul) {
+    padding-left: 1.25rem;
+    list-style: disc;
+    margin-block: var(--space-2xs);
+  }
+
+  .policy :global(.prose li) {
+    margin-bottom: var(--space-3xs);
+  }
+
+  .policy :global(.prose p) {
+    margin-bottom: var(--space-xs);
+  }
+</style>

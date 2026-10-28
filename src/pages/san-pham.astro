@@ -1,20 +1,24 @@
 ---
 import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import Ribbon from "../components/Ribbon.astro";
 import TextLink from "../components/TextLink.astro";
+import ShopeeButton from "../components/ShopeeButton.astro";
 import { images, type ImageSlug } from "../lib/images";
+import { getProduct, formatPrice, productUrl } from "../lib/products";
 import data from "../content/san-pham.json";
 
-const { hero, singleOrigin, tabs, series, instant, horeca, buyLabel, comingSoon, labels, filters } = data;
-const buyHref = data.buyHref || "https://shopee.vn/";
+const { hero, singleOrigin, tabs, horeca, comingSoon, labels, filters, detailLabel } = data;
 
-const productFiles = import.meta.glob<{ default: ImageMetadata }>("../assets/products/*.png", {
-  eager: true,
-});
-const product = (slug: string) => productFiles[`../assets/products/${slug}.png`].default;
+// Danh sách sản phẩm đọc từ src/lib/products.ts (nguồn dữ liệu duy nhất).
+const series = data.series.map((s) => ({ ...s, items: s.items.map(getProduct) }));
+const instant = { ...data.instant, items: data.instant.items.map(getProduct) };
+
+// Số sản phẩm cho từng bộ lọc (hiện cạnh tên bộ lọc).
+const beanProducts = series.flatMap((s) => s.items);
+const filterCount = (id: string) =>
+  id === "all" ? beanProducts.length : beanProducts.filter((p) => p.filters.includes(id)).length;
 ---
 
 <BaseLayout
@@ -47,27 +51,9 @@ const product = (slug: string) => productFiles[`../assets/products/${slug}.png`]
                 aria-controls={`panel-${t.id}`}
                 aria-selected={i === 0 ? "true" : "false"}
                 tabindex={i === 0 ? 0 : -1}
-                aria-haspopup={i === 0 ? "true" : undefined}
-                aria-expanded={i === 0 ? "false" : undefined}
               >
                 <span data-tab-label>{t.label}</span>
-                {i === 0 && (
-                  <svg class="tabs__chev" width="12" height="8" viewBox="0 0 10 6" fill="none" aria-hidden="true">
-                    <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                )}
               </button>
-              {i === 0 && (
-                <ul class="tabs__menu" data-filter-menu hidden aria-label="Lọc cà phê hạt/bột">
-                  {filters.map((f, fi) => (
-                    <li>
-                      <button type="button" class="tabs__option" data-filter={f.id} aria-pressed={fi === 0 ? "true" : "false"}>
-                        {f.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
             </div>
           ))
         }
@@ -76,6 +62,30 @@ const product = (slug: string) => productFiles[`../assets/products/${slug}.png`]
 
     <!-- 1. Cà phê hạt/bột -->
     <div role="tabpanel" id="panel-hat-bot" aria-labelledby="tab-hat-bot" class="panel">
+      <div class="container">
+        <div class="filterbar" data-filterbar>
+          <p class="filterbar__title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 5h18l-7 8.5V20l-4-2v-4.5L3 5Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" />
+            </svg>
+            <span>Lọc theo dòng cà phê</span>
+          </p>
+          <div class="filterbar__chips" role="group" aria-label="Lọc cà phê hạt/bột theo dòng">
+            {
+              filters.map((f, fi) => (
+                <button type="button" class="fchip" data-filter={f.id} aria-pressed={fi === 0 ? "true" : "false"}>
+                  <span class="fchip__label">{f.label}</span>
+                  <span class="fchip__n" aria-hidden="true">{filterCount(f.id)}</span>
+                </button>
+              ))
+            }
+          </div>
+          <p class="filterbar__status" aria-live="polite">
+            <span data-filter-status></span>
+            <button type="button" class="filterbar__clear" data-filter-clear hidden>Xóa lọc</button>
+          </p>
+        </div>
+      </div>
       {
         series.map((s) => (
           <section class="series" aria-label={s.title}>
@@ -84,24 +94,27 @@ const product = (slug: string) => productFiles[`../assets/products/${slug}.png`]
             <ul class="grid container">
               {s.items.map((it) => (
                 <li class="card" data-filters={it.filters.join(" ")}>
-                  <Image
-                    class="card__img"
-                    src={product(it.image)}
-                    alt={`Gói cà phê ${it.name}`}
-                    widths={[240, 360, 540]}
-                    sizes="(min-width: 900px) 22vw, 45vw"
-                    loading="lazy"
-                  />
-                  <h3 class="font-heading card__name">{it.name}</h3>
+                  <a class="card__link" href={productUrl(it)} aria-label={`${detailLabel}: ${it.name}`}>
+                    <Image
+                      class="card__img"
+                      src={it.image}
+                      alt={`Gói cà phê ${it.name}`}
+                      widths={[240, 360, 540]}
+                      sizes="(min-width: 900px) 22vw, 45vw"
+                      loading="lazy"
+                    />
+                    <h3 class="font-heading card__name">{it.name}</h3>
+                  </a>
                   <p class="card__story">{it.story}</p>
                   <dl class="card__meta">
                     <div><dt>{labels.bean}:</dt><dd>{it.bean}</dd></div>
-                    <div><dt>{labels.notes}:</dt><dd>{it.notes}</dd></div>
-                    <div><dt>{labels.price}:</dt><dd class="card__price">{it.price}.000đ</dd></div>
+                    <div><dt>{labels.notes}:</dt><dd>{it.notes.join(", ")}</dd></div>
+                    <div><dt>{labels.price}:</dt><dd class="card__price">{formatPrice(it.price)}</dd></div>
                   </dl>
-                  <a class="buy" href={it.href || buyHref} target="_blank" rel="noopener noreferrer">
-                    {buyLabel}
-                  </a>
+                  <div class="card__actions">
+                    <ShopeeButton product={it} />
+                    <a class="card__detail" href={productUrl(it)}>{detailLabel}</a>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -118,22 +131,25 @@ const product = (slug: string) => productFiles[`../assets/products/${slug}.png`]
           {
             instant.items.map((it) => (
               <li class="card">
-                <Image
-                  class="card__img"
-                  src={product(it.image)}
-                  alt={it.name}
-                  widths={[240, 360, 540]}
-                  sizes="(min-width: 900px) 22vw, 45vw"
-                  loading="lazy"
-                />
-                <h3 class="font-heading card__name">{it.name}</h3>
+                <a class="card__link" href={productUrl(it)} aria-label={`${detailLabel}: ${it.name}`}>
+                  <Image
+                    class="card__img"
+                    src={it.image}
+                    alt={it.name}
+                    widths={[240, 360, 540]}
+                    sizes="(min-width: 900px) 22vw, 45vw"
+                    loading="lazy"
+                  />
+                  <h3 class="font-heading card__name">{it.name}</h3>
+                </a>
                 <p class="card__story">{it.story}</p>
                 <dl class="card__meta">
-                  <div><dt>{labels.price}:</dt><dd class="card__price">{it.price}.000đ</dd></div>
+                  <div><dt>{labels.price}:</dt><dd class="card__price">{formatPrice(it.price)}</dd></div>
                 </dl>
-                <a class="buy" href={it.href || buyHref} target="_blank" rel="noopener noreferrer">
-                  {buyLabel}
-                </a>
+                <div class="card__actions">
+                  <ShopeeButton product={it} />
+                  <a class="card__detail" href={productUrl(it)}>{detailLabel}</a>
+                </div>
               </li>
             ))
           }
@@ -163,29 +179,28 @@ const product = (slug: string) => productFiles[`../assets/products/${slug}.png`]
 <script>
   document.querySelectorAll<HTMLElement>("[data-tabs]").forEach((root) => {
     const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
-    const menu = root.querySelector<HTMLElement>("[data-filter-menu]");
-    const firstTab = tabs[0];
-    const firstLabel = firstTab.querySelector<HTMLElement>("[data-tab-label]");
-    const baseLabel = firstLabel?.textContent ?? "";
     const options = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-filter]"));
     const cards = Array.from(root.querySelectorAll<HTMLElement>("#panel-hat-bot .card"));
     const sections = Array.from(root.querySelectorAll<HTMLElement>("#panel-hat-bot .series"));
+    const status = root.querySelector<HTMLElement>("[data-filter-status]");
+    const clear = root.querySelector<HTMLButtonElement>("[data-filter-clear]");
 
-    const setMenu = (open: boolean) => {
-      if (!menu) return;
-      menu.hidden = !open;
-      firstTab.setAttribute("aria-expanded", String(open));
-    };
-
-    const applyFilter = (id: string, label: string) => {
+    const applyFilter = (id: string) => {
+      let shown = 0;
       cards.forEach((c) => {
-        c.hidden = id !== "all" && !(c.dataset.filters ?? "").split(" ").includes(id);
+        const ok = id === "all" || (c.dataset.filters ?? "").split(" ").includes(id);
+        c.hidden = !ok;
+        if (ok) shown++;
       });
       sections.forEach((sec) => {
         sec.hidden = !sec.querySelector(".card:not([hidden])");
       });
       options.forEach((o) => o.setAttribute("aria-pressed", String(o.dataset.filter === id)));
-      if (firstLabel) firstLabel.textContent = id === "all" ? baseLabel : `${baseLabel} · ${label}`;
+      if (status) {
+        const label = options.find((o) => o.dataset.filter === id)?.querySelector(".fchip__label")?.textContent?.trim();
+        status.textContent = id === "all" ? `Đang xem tất cả ${shown} sản phẩm` : `Đang lọc “${label}”: ${shown}/${cards.length} sản phẩm`;
+      }
+      if (clear) clear.hidden = id === "all";
     };
 
     const select = (tab: HTMLButtonElement, focus = false) => {
@@ -196,21 +211,11 @@ const product = (slug: string) => productFiles[`../assets/products/${slug}.png`]
         const panel = root.querySelector<HTMLElement>("#" + t.getAttribute("aria-controls"));
         if (panel) panel.hidden = !on;
       });
-      if (tab !== firstTab) setMenu(false);
       if (focus) tab.focus();
     };
 
     tabs.forEach((tab, i) => {
-      tab.addEventListener("click", (e) => {
-        if (tab === firstTab) {
-          e.stopPropagation();
-          const wasSelected = tab.getAttribute("aria-selected") === "true";
-          select(tab);
-          setMenu(!wasSelected || menu?.hidden === true);
-        } else {
-          select(tab);
-        }
-      });
+      tab.addEventListener("click", () => select(tab));
       tab.addEventListener("keydown", (e) => {
         const k = e.key;
         if (k === "ArrowRight") select(tabs[(i + 1) % tabs.length], true);
@@ -220,25 +225,15 @@ const product = (slug: string) => productFiles[`../assets/products/${slug}.png`]
       });
     });
 
-    options.forEach((o) =>
-      o.addEventListener("click", () => {
-        applyFilter(o.dataset.filter ?? "all", o.textContent?.trim() ?? "");
-        setMenu(false);
-        firstTab.focus();
-      })
-    );
-    document.addEventListener("click", (e) => {
-      if (menu && !menu.hidden && !menu.contains(e.target as Node)) setMenu(false);
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && menu && !menu.hidden) {
-        setMenu(false);
-        firstTab.focus();
-      }
-    });
+    options.forEach((o) => o.addEventListener("click", () => applyFilter(o.dataset.filter ?? "all")));
+    clear?.addEventListener("click", () => applyFilter("all"));
 
     const fromHash = tabs.find((t) => "#" + t.getAttribute("aria-controls") === location.hash);
     if (fromHash) select(fromHash);
+
+    // /san-pham#robusta (hoặc #arabica, #blend, #organic) mở sẵn dòng tương ứng.
+    const hashFilter = options.find((o) => o.dataset.filter === location.hash.slice(1));
+    applyFilter(hashFilter?.dataset.filter ?? "all");
   });
 </script>
 
@@ -305,51 +300,107 @@ const product = (slug: string) => productFiles[`../assets/products/${slug}.png`]
     gap: 0.6em;
   }
 
-  .tabs__chev {
-    transition: transform var(--duration-fast) var(--ease-standard);
+  .filterbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs) var(--space-sm);
+    max-width: 920px;
+    margin: 0 auto var(--space-md);
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--color-surface);
+    border: var(--border-width) solid color-mix(in srgb, var(--color-primary) 35%, transparent);
+    border-left: 6px solid var(--color-primary);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
   }
 
-  .tabs__tab[aria-expanded="true"] .tabs__chev {
-    transform: rotate(180deg);
+  .filterbar__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
+    font-weight: 700;
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
   }
 
-  .tabs__menu {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    z-index: 10;
-    min-width: 100%;
-    padding-block: var(--space-3xs);
-    background: var(--color-paper);
-    border: var(--border-width) solid var(--color-primary);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  .filterbar__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
   }
 
-  .tabs__menu[hidden] {
-    display: none;
-  }
-
-  .tabs__option {
-    display: block;
-    width: 100%;
-    text-align: left;
+  .fchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
     font: inherit;
     font-weight: 700;
     font-size: var(--text-small);
-    min-height: 44px;
-    padding: 0.5em 1.2em;
     cursor: pointer;
+    min-height: 44px;
+    padding: 0.4em 0.5em 0.4em 1.1em;
     color: var(--color-primary);
     background: transparent;
-    border: none;
-    white-space: nowrap;
+    border: var(--border-width) solid var(--color-primary);
+    border-radius: 999px;
+    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
   }
 
-  .tabs__option:hover {
+  .fchip:hover {
     background: color-mix(in srgb, var(--color-primary) 10%, transparent);
   }
 
-  .tabs__option[aria-pressed="true"] {
+  .fchip[aria-pressed="true"] {
+    background: var(--color-primary);
+    color: var(--color-accent);
+  }
+
+  .fchip__n {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.7em;
+    height: 1.7em;
+    padding-inline: 0.4em;
+    font-size: 0.8em;
+    border-radius: 999px;
+    color: var(--color-paper);
+    background: var(--color-primary);
+  }
+
+  .fchip[aria-pressed="true"] .fchip__n {
+    color: var(--color-primary);
+    background: var(--color-accent);
+  }
+
+  .filterbar__status {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2xs) var(--space-xs);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .filterbar__clear {
+    font: inherit;
+    font-weight: 700;
+    font-size: var(--text-small);
+    cursor: pointer;
+    padding: 0.2em 0.8em;
+    color: var(--color-primary);
+    background: transparent;
+    border: var(--border-width) solid var(--color-primary);
+    border-radius: 999px;
+  }
+
+  .filterbar__clear[hidden] {
+    display: none;
+  }
+
+  .filterbar__clear:hover {
     background: var(--color-primary);
     color: var(--color-accent);
   }
@@ -434,24 +485,29 @@ const product = (slug: string) => productFiles[`../assets/products/${slug}.png`]
     color: var(--color-primary);
   }
 
-  .buy {
-    margin-top: auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0.6em 1.8em;
-    font-weight: 700;
-    font-size: var(--text-small);
+  .card__link {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    color: inherit;
     text-decoration: none;
-    background: var(--color-accent);
-    color: var(--color-ink);
-    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
   }
 
-  .buy:hover {
-    background: var(--color-primary);
-    color: var(--color-accent);
+  .card__actions {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+  }
+
+  .card__detail {
+    font-size: var(--text-small);
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
   }
 
   .note {

@@ -2,6 +2,8 @@
 import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductCards from "../../components/ProductCards.astro";
+import { getProduct } from "../../lib/products";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("kienThuc", (p) => !p.data.draft)).sort(
@@ -15,6 +17,11 @@ export async function getStaticPaths() {
 
 const { post, prev, next } = Astro.props;
 const { Content } = await render(post);
+
+// Bài "Arabica vs Robusta": gợi ý sản phẩm theo gu.
+const isRoastGuide = post.id === "su-khac-nhau-giua-arabica-va-robusta";
+const likeBold = ["giong-gia", "thien", "dia", "nhan"].map(getProduct);
+const likeBright = ["nang-can", "ho", "cheo", "tuong"].map(getProduct);
 const fmt = new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
 const url = new URL(Astro.url.pathname, Astro.site).toString();
 const jsonLd = {
@@ -28,7 +35,7 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} ogType="article">
+<BaseLayout title={post.data.title} description={post.data.description} ogType="article" pageCategory="kien_thuc">
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <article class="post container-narrow">
@@ -41,6 +48,23 @@ const jsonLd = {
     <div class="prose">
       <Content />
     </div>
+
+    {
+      isRoastGuide && (
+        <section class="pick" aria-label="Chọn cà phê theo gu">
+          <ProductCards
+            products={likeBold}
+            heading="Thích đậm"
+            note="Robusta đậm đà, thân dày, hậu vị sâu."
+          />
+          <ProductCards
+            products={likeBright}
+            heading="Thích chua thanh"
+            note="Arabica chua dịu, thơm, nhiều tầng hương trái cây."
+          />
+        </section>
+      )
+    }
 
     <nav class="post__pager" aria-label="Bài viết khác">
       {prev && <a class="post__prev" href={`/kien-thuc-ca-phe/${prev.id}`}>← {prev.data.title}</a>}

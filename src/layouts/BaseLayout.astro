@@ -2,17 +2,19 @@
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-// import ContactWidget from "../components/ContactWidget.astro";
+import ZaloFloat from "../components/ZaloFloat.astro";
 
 interface Props {
   title: string;
   description: string;
   image?: string;
-  /** Open Graph type: "article" for blog posts. */
-  ogType?: "website" | "article";
+  /** Open Graph type: "article" for blog posts, "product" for product pages. */
+  ogType?: "website" | "article" | "product";
+  /** Nhóm nội dung để đo lường Meta ViewContent: "cau_chuyen" | "hanh_trinh_thien_ly" | "farm" | "kien_thuc". */
+  pageCategory?: "cau_chuyen" | "hanh_trinh_thien_ly" | "farm" | "kien_thuc";
 }
 
-const { title, description, image = "/og-default.jpg", ogType = "website" } = Astro.props;
+const { title, description, image = "/og-default.jpg", ogType = "website", pageCategory } = Astro.props;
 const siteName = "Gióng";
 const fullTitle = title === siteName ? title : `${title} · ${siteName}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -47,14 +49,16 @@ const ogImageURL = new URL(image, Astro.site);
     <meta name="twitter:image" content={ogImageURL} />
     <slot name="head" />
   </head>
-  <body>
+  <body data-page-category={pageCategory}>
     <a href="#main" class="skip-link">Bỏ qua đến nội dung chính</a>
     <Header />
     <main id="main">
       <slot />
     </main>
     <Footer />
-    {/* Tạm tắt widget liên hệ nổi: bỏ dấu comment để bật lại */}
-    {/* <ContactWidget /> */}
+    <ZaloFloat />
+    <script>
+      import "../lib/tracking";
+    </script>
   </body>
 </html>

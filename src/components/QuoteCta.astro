@@ -7,13 +7,15 @@ interface Props {
   hotlineTel: string;
   email: string;
   formCta: string;
+  /** Nhu cầu chọn sẵn khi mở form: "bao_gia" (mặc định) hoặc "mau_thu". */
+  need?: "bao_gia" | "mau_thu";
 }
 
-const { hotline, hotlineTel, email, formCta } = Astro.props;
+const { hotline, hotlineTel, email, formCta, need = "bao_gia" } = Astro.props;
 ---
 
 <div class="quote-cta">
-  <a class="quote-cta__item" href={`tel:${hotlineTel}`}>
+  <a class="quote-cta__item" href={`tel:${hotlineTel}`} data-track="click_lien_he_si" data-kenh="phone">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"
@@ -23,14 +25,14 @@ const { hotline, hotlineTel, email, formCta } = Astro.props;
     </svg>
     {hotline}
   </a>
-  <a class="quote-cta__item" href={`mailto:${email}`}>
+  <a class="quote-cta__item" href={`mailto:${email}`} data-track="click_lien_he_si" data-kenh="email">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
       <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path>
     </svg>
     {email}
   </a>
-  <button type="button" class="quote-cta__btn" data-open-lead-form>
+  <button type="button" class="quote-cta__btn" data-open-lead-form data-need={need} data-track="mo_form_si">
     <span>{formCta}</span>
     <svg class="quote-cta__arrow" width="16" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
       <path

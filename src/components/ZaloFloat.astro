@@ -1,0 +1,113 @@
+---
+// Hai nút Zalo nổi, cố định góc dưới bên phải, hiện trên mọi trang.
+// Số Zalo sửa ở đây. Đo lượt bấm qua data-track / data-loai (xem tracking ở Phần B).
+const buttons = [
+  {
+    loai: "si",
+    label: "Mua sỉ",
+    href: "https://zalo.me/0941059999",
+    aria: "Liên hệ mua sỉ qua Zalo 094 105 9999",
+  },
+  {
+    loai: "le",
+    label: "Mua lẻ",
+    href: "https://zalo.me/0901499914",
+    aria: "Liên hệ mua lẻ cà phê hạt, bột qua Zalo 090 149 9914",
+  },
+];
+---
+
+<aside class="zalo-float" aria-label="Liên hệ qua Zalo">
+  {
+    buttons.map((b) => (
+      <a
+        class="zalo-float__btn"
+        href={b.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={b.aria}
+        data-track="click_zalo"
+        data-loai={b.loai}
+      >
+        <svg class="zalo-float__icon" width="30" height="30" viewBox="0 0 48 48" aria-hidden="true">
+          <rect width="48" height="48" rx="12" fill="#fff" />
+          <text x="24" y="30.5" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="16.5" fill="#0068FF">
+            Zalo
+          </text>
+        </svg>
+        <span class="zalo-float__label">{b.label}</span>
+      </a>
+    ))
+  }
+</aside>
+
+<style>
+  .zalo-float {
+    position: fixed;
+    right: max(0.875rem, env(safe-area-inset-right));
+    bottom: max(0.875rem, env(safe-area-inset-bottom));
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+    pointer-events: none;
+  }
+
+  .zalo-float__btn {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 1.05rem 0.35rem 0.4rem;
+    min-height: 46px;
+    border-radius: 999px;
+    background: #0068ff;
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0, 40, 120, 0.35);
+    transition: transform var(--duration-fast) var(--ease-standard), background var(--duration-fast) var(--ease-standard);
+  }
+
+  .zalo-float__btn:hover,
+  .zalo-float__btn:focus-visible {
+    background: #0054cf;
+    transform: translateY(-2px);
+  }
+
+  .zalo-float__icon {
+    flex: none;
+  }
+
+  /* Điện thoại: gọn hơn — icon + nhãn 1 dòng nhỏ. */
+  @media (max-width: 699px) {
+    .zalo-float {
+      right: max(0.625rem, env(safe-area-inset-right));
+      bottom: max(0.625rem, env(safe-area-inset-bottom));
+      gap: 0.4rem;
+    }
+
+    .zalo-float__btn {
+      min-height: 38px;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem 0.25rem 0.3rem;
+      font-size: 0.78rem;
+    }
+
+    .zalo-float__icon {
+      width: 26px;
+      height: 26px;
+    }
+  }
+
+  @media print {
+    .zalo-float {
+      display: none;
+    }
+  }
+</style>

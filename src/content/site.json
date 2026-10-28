@@ -36,12 +36,14 @@
       {
         "id": "grab",
         "label": "Grab Food",
-        "href": "https://food.grab.com/vn/vi/"
+        "href": "https://food.grab.com/vn/vi/",
+        "hidden": true
       },
       {
         "id": "shopee",
         "label": "Shopee Food",
-        "href": "https://shopee.vn/"
+        "href": "https://shopee.vn/",
+        "hidden": true
       }
     ]
   }

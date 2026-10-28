@@ -1,24 +1,34 @@
 ---
 import { images } from "../lib/images";
 import site from "../content/site.json";
+import storeData from "../content/cua-hang.json";
 
+// Mỗi quán: id khớp với src/content/cua-hang.json (lấy link chỉ đường + mã đo lường).
 const stores = [
-  { region: "Hà Nội", branches: ["20 Hàng Thùng, P. Hoàn Kiếm (07:00 – 22:00)"] },
+  { region: "Hà Nội", branches: [{ id: "hang-thung", text: "20 Hàng Thùng, P. Hoàn Kiếm (07:00 – 22:00)" }] },
   {
     region: "Hồ Chí Minh",
     branches: [
-      "57 Nguyễn Du, P. Sài Gòn (07:00 – 22:00)",
-      "F5 Diamond Plaza - 34 Lê Duẩn, P. Sài Gòn (08:00 – 22:00)",
+      { id: "nguyen-du", text: "57 Nguyễn Du, P. Sài Gòn (07:00 – 22:00)" },
+      { id: "diamond-plaza", text: "F5 Diamond Plaza - 34 Lê Duẩn, P. Sài Gòn (08:00 – 22:00)" },
     ],
   },
-  { region: "Đà Nẵng", branches: ["09 Nguyễn Thái Học, P. Hội An (08:00 – 21:30)"] },
-  { region: "Khánh Hòa", branches: ["15 Trần Hưng Đạo, P. Nha Trang (07:00 – 22:00)"] },
+  { region: "Đà Nẵng", branches: [{ id: "hoi-an", text: "09 Nguyễn Thái Học, P. Hội An (08:00 – 21:30)" }] },
+  { region: "Khánh Hòa", branches: [{ id: "nha-trang", text: "15 Trần Hưng Đạo, P. Nha Trang (07:00 – 22:00)" }] },
 ];
+const storeById = (id: string) => storeData.stores.find((s) => s.id === id)!;
+const directionsUrl = (id: string) => {
+  const st = storeById(id);
+  return st.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("Gióng Cà phê, " + st.address)}`;
+};
 
 const offices = [
   { city: "Hà Nội", address: "Heritage Westlake 677 Lạc Long Quân, Tây Hồ, Hà Nội" },
   { city: "Hồ Chí Minh", address: "38/5 Trần Khắc Chân, P. Tân Định, TP. HCM" },
 ];
+
+// Link Grab Food / Shopee Food đang ẩn (hidden: true trong site.json) cho tới khi có link gian hàng từng quán.
+const deliveryLinks = site.delivery.links.filter((l) => !(l as { hidden?: boolean }).hidden);
 ---
 
 <footer class="site-footer">
@@ -29,11 +39,12 @@ const offices = [
     </div>
 
     <div class="site-footer__stores">
+      {deliveryLinks.length > 0 && (
       <div class="site-footer__delivery">
         <p class="site-footer__heading">{site.delivery.heading}</p>
         <ul class="delivery">
           {
-            site.delivery.links.map((l) => (
+            deliveryLinks.map((l) => (
               <li>
                 <a class={`delivery__link delivery__link--${l.id}`} href={l.href} target="_blank" rel="noopener noreferrer" aria-label={l.label}>
                   <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
@@ -57,13 +68,29 @@ const offices = [
           }
         </ul>
       </div>
+      )}
       <p class="site-footer__heading">Hệ thống cửa hàng</p>
       {
         stores.map((s) => (
           <div class="site-footer__region">
             <p class="site-footer__region-name">{s.region}</p>
             <ul>
-              {s.branches.map((b) => <li>{b}</li>)}
+              {s.branches.map((b) => (
+                <li class="site-footer__branch">
+                  <span>{b.text}</span>
+                  <a
+                    class="site-footer__dir"
+                    href={directionsUrl(b.id)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Chỉ đường tới ${storeById(b.id).name}`}
+                    data-track="click_chi_duong"
+                    data-chi-nhanh={storeById(b.id).trackId}
+                  >
+                    Chỉ đường
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         ))
@@ -75,7 +102,7 @@ const offices = [
       <p class="site-footer__region-name">Công ty cổ phần Eco Gióng.</p>
       <p>170 Lê Hồng Phong, P. Phú Lợi, TP. HCM</p>
       <p>MST: 3702867127</p>
-      <p>Hotline: <a href="tel:+842836222084">(+84) 28 3622 2084</a></p>
+      <p>Hotline: <a href="tel:+842873002883" data-track="click_goi_van_phong">028 7300 2883</a></p>
       <p>E-mail: <a href="mailto:eco@ecogiong.com">eco@ecogiong.com</a></p>
       <p class="site-footer__region-name site-footer__office-title">Văn phòng:</p>
       {
@@ -88,6 +115,7 @@ const offices = [
 
   <div class="site-footer__bottom container">
     <p>Bản quyền {new Date().getFullYear()}, ECO Gióng</p>
+    <p><a class="site-footer__privacy" href="/chinh-sach-quyen-rieng-tu">Chính sách quyền riêng tư</a></p>
   </div>
 </footer>
 
@@ -199,12 +227,49 @@ const offices = [
     margin-bottom: 0.5rem;
   }
 
+  .site-footer__branch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15rem 0.75rem;
+  }
+
+  .site-footer__dir {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-decoration: none;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+    border-radius: 999px;
+    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .site-footer__dir:hover,
+  .site-footer__dir:focus-visible {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  .site-footer__privacy {
+    color: inherit;
+    text-underline-offset: 0.2em;
+  }
+
+  .site-footer__privacy:hover {
+    color: var(--color-accent);
+  }
+
+  /* Chừa chỗ ở cuối trang để hai nút Zalo nổi không che chữ ở chân trang. */
   .site-footer__bottom {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-2xs);
-    padding-block: 1.25rem;
+    justify-content: flex-start;
+    gap: 0.25rem 1.75rem;
+    padding-block: 1.25rem 7.5rem;
     border-top: var(--border-width) solid var(--color-border-on-primary);
     font-size: 0.8125rem;
     color: color-mix(in srgb, var(--color-paper) 60%, transparent);

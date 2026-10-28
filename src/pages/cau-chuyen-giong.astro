@@ -4,13 +4,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import Ribbon from "../components/Ribbon.astro";
 import TextLink from "../components/TextLink.astro";
+import PageActions from "../components/PageActions.astro";
 import { images, type ImageSlug } from "../lib/images";
 import data from "../content/cau-chuyen-giong.json";
 
 const { hero, sections, cta } = data;
+
+// Cụm "Rethink Robusta" trong bài dẫn sang dòng Robusta.
+const RETHINK_TEXT = '"Rethink Robusta"';
+const RETHINK = /("Rethink Robusta")/;
 ---
 
 <BaseLayout
+  pageCategory="cau_chuyen"
   title="Câu chuyện Gióng"
   description="Gióng Café ra đời từ tinh thần “Gióng trống mở cờ”: hành trình định vị cà phê thuần Việt, câu chuyện thương hiệu và triết lý High-quality Vietnamese Coffee & Rethink Robusta."
 >
@@ -41,7 +47,11 @@ const { hero, sections, cta } = data;
               p.startsWith("“") ? (
                 <blockquote class="block__quote">{p}</blockquote>
               ) : (
-                <p class="block__body">{p}</p>
+                <p class="block__body">
+                  {p.split(RETHINK).map((part) =>
+                    part === RETHINK_TEXT ? <a class="inline-link" href="/san-pham#robusta">{part}</a> : part
+                  )}
+                </p>
               )
             )}
           </div>
@@ -50,10 +60,22 @@ const { hero, sections, cta } = data;
     ))
   }
 
+  <PageActions
+    actions={[
+      { label: "Ghé Gióng gần bạn", href: "/cua-hang", variant: "primary" },
+      { label: "Thử Robusta Gióng", href: "/san-pham#robusta", variant: "secondary" },
+    ]}
+  />
   <p class="cta"><TextLink href={cta.href}>{cta.label}</TextLink></p>
 </BaseLayout>
 
 <style>
+  .inline-link {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-underline-offset: 0.2em;
+  }
+
   .block {
     padding-top: var(--space-xl);
   }

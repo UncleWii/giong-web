@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    { "source": "/qr/hoian", "destination": "/cua-hang?utm_source=qr&utm_medium=offline&utm_campaign=hoian_ban", "permanent": false },
+    { "source": "/qr/nhatrang", "destination": "/cua-hang?utm_source=qr&utm_medium=offline&utm_campaign=nhatrang_ban", "permanent": false },
+    { "source": "/qr/57nguyendu", "destination": "/cua-hang?utm_source=qr&utm_medium=offline&utm_campaign=57nguyendu_ban", "permanent": false },
+    { "source": "/qr/diamond", "destination": "/cua-hang?utm_source=qr&utm_medium=offline&utm_campaign=diamond_ban", "permanent": false },
+    { "source": "/qr/hangthung", "destination": "/cua-hang?utm_source=qr&utm_medium=offline&utm_campaign=hangthung_ban", "permanent": false },
+    { "source": "/qr/bao-bi", "destination": "/san-pham?utm_source=qr&utm_medium=offline&utm_campaign=bao_bi", "permanent": false }
+  ]
+}

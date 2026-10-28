@@ -52,7 +52,7 @@
     "text2": "Ngoài việc rang, nơi đây còn là 'lò' nghiên cứu và phát triển các sơ đồ rang cà phê của Gióng, để khai phá các nốt hương vị tiềm ẩn có trong hạt cà phê Việt Nam.",
     "locations": [
       "15 Trần Hưng Đạo, P. Nha Trang, tỉnh Khánh Hoà.",
-      "170 Lê Hồng Phong, phường Phú Lợi, P. Phú Lợi, TP. Hồ Chí Minh"
+      "170 Lê Hồng Phong, P. Phú Lợi, TP. Hồ Chí Minh"
     ],
     "certs": [
       {
@@ -70,5 +70,9 @@
   "cta": {
     "label": "Khám phá cà phê Gióng",
     "href": "/san-pham"
+  },
+  "cta2": {
+    "label": "Nhận báo giá sỉ cho quán",
+    "href": "/ngua-o#lien-he"
   }
 }

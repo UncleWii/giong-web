@@ -116,15 +116,26 @@
         "placeholder": "Tỉnh / thành phố"
       }
     },
-    "useLabel": "Nhu cầu sử dụng",
+    "useLabel": "Loại hình sử dụng",
     "useOptions": [
       "Kinh doanh (quán, nhà hàng, khách sạn...)",
       "Văn phòng"
     ],
     "submitLabel": "Gửi yêu cầu",
     "sendingLabel": "Đang gửi...",
-    "successTitle": "Đã gửi yêu cầu!",
-    "successText": "Cảm ơn bạn. Đội ngũ Ngựa Ô sẽ liên hệ lại trong thời gian sớm nhất.",
-    "errorText": "Gửi không thành công. Vui lòng thử lại hoặc gọi hotline bên dưới."
+    "successTitle": "Cảm ơn bạn đã gửi yêu cầu!",
+    "successText": "Yêu cầu của bạn đã được gửi thành công. Đội ngũ Ngựa Ô sẽ liên hệ lại với bạn trong thời gian sớm nhất.",
+    "errorText": "Gửi không thành công. Vui lòng thử lại hoặc gọi hotline bên dưới.",
+    "needLabel": "Nhu cầu",
+    "needOptions": [
+      {
+        "value": "bao_gia",
+        "label": "Nhận báo giá sỉ"
+      },
+      {
+        "value": "mau_thu",
+        "label": "Đặt mẫu thử"
+      }
+    ]
   }
 }

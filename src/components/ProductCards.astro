@@ -1,0 +1,109 @@
+---
+// Thẻ gợi ý sản phẩm (ảnh gói, tên, hương vị, giá) — dẫn sang trang sản phẩm riêng.
+import { Image } from "astro:assets";
+import { formatPrice, productUrl, type Product } from "../lib/products";
+
+interface Props {
+  products: Product[];
+  heading?: string;
+  note?: string;
+}
+
+const { products, heading, note } = Astro.props;
+---
+
+{
+  products.length > 0 && (
+    <section class="pcards" aria-label={heading ?? "Sản phẩm gợi ý"}>
+      {heading && <h2 class="font-heading pcards__title">{heading}</h2>}
+      {note && <p class="pcards__note">{note}</p>}
+      <ul class="pcards__grid">
+        {products.map((p) => (
+          <li>
+            <a class="pcard" href={productUrl(p)}>
+              <Image src={p.image} alt={`Gói cà phê ${p.name}`} widths={[160, 240, 320]} sizes="160px" loading="lazy" />
+              <span class="pcard__body">
+                <span class="pcard__name font-heading">{p.name}</span>
+                {p.origin && <span class="pcard__meta">{p.bean || p.origin}</span>}
+                {p.notes.length > 0 && <span class="pcard__meta">Hương vị: {p.notes.join(", ")}</span>}
+                <span class="pcard__price">{formatPrice(p.price)}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .pcards {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .pcards__title {
+    font-size: var(--text-h3);
+    color: var(--color-primary);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .pcards__note {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .pcards__grid {
+    display: grid;
+    gap: var(--space-sm);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  }
+
+  .pcard {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: var(--space-xs);
+    align-items: center;
+    padding: var(--space-2xs);
+    color: inherit;
+    text-decoration: none;
+    border: var(--border-width) solid var(--color-border);
+    background: var(--color-surface);
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .pcard:hover,
+  .pcard:focus-visible {
+    border-color: var(--color-primary);
+  }
+
+  .pcard :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .pcard__body {
+    display: grid;
+    gap: 0.2em;
+    min-width: 0;
+  }
+
+  .pcard__name {
+    font-size: var(--text-h3);
+    color: var(--color-primary);
+    line-height: var(--leading-snug);
+  }
+
+  .pcard__meta {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .pcard__price {
+    font-size: var(--text-small);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+</style>

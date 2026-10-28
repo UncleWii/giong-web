@@ -655,7 +655,7 @@ const slicesGeometry = Array.from({ length: N }, (_, i) => {
 
   @media (max-width: 899px) {
     .ps__stage {
-      min-height: 752px;
+      min-height: 808px;
     }
 
     .ps__names {
@@ -668,12 +668,12 @@ const slicesGeometry = Array.from({ length: N }, (_, i) => {
 
     .ps__bags {
       --bh: clamp(250px, 38vh, 330px);
-      margin-top: -148px;
+      margin-top: -204px;
     }
 
     .ps__blob {
       --blob-w: 86vw;
-      margin-top: calc(var(--blob-w) / -2 - 11% - 19px);
+      margin-top: calc(var(--blob-w) / -2 - 11% - 47px);
     }
 
     .ps__left,
@@ -681,6 +681,12 @@ const slicesGeometry = Array.from({ length: N }, (_, i) => {
       position: static;
       width: auto;
       text-align: center;
+    }
+
+    .ps__right {
+      display: grid;
+      justify-items: center;
+      gap: 0.8rem;
     }
 
     .ps__info {
@@ -709,8 +715,16 @@ const slicesGeometry = Array.from({ length: N }, (_, i) => {
       padding: 0;
     }
 
+    /* Nút "Xem sản phẩm" luôn hiện trên điện thoại (dạng nút viền, dễ bấm). */
+    .ps__info[data-active="true"] .ps__right {
+      pointer-events: auto;
+    }
+
     .ps__cta {
-      display: none;
+      min-height: 44px;
+      padding: 0.6em 1.5em;
+      border: 1.5px solid currentColor;
+      border-radius: 999px;
     }
   }
 

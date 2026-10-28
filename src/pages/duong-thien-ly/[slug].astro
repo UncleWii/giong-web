@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductCards from "../../components/ProductCards.astro";
+import { getProduct } from "../../lib/products";
 
 export async function getStaticPaths() {
   const legs = (await getCollection("thienLy", (p) => !p.data.draft)).sort(
@@ -14,6 +16,19 @@ export async function getStaticPaths() {
 
 const { leg, index, prev, next } = Astro.props;
 const { Content } = await render(leg);
+
+// Thẻ sản phẩm: luôn có Thiên Lý; chặng nào nhắc tới vùng nào thì gợi ý sản phẩm của vùng đó.
+const REGION_PRODUCTS: [string, string][] = [
+  ["Kon Tum", "thien"],
+  ["Đắk Nông", "dia"],
+  ["Di Linh", "nhan"],
+  ["Cầu Đất", "tuong"],
+];
+const legText = `${leg.data.title} ${leg.data.description} ${leg.body ?? ""}`;
+const suggested = [
+  getProduct("thien-ly"),
+  ...REGION_PRODUCTS.filter(([region]) => legText.includes(region)).map(([, slug]) => getProduct(slug)),
+];
 const url = new URL(Astro.url.pathname, Astro.site).toString();
 const jsonLd = {
   "@context": "https://schema.org",
@@ -26,7 +41,7 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={leg.data.title} description={leg.data.description} ogType="article">
+<BaseLayout title={leg.data.title} description={leg.data.description} ogType="article" pageCategory="hanh_trinh_thien_ly">
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <article class="post container-narrow">
@@ -39,6 +54,12 @@ const jsonLd = {
     <div class="prose">
       <Content />
     </div>
+
+    <ProductCards
+      products={suggested}
+      heading="Nếm thử hương vị của hành trình"
+      note="Mỗi vùng đất trên Đường Thiên Lý là một hương vị riêng."
+    />
 
     <nav class="post__pager" aria-label="Chặng khác">
       {prev && <a class="post__prev" href={`/duong-thien-ly/${prev.id}`}>← {prev.data.title}</a>}

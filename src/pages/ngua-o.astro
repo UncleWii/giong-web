@@ -101,7 +101,7 @@ const { hero, intro, gallery, catalog, contact, leadForm } = data;
 
       <p class="catalog__caption">{catalog.imageCaption}</p>
       <div class="catalog__cta">
-        <QuoteCta hotline={contact.hotline} hotlineTel={contact.hotlineTel} email={contact.email} formCta={catalog.cta} />
+        <QuoteCta hotline={contact.hotline} hotlineTel={contact.hotlineTel} email={contact.email} formCta={catalog.cta} need="mau_thu" />
       </div>
     </div>
   </section>
@@ -113,13 +113,13 @@ const { hero, intro, gallery, catalog, contact, leadForm } = data;
     <div class="container-narrow contact__body">
       <p class="contact__text">{contact.text}</p>
       <div class="contact__grid">
-        <a class="contact__item" href={`tel:${contact.hotlineTel}`}>
+        <a class="contact__item" href={`tel:${contact.hotlineTel}`} data-track="click_lien_he_si" data-kenh="phone">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
           </svg>
           {contact.hotline}
         </a>
-        <a class="contact__item" href={`mailto:${contact.email}`}>
+        <a class="contact__item" href={`mailto:${contact.email}`} data-track="click_lien_he_si" data-kenh="email">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8" />
             <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
@@ -127,7 +127,7 @@ const { hero, intro, gallery, catalog, contact, leadForm } = data;
           {contact.email}
         </a>
       </div>
-      <button type="button" class="form-open" data-open-lead-form>{contact.formCta}</button>
+      <button type="button" class="form-open" data-open-lead-form data-need="bao_gia" data-track="mo_form_si">{contact.formCta}</button>
     </div>
   </section>
 
@@ -192,6 +192,18 @@ const { hero, intro, gallery, catalog, contact, leadForm } = data;
         </div>
 
         <fieldset class="lead__use">
+          <legend>{leadForm.needLabel} *</legend>
+          {
+            leadForm.needOptions.map((opt, i) => (
+              <label class="lead__radio">
+                <input type="radio" name="need" value={opt.value} data-need-option checked={i === 0} />
+                <span>{opt.label}</span>
+              </label>
+            ))
+          }
+        </fieldset>
+
+        <fieldset class="lead__use">
           <legend>{leadForm.useLabel} *</legend>
           {
             leadForm.useOptions.map((opt, i) => (
@@ -213,7 +225,11 @@ const { hero, intro, gallery, catalog, contact, leadForm } = data;
         <p class="lead__status" data-lead-status role="status" aria-live="polite"></p>
       </div>
 
-      <div data-lead-step="success" hidden>
+      <div data-lead-step="success" hidden role="status">
+        <svg class="lead__tick" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="3" />
+          <path d="m14 25 7 7 13-15" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
         <h2 class="font-heading lead__title">{leadForm.successTitle}</h2>
         <p class="lead__desc">{leadForm.successText}</p>
         <button type="button" class="lead__submit" data-close-lead-form>Đóng</button>
@@ -242,6 +258,11 @@ const { hero, intro, gallery, catalog, contact, leadForm } = data;
   openBtns.forEach((b) =>
     b.addEventListener("click", () => {
       reset();
+      // "Đặt mẫu thử" mở form với nhu cầu = mẫu thử; các nút khác mặc định là nhận báo giá.
+      const need = b.getAttribute("data-need") || "bao_gia";
+      form?.querySelectorAll("[data-need-option]").forEach((r) => {
+        r.checked = r.value === need;
+      });
       dialog?.showModal();
     })
   );
@@ -264,8 +285,18 @@ const { hero, intro, gallery, catalog, contact, leadForm } = data;
         body: new FormData(form),
       });
       if (!res.ok) throw new Error("bad status");
+      // Chỉ tính là thành công khi dịch vụ gửi mail trả success = true (không chỉ là HTTP 200).
+      const result = await res.json().catch(() => ({}));
+      if (result.success !== true && result.success !== "true") throw new Error("not delivered");
       if (stepForm) stepForm.hidden = true;
       if (stepSuccess) stepSuccess.hidden = false;
+      // Báo cho phần đo lường: chỉ đến đây mới là 1 lead. Không gửi tên / số điện thoại / email.
+      const data = new FormData(form);
+      window.dispatchEvent(
+        new CustomEvent("giong:lead-success", {
+          detail: { khu_vuc: String(data.get("region") || ""), nhu_cau: String(data.get("need") || "bao_gia") },
+        })
+      );
     } catch {
       if (status) status.textContent = errorText;
     } finally {
@@ -276,6 +307,12 @@ const { hero, intro, gallery, catalog, contact, leadForm } = data;
 </script>
 
 <style>
+  .lead__tick {
+    display: block;
+    margin-bottom: var(--space-2xs);
+    color: var(--color-primary);
+  }
+
   .block {
     padding-top: var(--space-xl);
   }
