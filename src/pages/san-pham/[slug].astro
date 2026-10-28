@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ShopeeButton from "../../components/ShopeeButton.astro";
-import { products, formatPrice, noteIcon, productUrl } from "../../lib/products";
+import { products, formatPrice, noteIcon, productUrl, dongSanPham } from "../../lib/products";
 import sealIso from "../../assets/badges/Seal-ISO22000.webp";
 import sealFda from "../../assets/badges/Seal-FDA.webp";
 import sealOrganic from "../../assets/badges/Seal-VCO-Organic.webp";
@@ -60,6 +60,7 @@ const jsonLd = {
     data-product-name={product.name}
     data-category={product.category}
     data-price={product.price}
+    data-dong-san-pham={dongSanPham(product)}
   >
     <nav class="pdp__crumbs" aria-label="Breadcrumb">
       <a href="/san-pham">Cà phê</a>

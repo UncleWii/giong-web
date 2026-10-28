@@ -1,7 +1,7 @@
 ---
 // Nút "Mua trên Shopee" dùng chung (danh sách sản phẩm, trang sản phẩm…).
 // Mọi thông tin đo lường (data-*) lấy từ src/lib/products.ts.
-import type { Product } from "../lib/products";
+import { dongSanPham, type Product } from "../lib/products";
 
 interface Props {
   product: Product;
@@ -22,6 +22,7 @@ const { product, class: className = "" } = Astro.props;
   data-product-name={product.name}
   data-category={product.category}
   data-price={product.price}
+  data-dong-san-pham={dongSanPham(product)}
 >
   <svg class="shopee-btn__icon" width="18" height="18" viewBox="0 0 44 44" aria-hidden="true">
     <rect width="44" height="44" rx="10" fill="#EE4D2D"></rect>

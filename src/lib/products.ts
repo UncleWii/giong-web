@@ -213,6 +213,9 @@ export const getProduct = (slug: string): Product => {
 
 export const productUrl = (p: Product | string) => `/san-pham/${typeof p === "string" ? p : p.slug}`;
 
+/** Giá trị tham số đo lường dong_san_pham: classic / robusta / arabica / blend / hoa_tan. */
+export const dongSanPham = (p: Product) => p.series.replace("-", "_");
+
 /** 195000 → "195.000đ" */
 export const formatPrice = (vnd: number) => `${new Intl.NumberFormat("vi-VN").format(vnd)}đ`;
 

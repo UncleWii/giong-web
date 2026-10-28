@@ -121,6 +121,7 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
         value: d.price ? Number(d.price) : undefined,
         currency: "VND",
         content_type: "product",
+        dong_san_pham: d.dongSanPham,
       };
     case "click_chi_duong":
       return { chi_nhanh: d.chiNhanh };
@@ -181,6 +182,7 @@ function init() {
       value: d.price ? Number(d.price) : undefined,
       currency: "VND",
       content_type: "product",
+      dong_san_pham: d.dongSanPham,
     });
   }
 
