@@ -6,8 +6,6 @@ import data from "../content/cua-hang.json";
 
 type RawStore = (typeof data.stores)[number];
 export interface Store extends RawStore {
-  /** Ưu đãi cho khách từ Google. Xoá trường này (hoặc đặt null) để ẩn cả khối. */
-  offer?: { title: string; description: string; code: string } | null;
   /** Bản đồ nhúng chính thức (chỉ phần src của iframe). */
   embedUrl?: string;
 }

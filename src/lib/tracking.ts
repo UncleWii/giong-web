@@ -32,7 +32,6 @@ const EVENTS: Record<string, { meta: string; custom?: boolean; ga?: boolean }> =
   xem_menu: { meta: "ViewContent" },
   xem_trang_quan: { meta: "ViewContent" },
   xem_danh_gia: { meta: "ViewContent" },
-  lay_ma_uu_dai: { meta: "LayMaUuDai", custom: true },
   xem_tren_30s: { meta: "XemTren30s", custom: true },
   // Trang Câu chuyện / Farm / Thiên Lý / Kiến thức: GA4 đã có page_view tự động → chỉ gửi ViewContent cho Meta.
   xem_trang_noi_dung: { meta: "ViewContent", ga: false },
@@ -135,8 +134,6 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
       };
     case "click_chi_duong":
       return { chi_nhanh: d.chiNhanh, vi_tri: d.viTri };
-    case "lay_ma_uu_dai":
-      return { chi_nhanh: d.chiNhanh };
     case "click_goi_chi_nhanh":
       return { chi_nhanh: d.chiNhanh, kenh: "phone" };
     case "click_goi_van_phong":

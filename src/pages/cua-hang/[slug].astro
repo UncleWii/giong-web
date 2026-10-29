@@ -7,7 +7,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import FloatingArtwork from "../../components/FloatingArtwork.astro";
 import PhotoSlot from "../../components/PhotoSlot.astro";
 import data from "../../content/cua-hang.json";
-import { stores, storeImage, mapsUrl, embedUrl, storePath, hotlineOf, telHref, amenityLabel } from "../../lib/stores";
+import { stores, storeImage, mapsUrl, embedUrl, storePath, hotlineOf, telHref, amenityLabel, storePhoto } from "../../lib/stores";
 
 export function getStaticPaths() {
   return stores.map((store) => ({ params: { slug: store.slug }, props: { store } }));
@@ -19,8 +19,12 @@ const maps = mapsUrl(s);
 const tel = telHref(s);
 const hotline = hotlineOf(s);
 const others = stores.filter((o) => o.slug !== s.slug);
-const heroShot = storeImage(s.image);
+const heroShot = storePhoto(s.slug, "hero") ?? storeImage(s.image);
 const dishes = (s.dishes ?? []).slice(0, 4);
+// Quán đã có ảnh không gian thì chỉ hiện các ô có ảnh; chưa có ảnh nào thì hiện đủ 6 khung giữ chỗ.
+const allSpace = [1, 2, 3, 4, 5, 6];
+const haveSpace = allSpace.filter((n) => storePhoto(s.slug, `khong-gian-${n}`));
+const spaceSlots = haveSpace.length > 0 ? haveSpace : allSpace;
 const highlight = (id: string) => data.amenities.find((a) => a.id === id)?.highlight ?? amenityLabel(id);
 
 const title = `${s.name} – Cà phê Việt tại ${s.shortAddress}, ${s.cityShort}`;
@@ -134,37 +138,6 @@ const amenityIcon: Record<string, string> = {
       }
     </section>
 
-    <!-- C. ƯU ĐÃI CHO KHÁCH TỪ GOOGLE (ẩn nếu quán không có dữ liệu "offer") -->
-    {
-      s.offer && (
-        <section class="container lp-sec" aria-labelledby="offer-title">
-          <div class="lp-offer">
-            <div class="lp-offer__text">
-              <h2 id="offer-title" class="font-heading">{s.offer.title}</h2>
-              <p>{s.offer.description}</p>
-            </div>
-            <div class="lp-offer__action">
-              <button
-                type="button"
-                class="big-btn big-btn--ink"
-                data-offer-btn
-                data-track="lay_ma_uu_dai"
-                data-chi-nhanh={s.trackId}
-                aria-controls="offer-code"
-                aria-expanded="false"
-              >
-                {labels.offerButton}
-              </button>
-              <div class="lp-offer__code" id="offer-code" hidden>
-                <span>Đưa mã này cho nhân viên</span>
-                <strong>{s.offer.code}</strong>
-              </div>
-            </div>
-          </div>
-        </section>
-      )
-    }
-
     <!-- D. MÓN ĐẶC TRƯNG -->
     {
       dishes.length > 0 && (
@@ -202,7 +175,7 @@ const amenityIcon: Record<string, string> = {
       <h2 id="space-title" class="font-heading lp-h2">{labels.spaceTitle}</h2>
       <ul class="lp-space">
         {
-          [1, 2, 3, 4, 5, 6].map((n) => (
+          spaceSlots.map((n) => (
             <li>
               <PhotoSlot
                 slug={s.slug}
@@ -374,18 +347,6 @@ const amenityIcon: Record<string, string> = {
     update();
     window.setInterval(update, 60_000);
   }
-
-  // Ưu đãi: bấm "Lấy mã ưu đãi" thì hiện mã (sự kiện lay_ma_uu_dai do module tracking gửi).
-  const offerBtn = document.querySelector<HTMLButtonElement>("[data-offer-btn]");
-  offerBtn?.addEventListener("click", () => {
-    const code = document.getElementById("offer-code");
-    if (!code) return;
-    code.hidden = false;
-    offerBtn.hidden = true;
-    offerBtn.setAttribute("aria-expanded", "true");
-    const value = code.querySelector("strong")?.textContent ?? "";
-    navigator.clipboard?.writeText(value).catch(() => {});
-  });
 
   // Bản đồ nhúng chỉ tải khi sắp cuộn tới (không tranh băng thông với ảnh và chữ ở màn hình đầu).
   const mapFrame = document.querySelector<HTMLIFrameElement>("iframe[data-src]");
@@ -623,52 +584,6 @@ const amenityIcon: Record<string, string> = {
 
   .lp-amenities svg {
     flex: none;
-  }
-
-  /* ---------- C. ưu đãi ---------- */
-  .lp-offer {
-    display: grid;
-    gap: var(--space-sm);
-    padding: var(--space-sm);
-    background: var(--color-accent);
-    color: var(--color-ink);
-    border: 2px solid var(--color-ink);
-  }
-
-  .lp-offer h2 {
-    font-size: var(--text-h2);
-    margin-bottom: var(--space-3xs);
-  }
-
-  .lp-offer__action {
-    display: grid;
-    align-content: center;
-    justify-items: start;
-  }
-
-  .lp-offer__code {
-    display: grid;
-    gap: 0.2em;
-  }
-
-  .lp-offer__code span {
-    font-size: var(--text-small);
-    font-weight: 700;
-  }
-
-  .lp-offer__code strong {
-    font-family: var(--font-display);
-    font-size: clamp(2.2rem, 1.6rem + 3vw, 3.5rem);
-    letter-spacing: 0.08em;
-    line-height: 1;
-    padding: 0.15em 0.5em;
-    background: var(--color-white);
-    border: 2px dashed var(--color-ink);
-  }
-
-  .lp-offer__code[hidden],
-  .lp-offer__action [hidden] {
-    display: none;
   }
 
   /* ---------- D. món ---------- */
@@ -977,12 +892,6 @@ const amenityIcon: Record<string, string> = {
     .lp-hero__copy {
       order: 1;
       padding-top: var(--space-md);
-    }
-
-    .lp-offer {
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      padding: var(--space-md);
     }
 
     .lp-info {

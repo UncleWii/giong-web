@@ -56,12 +56,7 @@
       "cityShort": "Hà Nội",
       "lat": 21.032254,
       "lng": 105.854365,
-      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
-      "offer": {
-        "title": "[Ưu đãi]",
-        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
-        "code": "[GOOGLE]"
-      },
+      "locationHint": "Cà phê Việt cao cấp giữa lòng 36 phố phường, vài phút đi bộ tới Hồ Gươm.",
       "dishes": [
         {
           "name": "[Tên món]",
@@ -108,12 +103,7 @@
       "cityShort": "Sài Gòn",
       "lat": 10.7792701,
       "lng": 106.7003996,
-      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
-      "offer": {
-        "title": "[Ưu đãi]",
-        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
-        "code": "[GOOGLE]"
-      },
+      "locationHint": "Cà phê Việt cao cấp trong tòa nhà Imprimerie de l'Union 100 tuổi, cách Nhà thờ Đức Bà 30 giây đi bộ.",
       "dishes": [
         {
           "name": "[Tên món]",
@@ -158,12 +148,7 @@
       "cityShort": "Sài Gòn",
       "lat": 10.780987,
       "lng": 106.6984947,
-      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
-      "offer": {
-        "title": "[Ưu đãi]",
-        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
-        "code": "[GOOGLE]"
-      },
+      "locationHint": "Cà phê Việt cao cấp trên tầng 5 Diamond Plaza, view toàn cảnh trung tâm, ngay cạnh Nhà thờ Đức Bà.",
       "dishes": [
         {
           "name": "[Tên món]",
@@ -209,12 +194,7 @@
       "cityShort": "Hội An",
       "lat": 15.8767123,
       "lng": 108.330781,
-      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
-      "offer": {
-        "title": "[Ưu đãi]",
-        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
-        "code": "[GOOGLE]"
-      },
+      "locationHint": "Cà phê Việt cao cấp trong ngôi nhà cổ mái ngói rêu phong, giữa phố cổ.",
       "dishes": [
         {
           "name": "[Tên món]",
@@ -262,35 +242,30 @@
       "cityShort": "Nha Trang",
       "lat": 12.2428249,
       "lng": 109.194833,
-      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
-      "offer": {
-        "title": "[Ưu đãi]",
-        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
-        "code": "[GOOGLE]"
-      },
+      "locationHint": "Cà phê Việt cao cấp, hạt tươi rang tại chỗ, cách biển trung tâm 250m.",
       "dishes": [
         {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
+          "name": "Cà phê sữa",
+          "price": "55.000đ",
+          "description": "Robusta Việt đậm vị với sữa đặc, dùng kèm bánh ngọt từ 40.000đ."
         },
         {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
+          "name": "Pha phin Artisan",
+          "price": "100.000đ",
+          "description": "Chọn hạt Gióng rang tại chỗ, pha phin chậm từng giọt."
         },
         {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
+          "name": "V60 Artisan",
+          "price": "95.000đ",
+          "description": "Pha tay bằng V60, vị sạch, nhẹ, rõ hương của hạt bạn chọn."
         },
         {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
+          "name": "Coldbrew chanh",
+          "price": "95.000đ",
+          "description": "Cà phê ủ lạnh với chanh tươi và lá dứa, mát và thơm."
         }
       ],
-      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
+      "introEn": "Premium Vietnamese coffee, freshly roasted in-house, just 250m from Nha Trang's central beach."
     }
   ],
   "labels": {
@@ -310,7 +285,6 @@
     "amenities": "Tiện ích",
     "openNow": "Đang mở cửa",
     "closedNow": "Đã đóng cửa",
-    "offerButton": "Lấy mã ưu đãi",
     "dishesTitle": "Món đặc trưng",
     "menuFull": "Xem menu đầy đủ",
     "spaceTitle": "Không gian quán",

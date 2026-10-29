@@ -12,4 +12,4 @@ Chưa có file nào thì trang hiện khung trống (nền xám, viền nét đ�
 Thư mục: `ha-noi-hang-thung`, `sai-gon-nguyen-du`, `sai-gon-diamond-plaza`, `hoi-an-nguyen-thai-hoc`, `nha-trang-tran-hung-dao`.
 
 Cũng nhận đuôi `.jpg` / `.png`. Nên xuất webp, mỗi ảnh dưới ~250KB.
-Chữ (tên món, giá, mô tả, mã ưu đãi, câu vị trí, câu tiếng Anh) điền ở `src/content/cua-hang.json`.
+Chữ (tên món, giá, mô tả, câu vị trí, câu tiếng Anh) điền ở `src/content/cua-hang.json`.
