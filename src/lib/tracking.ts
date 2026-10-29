@@ -32,6 +32,7 @@ const EVENTS: Record<string, { meta: string; custom?: boolean; ga?: boolean }> =
   xem_menu: { meta: "ViewContent" },
   xem_trang_quan: { meta: "ViewContent" },
   xem_danh_gia: { meta: "ViewContent" },
+  lay_ma_uu_dai: { meta: "LayMaUuDai", custom: true },
   xem_tren_30s: { meta: "XemTren30s", custom: true },
   // Trang Câu chuyện / Farm / Thiên Lý / Kiến thức: GA4 đã có page_view tự động → chỉ gửi ViewContent cho Meta.
   xem_trang_noi_dung: { meta: "ViewContent", ga: false },
@@ -114,7 +115,14 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
   const page_path = location.pathname;
   switch (event) {
     case "click_zalo":
-      return { kenh: "zalo", loai: d.loai, vi_tri: "nut_noi", page_path };
+      return {
+        kenh: "zalo",
+        loai: d.loai,
+        vi_tri: "nut_noi",
+        page_path,
+        // Trang riêng của quán: gắn thêm chi_nhanh để biết khách nhắn Zalo từ quán nào.
+        chi_nhanh: document.querySelector<HTMLElement>("[data-view-store]")?.dataset.chiNhanh,
+      };
     case "click_mua_ngay":
       return {
         content_name: d.productName,
@@ -126,6 +134,8 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
         dong_san_pham: d.dongSanPham,
       };
     case "click_chi_duong":
+      return { chi_nhanh: d.chiNhanh, vi_tri: d.viTri };
+    case "lay_ma_uu_dai":
       return { chi_nhanh: d.chiNhanh };
     case "click_goi_chi_nhanh":
       return { chi_nhanh: d.chiNhanh, kenh: "phone" };

@@ -1,0 +1,87 @@
+---
+// Ô ảnh của trang quán: có file thì hiện ảnh, chưa có thì hiện khung trống (placeholder) ghi rõ tên file cần chép.
+// Ảnh nằm ở src/assets/cua-hang/<slug>/<file>.webp — chép đúng tên là trang tự hiện, không cần sửa code.
+import { Image, getImage } from "astro:assets";
+import { storePhoto } from "../lib/stores";
+
+interface Props {
+  slug: string;
+  /** Tên file không có đuôi, vd. "hero", "mon-1", "khong-gian-3". */
+  file: string;
+  /** Tên ô trong placeholder, vd. "hero quán". */
+  label: string;
+  width: number;
+  height: number;
+  alt: string;
+  sizes?: string;
+  loading?: "eager" | "lazy";
+  /** Cho phép bấm để xem lớn (dùng với lightbox ở trang quán). */
+  zoom?: boolean;
+  class?: string;
+}
+
+const { slug, file, label, width, height, alt, sizes, loading = "lazy", zoom = false, class: className = "" } = Astro.props;
+const photo = storePhoto(slug, file);
+const full = photo && zoom ? await getImage({ src: photo, width: 1800, format: "webp", quality: 80 }) : undefined;
+const widths = [Math.round(width / 2), width, width * 2].filter((w) => !photo || w <= photo.width);
+---
+
+{
+  photo ? (
+    zoom ? (
+      <button type="button" class:list={["slot", "slot--photo", className]} data-lightbox data-full={full!.src} data-alt={alt} aria-label={`Xem lớn: ${alt}`} style={`aspect-ratio:${width}/${height}`}>
+        <Image src={photo} alt={alt} widths={widths} sizes={sizes} loading={loading} decoding="async" />
+      </button>
+    ) : (
+      <div class:list={["slot", "slot--photo", className]} style={`aspect-ratio:${width}/${height}`}>
+        <Image src={photo} alt={alt} widths={widths} sizes={sizes} loading={loading} fetchpriority={loading === "eager" ? "high" : "auto"} decoding="async" />
+      </div>
+    )
+  ) : (
+    <div class:list={["slot", "slot--empty", className]} style={`aspect-ratio:${width}/${height}`} role="img" aria-label={`Chỗ trống: ${alt}`}>
+      <span>Ảnh {label} – {width}×{height} – {file}.webp</span>
+    </div>
+  )
+}
+
+<style>
+  .slot {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .slot--photo :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  button.slot {
+    cursor: zoom-in;
+  }
+
+  button.slot :global(img) {
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+
+  button.slot:hover :global(img),
+  button.slot:focus-visible :global(img) {
+    transform: scale(1.04);
+  }
+
+  .slot--empty {
+    display: grid;
+    place-items: center;
+    padding: var(--space-xs);
+    text-align: center;
+    font-size: var(--text-small);
+    color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+    background: #e9e7e3;
+    border: 2px dashed #b9b5ad;
+  }
+</style>

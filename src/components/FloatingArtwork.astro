@@ -1,0 +1,71 @@
+---
+// Artwork "dập dềnh" như thuyền trên sóng: trôi lên xuống nhẹ + nghiêng rất nhẹ, chỉ dùng CSS transform.
+// Dùng lại được ở trang khác: <FloatingArtwork /> (mặc định là artwork thuyền – múa – máy pha cà phê).
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import defaultArt from "../assets/artwork/thuyen-mua-ca-phe.webp";
+
+interface Props {
+  src?: ImageMetadata;
+  alt?: string;
+  /** Hình đầu trang → "eager" (tải ưu tiên); hình ở dưới → "lazy". */
+  loading?: "eager" | "lazy";
+  sizes?: string;
+  class?: string;
+}
+
+const {
+  src = defaultArt,
+  alt = "Artwork Gióng: thuyền rồng, múa dân gian và cà phê Việt",
+  loading = "eager",
+  sizes = "(min-width: 900px) 560px, 80vw",
+  class: className = "",
+} = Astro.props;
+---
+
+<div class:list={["floating-art", className]}>
+  <Image
+    class="floating-art__img"
+    src={src}
+    alt={alt}
+    widths={[360, 560, 800]}
+    sizes={sizes}
+    loading={loading}
+    fetchpriority={loading === "eager" ? "high" : "auto"}
+    decoding="async"
+  />
+</div>
+
+<style>
+  .floating-art {
+    /* Chừa chỗ cho biên độ trôi để không đẩy lệch bố cục xung quanh. */
+    padding-block: 12px;
+    pointer-events: none;
+  }
+
+  .floating-art__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transform-origin: 50% 80%;
+    animation: floating-art 5s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  @keyframes floating-art {
+    0%,
+    100% {
+      transform: translate3d(0, 5px, 0) rotate(-1deg);
+    }
+    50% {
+      transform: translate3d(0, -5px, 0) rotate(1deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .floating-art__img {
+      animation: none;
+      will-change: auto;
+    }
+  }
+</style>

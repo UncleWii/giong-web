@@ -14,19 +14,23 @@
   "amenities": [
     {
       "id": "outside",
-      "label": "Outside"
+      "label": "Outside",
+      "highlight": "Ngồi ngoài trời"
     },
     {
       "id": "pet",
-      "label": "Pet friendly"
+      "label": "Pet friendly",
+      "highlight": "Cho mang thú cưng"
     },
     {
       "id": "roastery",
-      "label": "Roastery & coffee"
+      "label": "Roastery & coffee",
+      "highlight": "Rang tại chỗ"
     },
     {
       "id": "ac",
-      "label": "Máy lạnh"
+      "label": "Máy lạnh",
+      "highlight": "Máy lạnh"
     }
   ],
   "stores": [
@@ -51,7 +55,36 @@
       "shortAddress": "20 Hàng Thùng",
       "cityShort": "Hà Nội",
       "lat": 21.032254,
-      "lng": 105.854365
+      "lng": 105.854365,
+      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
+      "offer": {
+        "title": "[Ưu đãi]",
+        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
+        "code": "[GOOGLE]"
+      },
+      "dishes": [
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        }
+      ],
+      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
     },
     {
       "id": "nguyen-du",
@@ -74,7 +107,36 @@
       "shortAddress": "57 Nguyễn Du",
       "cityShort": "Sài Gòn",
       "lat": 10.7792701,
-      "lng": 106.7003996
+      "lng": 106.7003996,
+      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
+      "offer": {
+        "title": "[Ưu đãi]",
+        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
+        "code": "[GOOGLE]"
+      },
+      "dishes": [
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        }
+      ],
+      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
     },
     {
       "id": "diamond-plaza",
@@ -95,7 +157,36 @@
       "shortAddress": "34 Lê Duẩn",
       "cityShort": "Sài Gòn",
       "lat": 10.780987,
-      "lng": 106.6984947
+      "lng": 106.6984947,
+      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
+      "offer": {
+        "title": "[Ưu đãi]",
+        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
+        "code": "[GOOGLE]"
+      },
+      "dishes": [
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        }
+      ],
+      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
     },
     {
       "id": "hoi-an",
@@ -117,7 +208,36 @@
       "shortAddress": "09 Nguyễn Thái Học",
       "cityShort": "Hội An",
       "lat": 15.8767123,
-      "lng": 108.330781
+      "lng": 108.330781,
+      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
+      "offer": {
+        "title": "[Ưu đãi]",
+        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
+        "code": "[GOOGLE]"
+      },
+      "dishes": [
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        }
+      ],
+      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
     },
     {
       "id": "nha-trang",
@@ -141,7 +261,36 @@
       "shortAddress": "15 Trần Hưng Đạo",
       "cityShort": "Nha Trang",
       "lat": 12.2428249,
-      "lng": 109.194833
+      "lng": 109.194833,
+      "locationHint": "[Cách … đi bộ — vd: Cách Chùa Cầu 3 phút đi bộ]",
+      "offer": {
+        "title": "[Ưu đãi]",
+        "description": "[Vd: Đọc mã GOOGLE khi gọi món, tặng 1 topping]",
+        "code": "[GOOGLE]"
+      },
+      "dishes": [
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        },
+        {
+          "name": "[Tên món]",
+          "price": "[Giá]",
+          "description": "[Mô tả ngắn 1 dòng]"
+        }
+      ],
+      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
     }
   ],
   "labels": {
@@ -158,6 +307,13 @@
     "detail": "Xem trang quán",
     "reviews": "Xem đánh giá trên Google",
     "address": "Địa chỉ",
-    "amenities": "Tiện ích"
+    "amenities": "Tiện ích",
+    "openNow": "Đang mở cửa",
+    "closedNow": "Đã đóng cửa",
+    "offerButton": "Lấy mã ưu đãi",
+    "dishesTitle": "Món đặc trưng",
+    "menuFull": "Xem menu đầy đủ",
+    "spaceTitle": "Không gian quán",
+    "infoTitle": "Thông tin & bản đồ"
   }
 }
