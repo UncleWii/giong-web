@@ -1,0 +1,40 @@
+{
+  "classic": {
+    "series": "classic",
+    "h1": "Classic Single Origin",
+    "sub": "Năng Cán - Gióng Giả - Thiên Lý",
+    "title": "Classic Single Origin – Gióng Giả, Năng Cán, Thiên Lý",
+    "description": "Bộ ba Classic Single Origin của Gióng: Gióng Giả, Năng Cán, Thiên Lý — cà phê Lâm Đồng, Tây Nguyên, rang từ nhẹ đến đậm. Giá và nút mua trên Shopee.",
+    "intro": [
+      "Trong suốt chiều dài lịch sử người Việt Nam đã luôn gắn liền với sự chăm chỉ, bền bỉ và kiên cường để chinh phục những khó khăn và phát triển như ngày hôm nay. Để thể hiện những đức tính đó, ‘team' Gióng đã nghiên cứu và phát triển bộ ba sản phẩm “Gióng Giả - Năng Cán - Thiên Lý” tượng trưng cho “Kiên cường, Chăm chỉ và Bền bỉ\".",
+      "Bộ ba Classic Single Origin được nuôi dưỡng bởi thổ nhưỡng Lâm Đồng, Tây Nguyên với độ rang từ nhẹ đến đậm, thích hợp với nhiều gu thưởng thức."
+    ],
+    "listTitle": "Các sản phẩm dòng Classic",
+    "short": "Classic"
+  },
+  "robusta": {
+    "series": "robusta",
+    "h1": "Ngũ thường Robusta",
+    "sub": "“Nhân - Lễ - Nghĩa - Trí - Tín”",
+    "title": "Ngũ thường Robusta – cà phê Robusta Single Origin Tây Nguyên",
+    "description": "Dòng Ngũ thường Robusta của Gióng: Robusta Single Origin từ các tỉnh Tây Nguyên, hợp pha phin. Xem sản phẩm, giá và mua trên Shopee.",
+    "intro": [
+      "Đi qua 5 tỉnh Tây Nguyên đất đỏ thủ phủ ngành cà phê Việt cùng những cuộc gặp gỡ mang tính tương trợ và chia sẻ từ người nông dân về Robusta - hạt cà phê gắn liền với văn hóa cà phê phin Việt Nam. \"Ngũ thường Robusta: Nhân - Lễ - Nghĩa - Trí - Tín\" ra đời từ đây",
+      "Năm dòng Robusta - Single Origin chất lượng cao đến từ 5 tỉnh Tây Nguyên này như một sự cân bằng giữa các nốt hương vị thuần Việt được phát triển bởi đội ngũ rang xay của Gióng và những đặc tính hẵng có của người nông dân cũng như người Việt nói chung \"Nhân hậu - Lễ Giáo - Chính Nghĩa - Trí Tuệ - Uy Tín\""
+    ],
+    "listTitle": "Các sản phẩm dòng Robusta",
+    "short": "Robusta"
+  },
+  "arabica": {
+    "series": "arabica",
+    "h1": "Bản giao hưởng Arabica cao nguyên",
+    "sub": "Arabica 1-5",
+    "title": "Bản giao hưởng Arabica cao nguyên – cà phê Arabica Single Origin",
+    "description": "Dòng Bản giao hưởng Arabica cao nguyên của Gióng: Arabica Single Origin từ Măng Đen, Sơn La, Điện Biên, Cầu Đất. Xem sản phẩm, giá và mua trên Shopee.",
+    "intro": [
+      "Như 5 nốt nhạc của người Việt: Hò, Xự, Xang, Xê, Cống; các nốt hương vị của 5 dòng Arabica - Single Origin chất lượng cao này như tạo nên một bản giao hưởng nhẹ nhàng nhưng hậu vị lại kéo dài và đầy luyến lưu."
+    ],
+    "listTitle": "Các sản phẩm dòng Arabica",
+    "short": "Arabica"
+  }
+}

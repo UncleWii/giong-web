@@ -1,0 +1,14 @@
+---
+// Chính sách bán hàng: /chinh-sach/doi-tra, /chinh-sach/thanh-toan, /chinh-sach/van-chuyen.
+// Nội dung chuyển nguyên văn từ web cũ, nằm ở src/content/chinh-sach.json.
+import PolicyArticle from "../../components/PolicyArticle.astro";
+import docs from "../../content/chinh-sach.json";
+
+export function getStaticPaths() {
+  return (["doi-tra", "thanh-toan", "van-chuyen"] as const).map((slug) => ({ params: { slug }, props: { doc: docs[slug] } }));
+}
+
+const { doc } = Astro.props;
+---
+
+<PolicyArticle doc={doc as never} />

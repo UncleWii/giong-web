@@ -11,9 +11,9 @@ import { formatPrice, productUrl, type Product } from "../lib/products";
 interface Props {
   products: Product[];
   title: string;
-  lead: string;
-  /** Giá trị chi_nhanh gửi kèm sự kiện, vd. "NhaTrang". */
-  chiNhanh: string;
+  lead?: string;
+  /** Giá trị chi_nhanh gửi kèm sự kiện, vd. "NhaTrang" (chỉ dùng ở trang quán). */
+  chiNhanh?: string;
   /** Giá trị vi_tri gửi kèm sự kiện. */
   viTri?: string;
   detailLabel: string;
@@ -34,7 +34,7 @@ const whiteBg = (slug: string) =>
 
 <section class="container fp" aria-labelledby="fp-title" data-vi-tri={viTri}>
   <h2 id="fp-title" class="font-heading fp__title">{title}</h2>
-  <p class="fp__lead">{lead}</p>
+  {lead && <p class="fp__lead">{lead}</p>}
 
   <ul class="fp__grid">
     {

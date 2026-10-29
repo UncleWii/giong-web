@@ -22,6 +22,16 @@ const directionsUrl = (id: string) => {
   return st.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("Gióng Cà phê, " + st.address)}`;
 };
 
+// Các trang chính sách / điều khoản (nội dung ở src/content/chinh-sach.json).
+const policyLinks = [
+  { href: "/chinh-sach-quyen-rieng-tu", label: "Chính sách quyền riêng tư" },
+  { href: "/dieu-khoan", label: "Điều lệ và điều khoản thành viên" },
+  { href: "/chinh-sach/doi-tra", label: "Đổi trả và hoàn tiền" },
+  { href: "/chinh-sach/thanh-toan", label: "Thanh toán" },
+  { href: "/chinh-sach/van-chuyen", label: "Vận chuyển và kiểm tra hàng" },
+  { href: "/ho-so-tu-cong-bo", label: "Hồ sơ tự công bố sản phẩm" },
+];
+
 const offices = [
   { city: "Hà Nội", address: "Heritage Westlake 677 Lạc Long Quân, Tây Hồ, Hà Nội" },
   { city: "Hồ Chí Minh", address: "38/5 Trần Khắc Chân, P. Tân Định, TP. HCM" },
@@ -115,7 +125,9 @@ const deliveryLinks = site.delivery.links.filter((l) => !(l as { hidden?: boolea
 
   <div class="site-footer__bottom container">
     <p>Bản quyền {new Date().getFullYear()}, ECO Gióng</p>
-    <p><a class="site-footer__privacy" href="/chinh-sach-quyen-rieng-tu">Chính sách quyền riêng tư</a></p>
+    <nav class="site-footer__policies" aria-label="Chính sách">
+      {policyLinks.map((l) => <a class="site-footer__privacy" href={l.href}>{l.label}</a>)}
+    </nav>
   </div>
 </footer>
 
@@ -257,6 +269,12 @@ const deliveryLinks = site.delivery.links.filter((l) => !(l as { hidden?: boolea
   .site-footer__privacy {
     color: inherit;
     text-underline-offset: 0.2em;
+  }
+
+  .site-footer__policies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
   }
 
   .site-footer__privacy:hover {

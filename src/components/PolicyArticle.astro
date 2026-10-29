@@ -1,0 +1,95 @@
+---
+// Trang chính sách / điều khoản: nội dung lấy từ src/content/chinh-sach.json (chuyển nguyên văn từ web cũ giong.cafe).
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+interface Item {
+  lines: string[];
+  href?: string;
+}
+type Block = { t: "h2" | "h3" | "p"; lines: string[] } | { t: "ul"; items: Item[] };
+interface Doc {
+  title: string;
+  description: string;
+  h1: string;
+  lang?: string;
+  blocks: Block[];
+}
+
+interface Props {
+  doc: Doc;
+}
+
+const { doc } = Astro.props;
+---
+
+<BaseLayout title={doc.title} description={doc.description}>
+  <article class="policy container-narrow" lang={doc.lang}>
+    <h1 class="font-heading policy__title">{doc.h1}</h1>
+
+    <div class="prose">
+      {
+        doc.blocks.map((b) => {
+          if (b.t === "ul") {
+            return (
+              <ul>
+                {b.items.map((it) => {
+                  const text = it.lines.map((line, i) => (i > 0 ? [<br />, line] : line));
+                  return <li>{it.href ? <a href={it.href} target="_blank" rel="noopener noreferrer">{text}</a> : text}</li>;
+                })}
+              </ul>
+            );
+          }
+          const text = b.lines.map((line, i) => (i > 0 ? [<br />, line] : line));
+          if (b.t === "h2") return <h2>{text}</h2>;
+          if (b.t === "h3") return <h3>{text}</h3>;
+          return <p>{text}</p>;
+        })
+      }
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .policy {
+    padding-block: var(--space-lg) var(--space-xl);
+  }
+
+  .policy__title {
+    font-size: var(--text-h2);
+    line-height: var(--leading-tight);
+    color: var(--color-primary);
+    margin-bottom: var(--space-md);
+  }
+
+  .policy :global(.prose h2) {
+    font-size: var(--text-h3);
+    color: var(--color-primary);
+    margin-block: var(--space-md) var(--space-2xs);
+  }
+
+  .policy :global(.prose h3) {
+    font-size: var(--text-body-lg);
+    color: var(--color-primary);
+    margin-block: var(--space-sm) var(--space-2xs);
+  }
+
+  .policy :global(.prose ul) {
+    padding-left: 1.25rem;
+    list-style: disc;
+    margin-block: var(--space-2xs);
+  }
+
+  .policy :global(.prose li) {
+    margin-bottom: var(--space-3xs);
+  }
+
+  .policy :global(.prose p) {
+    margin-bottom: var(--space-xs);
+  }
+
+  .policy :global(.prose a) {
+    color: var(--color-primary);
+    text-underline-offset: 0.2em;
+    overflow-wrap: anywhere;
+  }
+</style>

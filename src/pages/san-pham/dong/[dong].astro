@@ -1,0 +1,111 @@
+---
+// Trang giới thiệu từng dòng sản phẩm: /san-pham/dong/classic, /robusta, /arabica.
+// Phần giới thiệu lấy từ src/content/san-pham-dong.json (chuyển từ web cũ); danh sách sản phẩm đọc từ src/lib/products.ts.
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import FeaturedProducts from "../../../components/FeaturedProducts.astro";
+import { products, productUrl } from "../../../lib/products";
+import lines from "../../../content/san-pham-dong.json";
+import store from "../../../content/cua-hang.json";
+
+export function getStaticPaths() {
+  return Object.keys(lines).map((dong) => ({ params: { dong } }));
+}
+
+const { dong } = Astro.params as { dong: keyof typeof lines };
+const line = lines[dong];
+const items = products.filter((p) => p.series === line.series);
+const others = (Object.keys(lines) as (keyof typeof lines)[]).filter((k) => k !== dong);
+const { labels } = store;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: line.h1,
+  itemListElement: items.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    url: new URL(productUrl(p), Astro.site).toString(),
+    name: p.name,
+  })),
+};
+---
+
+<BaseLayout title={line.title} description={line.description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article class="line container-narrow">
+    <p class="line__crumb"><a href="/san-pham">Cà phê</a> › {line.short}</p>
+    <h1 class="font-heading line__title">{line.h1}</h1>
+    <h2 class="line__sub">{line.sub}</h2>
+    {line.intro.map((text) => <p class="line__text">{text}</p>)}
+  </article>
+
+  <FeaturedProducts
+    products={items}
+    title={line.listTitle}
+    viTri="san_pham_dong"
+    detailLabel={labels.featuredDetail}
+    vatNote={labels.featuredVat}
+    zaloLabel={labels.featuredZalo}
+    zaloNote={labels.featuredZaloNote}
+    zaloHref={`https://zalo.me/${store.zaloRetail}`}
+  />
+
+  <nav class="container-narrow line__more" aria-label="Các dòng khác">
+    <p>Xem thêm:</p>
+    <ul>
+      {others.map((k) => <li><a href={`/san-pham/dong/${k}`}>{lines[k].h1}</a></li>)}
+      <li><a href="/san-pham">Tất cả sản phẩm</a></li>
+    </ul>
+  </nav>
+</BaseLayout>
+
+<style>
+  .line {
+    padding-block: var(--space-lg) var(--space-sm);
+  }
+
+  .line__crumb {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .line__crumb a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+  }
+
+  .line__title {
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+    color: var(--color-primary);
+  }
+
+  .line__sub {
+    font-size: var(--text-h3);
+    margin-block: var(--space-3xs) var(--space-sm);
+  }
+
+  .line__text {
+    margin-bottom: var(--space-xs);
+    max-width: 65ch;
+  }
+
+  .line__more {
+    padding-block: var(--space-sm) var(--space-xl);
+  }
+
+  .line__more ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-sm);
+    margin-top: var(--space-3xs);
+  }
+
+  .line__more a {
+    font-weight: 700;
+    color: var(--color-primary);
+    text-underline-offset: 0.2em;
+  }
+</style>

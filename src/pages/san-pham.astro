@@ -8,6 +8,7 @@ import ShopeeButton from "../components/ShopeeButton.astro";
 import { images, type ImageSlug } from "../lib/images";
 import { getProduct, formatPrice, productUrl } from "../lib/products";
 import data from "../content/san-pham.json";
+import lineData from "../content/san-pham-dong.json";
 
 const { hero, singleOrigin, tabs, horeca, comingSoon, labels, filters, detailLabel } = data;
 
@@ -35,6 +36,10 @@ const filterCount = (id: string) =>
   <section class="single container-narrow" aria-labelledby="single-title">
     <h2 id="single-title" class="font-heading single__title">{singleOrigin.title}</h2>
     <p class="single__text">{singleOrigin.text}</p>
+    <p class="single__lines">
+      Khám phá theo dòng:
+      {Object.entries(lineData).map(([k, l]) => <a href={`/san-pham/dong/${k}`}>{l.short}</a>)}
+    </p>
   </section>
 
   <section class="catalog" data-tabs>
@@ -249,6 +254,20 @@ const filterCount = (id: string) =>
     text-transform: uppercase;
     color: var(--color-primary);
     margin-bottom: var(--space-sm);
+  }
+
+  .single__lines {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2xs) var(--space-sm);
+    margin-top: var(--space-xs);
+    font-weight: 700;
+  }
+
+  .single__lines a {
+    color: var(--color-primary);
+    text-underline-offset: 0.2em;
   }
 
   .single__text {

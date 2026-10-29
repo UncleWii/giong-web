@@ -1,0 +1,646 @@
+{
+ "doi-tra": {
+  "title": "Chính sách đổi trả và hoàn tiền",
+  "description": "Chính sách đổi trả và hoàn tiền của Gióng: điều kiện, quy trình đổi trả và thời gian hoàn tiền cho đơn đã thanh toán trực tuyến.",
+  "h1": "CHÍNH SÁCH ĐỔI VÀ HOÀN TIỀN",
+  "blocks": [
+   {
+    "t": "h2",
+    "lines": [
+     "Điều kiện và thời gian đổi trả"
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "Quý khách vui lòng đồng kiểm thật kỹ với nhân viên giao hàng tại thời điểm nhận hàng, nếu gặp trường hợp:"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Sản phẩm bị rách bao bì"
+      ]
+     },
+     {
+      "lines": [
+       "Không đầy đủ tem nhãn theo quy định của Mio"
+      ]
+     },
+     {
+      "lines": [
+       "Bị hư hỏng do vi khuẩn hoặc côn trùng xâm nhập"
+      ]
+     },
+     {
+      "lines": [
+       "Bị hư hỏng trong quá trình lưu thông"
+      ]
+     },
+     {
+      "lines": [
+       "Sản phẩm hết hạn sử dụng"
+      ]
+     },
+     {
+      "lines": [
+       "Giao không đúng sản phẩm đã đặt hàng"
+      ]
+     }
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "Quý khách hàng vui lòng không nhận hàng và trả lại nhân viên giao nhận."
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "Quy trình đổi trả hàng"
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "Tại thời điểm trả hàng với nhân viên giao nhận, Quý khách hàng đồng thời liên hệ đến tổng đài Chăm sóc khách hàng (CSKH): 028 35353457 để được hỗ trợ các bước tiếp theo. 028 35353457"
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "Trường hợp đơn hàng đã thanh toán trực tuyến cần trả hàng"
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "Giong.cafe sẽ tiến hành xin thông tin tài khoản của khách hàng để tiến hành hoàn tiền theo thời hạn như sau:"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Khách hàng nhận được tiền hoàn từ 3 đến 6 ngày (trừ thứ 7, chủ nhật và ngày lễ). Nếu quá thời gian này không nhận được tiền, Mio sẽ hỗ trợ liên hệ ngân hàng của khách hàng để giải quyết."
+      ]
+     },
+     {
+      "lines": [
+       "Khi gặp các vấn đề cần phản ánh hoặc khiếu nại, quý khách có thể liên hệ tổng đài khiếu nại Giong.cafe: 028 35353457 để được hỗ trợ."
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "thanh-toan": {
+  "title": "Chính sách thanh toán",
+  "description": "Chính sách thanh toán của Gióng: thanh toán tiền mặt khi nhận hàng hoặc chuyển khoản.",
+  "h1": "CHÍNH SÁCH THANH TOÁN",
+  "blocks": [
+   {
+    "t": "h2",
+    "lines": [
+     "Thanh toán bằng tiền mặt"
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "Thanh toán trực tiếp cho nhân viên giao hàng sau khi khách nhận hàng và kiểm tra."
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "Thanh toán bằng hình thức chuyển khoản"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Tên tài khoản: Công ty cổ phần Eco Gióng"
+      ]
+     },
+     {
+      "lines": [
+       "Số tài khoản: 20200408"
+      ]
+     },
+     {
+      "lines": [
+       "Tại Ngân hàng: Ngân hàng TMCP Á Châu (ACB) Chi nhánh Nguyễn Văn Trỗi"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "van-chuyen": {
+  "title": "Chính sách vận chuyển và kiểm tra hàng",
+  "description": "Chính sách vận chuyển và kiểm tra hàng của Gióng (Shipping and inspection policy).",
+  "h1": "SHIPPING AND INSPECTION POLICY",
+  "blocks": [
+   {
+    "t": "h2",
+    "lines": [
+     "Scope of Application"
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "Applies to deliveries within all areas of Ho Chi Minh City (except for Nhà Bè, Hóc Môn, Củ Chi, and Cần Giờ)"
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "Delivery and Receipt Time"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "All orders placed from 7 AM to 7 PM will be delivered on the same day, with a maximum time of 2 hours."
+      ]
+     },
+     {
+      "lines": [
+       "All orders placed after 7 PM will be delivered at 7 AM the next day."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "Delivery Method"
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "By road, including but not limited to vehicles such as motorcycles, trucks, pickup trucks, and cars."
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "During the delivery process, if the customer requires an invoice or document, the company will send it via email or provide it when purchasing directly at the store."
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "Inspection Policy"
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "Upon receiving the goods, the customer has the right to request the delivery staff to open and inspect the items."
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "If the seller delivers the wrong type of product, the customer has the right to return the goods and not make payment."
+      ]
+     },
+     {
+      "lines": [
+       "If the order is incorrect after payment, the customer has the right to request a refund or the correct order to be delivered."
+      ]
+     }
+    ]
+   }
+  ],
+  "lang": "en"
+ },
+ "ho-so-tu-cong-bo": {
+  "title": "Hồ sơ tự công bố sản phẩm",
+  "description": "Hồ sơ tự công bố sản phẩm cà phê của Gióng (bản PDF).",
+  "h1": "Hồ sơ Tự công bố Sản phẩm",
+  "blocks": [
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG NHÂN"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e572bb5acb32be9d5f2_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20NHA%CC%82N.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG LỄ"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57bb74400817cf6b0e_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20LE%CC%82%CC%83.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG NGHĨA"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57b4cbff72f22df4eb_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20NGHI%CC%83A.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG TRÍ"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e572f6c368f4ee5db76_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20TRI%CC%81.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG TÍN"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e575cb7243495a1dde1_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20TI%CC%81N.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG GIÓNG GIẢ"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e5788987b70d8dfc2eb_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20GIO%CC%81NG%20GIA%CC%89.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG NĂNG CÁN"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57b86d9a286b898792_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20NA%CC%86NG%20CA%CC%81N.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG THIÊN LÝ"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57437879f2eca76d97_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20THIE%CC%82N%20LY%CC%81.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG ARABICA 1"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e575d59d33f46cddc50_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%201.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG ARABICA 2"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e58a3238d25fd256fc4_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%202.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG ARABICA 3"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e58d104585acd862af5_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%203.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG ARABICA 4"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e571ac762c65490a8d9_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%204.pdf"
+     },
+     {
+      "lines": [
+       "TCB CÀ PHÊ HẠT RANG ARABICA 5"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57351d2bf73d1b492e_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%205.pdf"
+     },
+     {
+      "lines": [
+       "TCB Cà phê túi lọc Nhân"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d1a0732f6c368f4ee7ace7_TCB%20Ca%CC%80%20phe%CC%82%20tu%CC%81i%20lo%CC%A3c%20Nha%CC%82n.pdf"
+     },
+     {
+      "lines": [
+       "TCB Cà phê túi lọc Thiên Lý"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d1a0733acdaf4745499aa6_TCB%20Ca%CC%80%20phe%CC%82%20tu%CC%81i%20lo%CC%A3c%20Thie%CC%82n%20Ly%CC%81.pdf"
+     },
+     {
+      "lines": [
+       "TCB Cà phê túi lọc Ngũ Thường Robusta"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d1a073fb5adca4666fa32d_TCB%20Ca%CC%80%20phe%CC%82%20tu%CC%81i%20lo%CC%A3c%20Ngu%CC%83%20Thu%CC%9Bo%CC%9B%CC%80ng%20Robusta.pdf"
+     },
+     {
+      "lines": [
+       "TCB Cà phê túi lọc Bản Giao Hưởng Arabica"
+      ],
+      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d1a073f5cbedd0cf725151_TCB%20Ca%CC%80%20phe%CC%82%20tu%CC%81i%20lo%CC%A3c%20Ba%CC%89n%20Giao%20Hu%CC%9Bo%CC%9B%CC%89ng%20Arabica.pdf"
+     }
+    ]
+   }
+  ]
+ },
+ "dieu-khoan": {
+  "title": "Điều lệ và điều khoản thành viên",
+  "description": "Điều lệ và điều khoản của thành viên Công ty Cổ phần Eco Gióng: tích điểm, cấp độ Sĩ – Úy – Tá – Tướng, đổi voucher.",
+  "h1": "ĐIỀU LỆ VÀ ĐIỀU KHOẢN CỦA THÀNH VIÊN CÔNG TY CỔ PHẦN ECO GIÓNG",
+  "blocks": [
+   {
+    "t": "h2",
+    "lines": [
+     "GIỚI THIỆU CHUNG"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Điểm thành viên: Sẽ được tích trên app của Gióng Cà Phê, tích lũy điểm khi trả bằng tiền mặt hoặc các loại thẻ ngân hàng khác, tài khoản MoMo hoặc các hình thức thanh toán được chấp nhận tại mọi cửa hàng Gióng."
+      ]
+     },
+     {
+      "lines": [
+       "Điểm tích lũy hiện tại: Điểm tích lũy hiện tại dùng để xét cấp độ: Sĩ, Úy, Tá, Tướng. Để duy trì cấp độ, Chủ Sở Hữu cần tích lũy thêm điểm mỗi tháng để duy trì đủ số điểm của từng cấp độ trong vòng 12 tháng. Khi hết thời hạn, nếu Chủ Sở Hữu không tích lũy đủ số điểm trên, sẽ bị rớt xuống một hạng. Số điểm tích lũy quá 12 tháng sẽ bị hủy và không được tiếp tục sử dụng để xét cấp độ."
+      ]
+     },
+     {
+      "lines": [
+       "Điểm đổi voucher: Điểm đổi voucher chỉ dùng riêng cho việc đổi voucher. Khi tổng giá trị mua hàng đạt 1.000 điểm đầu tiên, Khách Hàng sẽ nhận được một voucher quà tặng là một ly nước free size bất kỳ. Điểm thưởng khi được nâng cấp lên cấp cao hơn sẽ tương ứng với các voucher khác nhau theo từng chương trình khuyến mãi tại thời điểm đổi. Điểm đổi voucher sẽ bị hủy nếu Khách Hàng không phát sinh giao dịch tích lũy điểm trong vòng một năm kể từ ngày giao dịch sau cùng."
+      ]
+     },
+     {
+      "lines": [
+       "Kỳ xét cấp độ hiện tại: Kỳ xét cấp độ hiện tại sẽ luôn luân chuyển theo từng tháng. Ví dụ: Nếu Khách Hàng đang ở tháng 05/2021, kỳ xét cấp độ hiện tại sẽ là từ 01/05/2020 – 31/05/2021. Khi bước sang tháng 06/2021, kỳ xét cấp độ sẽ là từ 01/06/2020 – 30/06/2021."
+      ]
+     },
+     {
+      "lines": [
+       "Điểm sắp hết hạn: Điểm sắp hết hạn sẽ hiển thị số điểm tích lũy của Khách Hàng sắp bị hủy khi quá hạn."
+      ]
+     },
+     {
+      "lines": [
+       "Ngày hết hạn: Ngày hết hạn thể hiện rằng sau ngày này, số điểm nằm trong mục điểm sắp hết hạn của Khách Hàng sẽ bị hủy."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "MỤC ĐÍCH SỬ DỤNG APP TÍCH ĐIỂM"
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "App Thành Viên của Chủ Sở Hữu được sử dụng cho mục đích tích lũy điểm thưởng theo chương trình thẻ tặng điểm thưởng do Công Ty Cổ phần Eco Gióng tổ chức tại các quán Gióng Cà Phê."
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "ĐỐI TƯỢNG ĐƯỢC SỬ DỤNG"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Chương trình Tích Lũy Điểm Thưởng áp dụng cho tất cả các cá nhân từ đủ 18 tuổi trở lên, là công dân Việt Nam, cá nhân nước ngoài thường trú hoặc người có giấy phép lao động đang cư trú tại Việt Nam đã đăng ký làm thành viên của Gióng (sau đây gọi tắt là “Chủ Sở Hữu” hay “Khách Hàng”). Để đăng ký làm thành viên, người có nhu cầu chỉ cần tải app Gióng Cà Phê trên điện thoại thông minh qua App Store hoặc Google Play. Mỗi Chủ Sở Hữu sẽ được cấp một (1) mã thành viên."
+      ]
+     },
+     {
+      "lines": [
+       "Chủ Sở Hữu có thể hủy tư cách thành viên hoặc cập nhật thông tin cá nhân ngay tại app Gióng Cà Phê. Trong trường hợp xóa tài khoản, toàn bộ lợi ích được tích lũy bởi Chủ Sở Hữu sẽ ngay lập tức bị thu hồi và không được khôi phục. Khi tài khoản bị hủy, dữ liệu của Khách Hàng trên hệ thống Gióng sẽ hết hiệu lực và không còn giá trị sử dụng."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "DỮ LIỆU CÁ NHÂN VÀ MỤC ĐÍCH SỬ DỤNG"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Dữ liệu cá nhân mà Khách Hàng cung cấp sẽ giúp chúng tôi hiểu nhu cầu và duy trì mối quan hệ với Khách Hàng (Chủ Sở Hữu), xử lý các giao dịch (nếu có), hoàn tất nghĩa vụ giao hàng và nâng cao chất lượng dịch vụ."
+      ]
+     },
+     {
+      "lines": [
+       "Chúng tôi thu thập Dữ Liệu Cá Nhân của Chủ Sở Hữu cho các mục đích sau, bao gồm nhưng không giới hạn:",
+       "- Xử lý các thông tin liên quan đến việc cung cấp hàng hóa, thực hiện dịch vụ nhằm đáp ứng tốt nhất yêu cầu của Chủ Sở Hữu.",
+       "- Giải đáp thắc mắc từ Chủ Sở Hữu."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "CHƯƠNG TRÌNH TÍCH LŨY ĐIỂM HƯỞNG"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Chương Trình Tích Lũy Điểm Thưởng là chương trình do Công Ty Cổ phần Eco Gióng đăng ký và tổ chức tại app Gióng Cà Phê. Tại thời điểm Khách Hàng tải app Thành Viên thành công, Khách Hàng được quyền tham gia Chương Trình Tích Lũy Điểm Thưởng. Vào bất kỳ thời điểm nào, chúng tôi có thể thay đổi thể lệ Chương Trình Tích Lũy Điểm Thưởng bằng cách thay đổi điều khoản và điều kiện áp dụng được nêu theo đây, sau khi đã thông báo hoặc đăng ký thành công tại cơ quan có thẩm quyền theo quy định pháp luật hiện hành. Mọi thay đổi, bổ sung đối với Chương Trình Tích Lũy Điểm Thưởng sẽ được chúng tôi công bố công khai cho toàn bộ thành viên của Gióng Cà Phê tại mỗi thời điểm áp dụng."
+      ]
+     },
+     {
+      "lines": [
+       "Điểm thưởng sau khi được Chủ Sở Hữu tích lũy đến hạn mức cho phép quy đổi theo thể lệ Chương Trình Tích Lũy Điểm Thưởng (vui lòng tham khảo thể lệ được mô tả bên dưới), Chủ Sở Hữu được quyền yêu cầu quy đổi Thẻ Quà Tặng Điểm Thưởng (Bonus Point Gift Card) có giá trị tương ứng với hạn mức quy đổi."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "h3",
+    "lines": [
+     "Với mỗi cấp độ tại Gióng, chúng tôi đưa ra 4 mức: Sĩ, Úy, Tá, Tướng."
+    ]
+   },
+   {
+    "t": "p",
+    "lines": [
+     "* Chú thích: 250 VNĐ = 1 điểm tích lũy tại Gióng Cà Phê."
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Sĩ: Thể lệ: Với mỗi chi tiêu 250 VNĐ khi mua sắm tại Gióng Cà Phê, Chủ Sở Hữu sẽ nhận được 1 điểm tích lũy vào tài khoản Khách Hàng khi Khách Hàng hoàn tất việc thanh toán. Khi đến ngày sinh nhật, Chủ Sở Hữu sẽ nhận được một (1) Quà Tặng trị giá 1 ly nước bất kỳ trong tháng sinh nhật. Ngoài ra, vào ngày thường, khi Khách Hàng đạt được 1.000 điểm đầu tiên sẽ được tặng 1 ly nước bất kỳ trong Menu của Gióng."
+      ]
+     },
+     {
+      "lines": [
+       "Úy: Thể lệ: Khi Khách Hàng đạt được 10.000 điểm, Chủ Sở Hữu sẽ được lên cấp “Úy” và nhận được một (1) Quà Tặng trị giá 1 ly nước và một phần bánh trong tháng sinh nhật."
+      ]
+     },
+     {
+      "lines": [
+       "Tá: Thể lệ: Khi Khách Hàng đạt được 100.000 điểm, Chủ Sở Hữu sẽ được lên cấp “Tá” và nhận được một (1) Quà Tặng trị giá 1 ly nước và một phần bánh trong tháng sinh nhật, kèm theo đó là một bình nước tự chọn có bán tại Gióng Cà Phê."
+      ]
+     },
+     {
+      "lines": [
+       "Tướng: Thể lệ: Khi Khách Hàng đạt được 320.000 điểm, Chủ Sở Hữu sẽ được lên cấp “Tướng” và nhận được một (1) Quà Tặng trị giá 1 ly nước, một ổ bánh trong tháng sinh nhật, và được sử dụng phòng họp riêng tư trong vòng 4 tiếng đồng hồ."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "LỢI ÍCH CỦA APP THÀNH VIÊN"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "App Thành Viên của Gióng Cà Phê, tại mọi thời điểm, là tài sản thuộc sở hữu trí tuệ của Công Ty Cổ phần Eco Gióng. Chủ Sở Hữu không được chuyển nhượng tài khoản cho người khác. Trong trường hợp bị thất lạc hoặc quên mật khẩu của app, Chủ Sở Hữu cần ngay lập tức thông báo cho chúng tôi."
+      ]
+     },
+     {
+      "lines": [
+       "App Thành Viên của Gióng Cà Phê được Chủ Sở Hữu sử dụng để tích lũy điểm thưởng khi Chủ Sở Hữu mua sắm trong phạm vi Gióng Cà Phê và thanh toán bằng tiền mặt, thẻ quà tặng phát hành bởi Công Ty Cổ phần Eco Gióng hoặc bất kỳ thẻ ngân hàng nào do Chủ Sở Hữu làm chủ. Để tránh nhầm lẫn, chúng tôi không chấp nhận Chủ Sở Hữu tích lũy điểm thưởng khi thanh toán bằng phiếu quà tặng dưới bất kỳ hình thức nào."
+      ]
+     },
+     {
+      "lines": [
+       "Thời hạn để quy đổi điểm thưởng áp dụng cho Chủ Sở Hữu là một (1) năm kể từ ngày Chủ Sở Hữu thực hiện giao dịch cuối cùng tại chuỗi Gióng Cà Phê."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "TRÁCH NHIỆM CỦA CHỦ SỞ HỮU"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Những hành vi trái với quy định của pháp luật hiện hành."
+      ]
+     },
+     {
+      "lines": [
+       "Lừa đảo hoặc lạm dụng (như sử dụng các phần mềm can thiệp, xâm nhập hệ thống bất hợp pháp, thông đồng với nhân viên tại Gióng nhằm trục lợi hoặc gây tổn thất cho Công ty Cổ phần ECO Gióng, v.v.)."
+      ]
+     },
+     {
+      "lines": [
+       "Vi phạm các điều khoản và điều kiện này."
+      ]
+     },
+     {
+      "lines": [
+       "Tham gia lừa đảo hoặc lạm dụng ủy thác, sử dụng giải thưởng, thẻ thành viên và các lợi ích thành viên sai mục đích."
+      ]
+     },
+     {
+      "lines": [
+       "Không thanh toán hóa đơn đúng hạn (nếu có)."
+      ]
+     },
+     {
+      "lines": [
+       "Các trường hợp khác theo quy định của Gióng Cà Phê."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Chúng tôi có quyền khiếu kiện đối với các hành vi nêu trên. Không nội dung nào trong điều khoản và điều kiện này giới hạn quyền pháp lý của chúng tôi hoặc quyền yêu cầu các biện pháp khắc phục cần thiết."
+      ]
+     },
+     {
+      "lines": [
+       "Chủ Sở Hữu có thể thay đổi thông tin cá nhân và thông tin giao dịch của mình bất kỳ lúc nào, nhưng không thể thay đổi tên đã được ghi nhận khi đăng ký. Thông tin cá nhân của Chủ Sở Hữu sẽ không bị tiết lộ hoặc chuyển giao cho bất kỳ bên thứ ba nào mà không có sự đồng ý, trừ trường hợp được cung cấp cho cơ quan nhà nước theo yêu cầu điều tra hoặc theo quy định của pháp luật."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "h2",
+    "lines": [
+     "PHẢN HỒI VÀ KHIẾU NẠI"
+    ]
+   },
+   {
+    "t": "ul",
+    "items": [
+     {
+      "lines": [
+       "Chương Trình Tích Lũy Điểm Thưởng được công khai, minh bạch trên website và tại các cửa hàng Gióng Cà Phê thuộc Công ty Cổ phần Eco Gióng. Chủ Sở Hữu cam kết thông tin cung cấp là chính xác, chúng tôi không chịu trách nhiệm giải quyết khiếu nại nếu thông tin sai lệch."
+      ]
+     },
+     {
+      "lines": [
+       "Để biết thêm chi tiết về APP THÀNH VIÊN GIÓNG, vui lòng tham khảo tại trang thông tin điện tử www.giong.cafe hoặc liên hệ trực tiếp tại cửa hàng Gióng Cà Phê."
+      ]
+     },
+     {
+      "lines": [
+       "Đơn vị phát hành: Công ty Cổ phần Eco Gióng"
+      ]
+     },
+     {
+      "lines": [
+       "Dành cho Khách Hàng: Khách Hàng mua hàng tại cửa hàng Gióng Cà Phê và đăng ký trở thành thành viên."
+      ]
+     },
+     {
+      "lines": [
+       "Với mỗi 250 đồng khi mua sắm, Khách Hàng sẽ nhận được 1 điểm, đồng thời tích lũy vào hai mục: Điểm tích lũy hiện tại và Điểm đổi voucher."
+      ]
+     },
+     {
+      "lines": [
+       "Tại thời điểm thanh toán, để tích lũy điểm thưởng, Chủ Sở Hữu phải xuất trình mã Thành viên cho nhân viên Gióng để ghi nhận điểm thưởng theo đúng quy định Chương Trình Tích Lũy Điểm Thưởng. Để tránh nhầm lẫn, chúng tôi không chấp nhận tích lũy điểm thưởng nếu Chủ Sở Hữu chỉ cung cấp biên nhận hoặc hóa đơn bán hàng của các giao dịch trước thời điểm mở tài khoản, hoặc không yêu cầu tích lũy điểm trong ngày mua hàng."
+      ]
+     },
+     {
+      "lines": [
+       "Tùy vào quy định của từng chương trình cụ thể, Chủ Sở Hữu có thể cần xuất trình Chứng minh nhân dân, Căn cước công dân hoặc Hộ chiếu để xác minh tư cách thành viên. Nếu Chủ Sở Hữu đã mua sắm tại Gióng Cà Phê nhưng chưa được tích lũy điểm theo đúng thể lệ, vui lòng liên hệ Quầy Cashier tại cửa hàng Gióng để được hỗ trợ."
+      ]
+     },
+     {
+      "lines": [
+       "Chúng tôi không chịu trách nhiệm đối với bất kỳ nghĩa vụ thuế hoặc khoản phí nào phát sinh liên quan đến việc cấp phát lợi ích hoặc giải thưởng thành viên. Lợi ích thành viên không được bán, đổi hoặc chuyển nhượng (trừ khi do chúng tôi hoặc đối tác của chúng tôi thực hiện). Nếu Chủ Sở Hữu hoặc đại diện của họ cố tình chuyển giao, bán hoặc đổi điểm thưởng sai quy định, các điểm thưởng đó sẽ bị vô hiệu."
+      ]
+     },
+     {
+      "lines": [
+       "Chúng tôi có quyền hủy điểm thưởng đã tích lũy, ngừng hoặc chấm dứt tư cách thành viên của Chủ Sở Hữu bất kỳ lúc nào, có hiệu lực ngay lập tức bằng văn bản thông báo nếu phát hiện hành vi vi phạm."
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}
