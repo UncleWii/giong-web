@@ -6,7 +6,9 @@ import { Image, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import FloatingArtwork from "../../components/FloatingArtwork.astro";
 import PhotoSlot from "../../components/PhotoSlot.astro";
+import FeaturedProducts from "../../components/FeaturedProducts.astro";
 import data from "../../content/cua-hang.json";
+import { getProduct } from "../../lib/products";
 import { stores, storeImage, mapsUrl, embedUrl, storePath, hotlineOf, telHref, amenityLabel, storePhoto } from "../../lib/stores";
 
 export function getStaticPaths() {
@@ -21,6 +23,7 @@ const hotline = hotlineOf(s);
 const others = stores.filter((o) => o.slug !== s.slug);
 const heroShot = storePhoto(s.slug, "hero") ?? storeImage(s.image);
 const dishes = (s.dishes ?? []).slice(0, 4);
+const featured = (s.featuredProducts ?? []).map(getProduct);
 // Quán đã có ảnh không gian thì chỉ hiện các ô có ảnh; chưa có ảnh nào thì hiện đủ 6 khung giữ chỗ.
 const allSpace = [1, 2, 3, 4, 5, 6];
 const haveSpace = allSpace.filter((n) => storePhoto(s.slug, `khong-gian-${n}`));
@@ -167,6 +170,22 @@ const amenityIcon: Record<string, string> = {
             </a>
           </p>
         </section>
+      )
+    }
+
+    <!-- D2. CÀ PHÊ RANG XAY NGUYÊN CHẤT (chỉ hiện nếu quán có "featuredProducts" trong cua-hang.json) -->
+    {
+      featured.length > 0 && (
+        <FeaturedProducts
+          products={featured}
+          title={labels.featuredTitle}
+          lead={labels.featuredLead.replace("{city}", s.cityShort)}
+          chiNhanh={s.trackId}
+          detailLabel={labels.featuredDetail}
+          vatNote={labels.featuredVat}
+          zaloLabel={labels.featuredZalo}
+          zaloHref={`https://zalo.me/${data.zaloRetail}`}
+        />
       )
     }
 

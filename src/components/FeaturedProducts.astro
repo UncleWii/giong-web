@@ -1,0 +1,250 @@
+---
+// Khối "Cà phê rang xay nguyên chất" cho trang quán: 3 thẻ sản phẩm + nút Zalo mua lẻ.
+// Tên, dòng, hạt, hương vị, giá, link Shopee đều đọc từ src/lib/products.ts (không gõ tay).
+// Ảnh: ưu tiên ảnh gói nền trắng src/assets/products/nen-trang/<slug>-nen-trang.webp (800×800);
+// chưa có file thì dùng ảnh gói tách nền của sản phẩm, đặt trên thẻ trắng.
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import ShopeeButton from "./ShopeeButton.astro";
+import { formatPrice, productUrl, type Product } from "../lib/products";
+
+interface Props {
+  products: Product[];
+  title: string;
+  lead: string;
+  /** Giá trị chi_nhanh gửi kèm sự kiện, vd. "NhaTrang". */
+  chiNhanh: string;
+  /** Giá trị vi_tri gửi kèm sự kiện. */
+  viTri?: string;
+  detailLabel: string;
+  vatNote: string;
+  zaloLabel: string;
+  zaloHref: string;
+}
+
+const { products, title, lead, chiNhanh, viTri = "trang_quan", detailLabel, vatNote, zaloLabel, zaloHref } = Astro.props;
+
+const whiteFiles = import.meta.glob<{ default: ImageMetadata }>("../assets/products/nen-trang/*-nen-trang.{webp,jpg,png}", {
+  eager: true,
+});
+const whiteBg = (slug: string) =>
+  Object.entries(whiteFiles).find(([path]) => path.includes(`/${slug}-nen-trang.`))?.[1].default;
+---
+
+<section class="container fp" aria-labelledby="fp-title">
+  <h2 id="fp-title" class="font-heading fp__title">{title}</h2>
+  <p class="fp__lead">{lead}</p>
+
+  <ul class="fp__grid">
+    {
+      products.map((p) => {
+        const packshot = whiteBg(p.slug);
+        return (
+          <li class="fp-card">
+            <div class="fp-card__media">
+              <Image
+                src={packshot ?? p.image}
+                alt={`Gói cà phê ${p.name} – ${p.seriesTitle}`}
+                widths={[240, 400, 640]}
+                sizes="(min-width: 900px) 320px, 130px"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="fp-card__body">
+              <h3 class="fp-card__name font-heading">{p.name}</h3>
+              <p class="fp-card__series">{p.seriesTitle}</p>
+              <p class="fp-card__bean">{p.bean}</p>
+              <p class="fp-card__notes">Hương vị: {p.notes.join(", ")}</p>
+              <p class="fp-card__price">{formatPrice(p.price)}</p>
+              <p class="fp-card__vat">{vatNote}</p>
+            </div>
+            <div class="fp-card__actions">
+              <ShopeeButton product={p} chiNhanh={chiNhanh} viTri={viTri} />
+              <a
+                class="fp-card__detail"
+                href={productUrl(p)}
+                data-track="xem_chi_tiet_sp"
+                data-product-id={p.slug}
+                data-chi-nhanh={chiNhanh}
+                data-vi-tri={viTri}
+              >
+                {detailLabel}
+              </a>
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  <p class="fp__zalo">
+    <a
+      class="fp__zalo-btn"
+      href={zaloHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-track="click_zalo"
+      data-loai="le"
+      data-vi-tri={viTri}
+    >
+      {zaloLabel}
+    </a>
+  </p>
+</section>
+
+<style>
+  .fp {
+    padding-block: var(--space-md);
+  }
+
+  .fp__title {
+    font-size: var(--text-h2);
+    color: var(--color-primary);
+    margin-bottom: var(--space-3xs);
+  }
+
+  .fp__lead {
+    color: var(--color-text-muted);
+    max-width: 60ch;
+    margin-bottom: var(--space-sm);
+  }
+
+  .fp__grid {
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  /* Mobile: ảnh gói bên trái, chữ bên phải, nút trải rộng bên dưới. */
+  .fp-card {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: var(--space-2xs) var(--space-xs);
+    align-items: center;
+    padding: var(--space-xs);
+    background: #fff;
+    border: 1px solid var(--color-border);
+  }
+
+  .fp-card__media {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .fp-card__media :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .fp-card__name {
+    font-size: var(--text-body-lg);
+    color: var(--color-primary);
+    line-height: 1.15;
+  }
+
+  .fp-card__series {
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .fp-card__bean,
+  .fp-card__notes {
+    font-size: var(--text-small);
+  }
+
+  .fp-card__price {
+    margin-top: var(--space-3xs);
+    font-size: var(--text-body-lg);
+    font-weight: 700;
+  }
+
+  .fp-card__vat {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+
+  .fp-card__actions {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: var(--space-3xs);
+    justify-items: stretch;
+  }
+
+  .fp-card__actions :global(.shopee-btn) {
+    width: 100%;
+  }
+
+  .fp-card__detail {
+    justify-self: center;
+    padding: 0.5em 0.75em;
+    font-size: var(--text-small);
+    font-weight: 700;
+    color: var(--color-primary);
+    text-underline-offset: 0.2em;
+  }
+
+  .fp__zalo {
+    margin-top: var(--space-sm);
+    text-align: center;
+  }
+
+  .fp__zalo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0.6em 1.6em;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--color-primary);
+    border: var(--border-width) solid var(--color-primary);
+    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .fp__zalo-btn:hover,
+  .fp__zalo-btn:focus-visible {
+    color: var(--color-accent);
+    background: var(--color-primary);
+  }
+
+  @media (min-width: 720px) {
+    .fp__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-sm);
+    }
+
+    .fp-card {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: var(--space-sm);
+      gap: var(--space-xs);
+    }
+
+    .fp-card__media {
+      width: 100%;
+    }
+
+    .fp-card__body {
+      flex: 1;
+    }
+
+    .fp-card__actions {
+      margin-top: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fp__zalo-btn {
+      transition: none;
+    }
+  }
+</style>

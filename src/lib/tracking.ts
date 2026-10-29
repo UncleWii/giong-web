@@ -21,6 +21,7 @@ type Params = Record<string, string | number | string[] | undefined>;
 const EVENTS: Record<string, { meta: string; custom?: boolean; ga?: boolean }> = {
   click_zalo: { meta: "Contact" },
   click_mua_ngay: { meta: "AddToCart" },
+  xem_chi_tiet_sp: { meta: "ViewContent" },
   view_item: { meta: "ViewContent" },
   click_chi_duong: { meta: "FindLocation" },
   click_goi_chi_nhanh: { meta: "Contact" },
@@ -117,7 +118,7 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
       return {
         kenh: "zalo",
         loai: d.loai,
-        vi_tri: "nut_noi",
+        vi_tri: d.viTri ?? "nut_noi",
         page_path,
         // Trang riêng của quán: gắn thêm chi_nhanh để biết khách nhắn Zalo từ quán nào.
         chi_nhanh: document.querySelector<HTMLElement>("[data-view-store]")?.dataset.chiNhanh,
@@ -131,7 +132,12 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
         currency: "VND",
         content_type: "product",
         dong_san_pham: d.dongSanPham,
+        // Chỉ có khi nút nằm trên trang quán (khối cà phê rang xay).
+        chi_nhanh: d.chiNhanh,
+        vi_tri: d.viTri,
       };
+    case "xem_chi_tiet_sp":
+      return { content_ids: d.productId ? [d.productId] : undefined, chi_nhanh: d.chiNhanh, vi_tri: d.viTri };
     case "click_chi_duong":
       return { chi_nhanh: d.chiNhanh, vi_tri: d.viTri };
     case "click_goi_chi_nhanh":

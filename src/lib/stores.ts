@@ -8,6 +8,8 @@ type RawStore = (typeof data.stores)[number];
 export interface Store extends RawStore {
   /** Bản đồ nhúng chính thức (chỉ phần src của iframe). */
   embedUrl?: string;
+  /** Danh sách slug sản phẩm (src/lib/products.ts) hiện ở khối "Cà phê rang xay nguyên chất". Không có = ẩn khối. */
+  featuredProducts?: string[];
 }
 export const stores = data.stores as Store[];
 
