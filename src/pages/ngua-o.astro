@@ -279,15 +279,29 @@ const { hero, intro, gallery, catalog, contact, leadForm } = data;
     if (status) status.textContent = "";
 
     try {
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: new FormData(form),
-      });
-      if (!res.ok) throw new Error("bad status");
-      // Chỉ tính là thành công khi dịch vụ gửi mail trả success = true (không chỉ là HTTP 200).
-      const result = await res.json().catch(() => ({}));
-      if (result.success !== true && result.success !== "true") throw new Error("not delivered");
+      // Đường chính: /api/lead (Vercel Functions, gửi email qua Resend). Đường dự phòng: formsubmit.co.
+      // Chỉ tính là thành công khi dịch vụ trả success = true (không chỉ là HTTP 200).
+      const delivered = async (res) => {
+        if (!res.ok) return false;
+        const result = await res.json().catch(() => ({}));
+        return result.success === true || result.success === "true";
+      };
+      let sent = false;
+      try {
+        sent = await delivered(
+          await fetch("/api/lead", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify(Object.fromEntries(new FormData(form))),
+          })
+        );
+      } catch {}
+      if (!sent) {
+        sent = await delivered(
+          await fetch(endpoint, { method: "POST", headers: { Accept: "application/json" }, body: new FormData(form) })
+        );
+      }
+      if (!sent) throw new Error("not delivered");
       if (stepForm) stepForm.hidden = true;
       if (stepSuccess) stepSuccess.hidden = false;
       // Báo cho phần đo lường: chỉ đến đây mới là 1 lead. Không gửi tên / số điện thoại / email.
