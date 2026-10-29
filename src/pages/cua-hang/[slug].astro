@@ -7,6 +7,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import FloatingArtwork from "../../components/FloatingArtwork.astro";
 import PhotoSlot from "../../components/PhotoSlot.astro";
 import FeaturedProducts from "../../components/FeaturedProducts.astro";
+import DebugOnly from "../../components/DebugOnly.astro";
 import data from "../../content/cua-hang.json";
 import { getProduct } from "../../lib/products";
 import { stores, storeImage, mapsUrl, embedUrl, storePath, hotlineOf, telHref, amenityLabel, storePhoto } from "../../lib/stores";
@@ -23,11 +24,15 @@ const hotline = hotlineOf(s);
 const others = stores.filter((o) => o.slug !== s.slug);
 const heroShot = storePhoto(s.slug, "hero") ?? storeImage(s.image);
 const dishes = (s.dishes ?? data.dishes).slice(0, 4);
+// Chữ còn [ngoặc vuông] hoặc để trống = chưa điền: ẩn trên web thật, chỉ hiện khi kiểm tra (?debug_tracking=1).
+const isPlaceholder = (v?: string | null) => !v || /\[[^\]]*\]/.test(v);
+const dishesReady = dishes.length > 0 && dishes.every((d) => !isPlaceholder(d.name) && !isPlaceholder(d.price) && !isPlaceholder(d.description));
 const featured = (s.featuredProducts ?? []).map(getProduct);
-// Quán đã có ảnh không gian thì chỉ hiện các ô có ảnh; chưa có ảnh nào thì hiện đủ 6 khung giữ chỗ.
+// Quán đã có ảnh không gian thì chỉ hiện các ô có ảnh; chưa có ảnh nào thì ẩn cả khối (bản kiểm tra hiện đủ 6 khung giữ chỗ).
 const allSpace = [1, 2, 3, 4, 5, 6];
 const haveSpace = allSpace.filter((n) => storePhoto(s.slug, `khong-gian-${n}`));
 const spaceSlots = haveSpace.length > 0 ? haveSpace : allSpace;
+const spaceReady = haveSpace.length > 0;
 const highlight = (id: string) => data.amenities.find((a) => a.id === id)?.highlight ?? amenityLabel(id);
 
 const title = `${s.name} – Cà phê Việt tại ${s.shortAddress}, ${s.cityShort}`;
@@ -74,7 +79,7 @@ const amenityIcon: Record<string, string> = {
     <!-- A. HERO: tên quán · trạng thái mở cửa · vị trí · nút Chỉ đường -->
     <section class="lp-hero" data-vi-tri="trang_quan_hero">
       <div class="container lp-hero__inner">
-        <a class="lp-en" href="#english" lang="en" aria-label="English information">EN</a>
+        <a class="lp-en" href="#english" lang="en" aria-label="English information">English info ↓</a>
         <div class="lp-hero__art">
           <FloatingArtwork />
         </div>
@@ -90,7 +95,7 @@ const amenityIcon: Record<string, string> = {
             <span class="lp-status__dot" aria-hidden="true"></span>
             <span data-status-text>{labels.hours}: {s.hours}</span>
           </p>
-          <p class="lp-hint">{s.locationHint}</p>
+          <DebugOnly hide={isPlaceholder(s.locationHint)}><p class="lp-hint">{s.locationHint}</p></DebugOnly>
           <div class="lp-hero__cta">
             <a
               class="big-btn big-btn--primary big-btn--xl"
@@ -143,6 +148,7 @@ const amenityIcon: Record<string, string> = {
     <!-- D. MÓN ĐẶC TRƯNG -->
     {
       dishes.length > 0 && (
+        <DebugOnly hide={!dishesReady}>
         <section class="container lp-sec" aria-labelledby="dishes-title" data-vi-tri="trang_quan_mon">
           <h2 id="dishes-title" class="font-heading lp-h2">{labels.dishesTitle}</h2>
           <ul class="lp-dishes">
@@ -169,6 +175,7 @@ const amenityIcon: Record<string, string> = {
             </a>
           </p>
         </section>
+        </DebugOnly>
       )
     }
 
@@ -190,6 +197,7 @@ const amenityIcon: Record<string, string> = {
     }
 
     <!-- E. KHÔNG GIAN QUÁN -->
+    <DebugOnly hide={!spaceReady}>
     <section class="container lp-sec" aria-labelledby="space-title" data-vi-tri="trang_quan_khong_gian">
       <h2 id="space-title" class="font-heading lp-h2">{labels.spaceTitle}</h2>
       <ul class="lp-space">
@@ -211,6 +219,7 @@ const amenityIcon: Record<string, string> = {
         }
       </ul>
     </section>
+    </DebugOnly>
 
     <!-- F. THÔNG TIN & BẢN ĐỒ -->
     <section class="container lp-sec" aria-labelledby="info-title" data-vi-tri="trang_quan_thong_tin">
@@ -268,7 +277,7 @@ const amenityIcon: Record<string, string> = {
       <div class="lp-en-box">
         <p class="eyebrow">For international guests</p>
         <h2 id="en-title" class="font-heading">{s.name}</h2>
-        <p class="lp-en-box__intro">{s.introEn}</p>
+        <DebugOnly hide={isPlaceholder(s.introEn)}><p class="lp-en-box__intro">{s.introEn}</p></DebugOnly>
         <dl class="lp-facts">
           <div>
             <dt>Address</dt>
@@ -514,9 +523,9 @@ const amenityIcon: Record<string, string> = {
     z-index: 1;
     display: inline-grid;
     place-items: center;
-    min-width: 44px;
     min-height: 36px;
-    padding-inline: 0.8em;
+    padding-inline: 1em;
+    white-space: nowrap;
     font-size: var(--text-small);
     font-weight: 700;
     letter-spacing: var(--tracking-wide);

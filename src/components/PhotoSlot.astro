@@ -1,8 +1,9 @@
 ---
-// Ô ảnh của trang quán: có file thì hiện ảnh, chưa có thì hiện khung trống (placeholder) ghi rõ tên file cần chép.
+// Ô ảnh của trang quán: có file thì hiện ảnh. Chưa có file: web thật ẩn ô này; bản kiểm tra (?debug_tracking=1) hiện khung trống ghi rõ tên file cần chép.
 // Ảnh nằm ở src/assets/cua-hang/<slug>/<file>.webp — chép đúng tên là trang tự hiện, không cần sửa code.
 import { Image, getImage } from "astro:assets";
 import { storePhoto } from "../lib/stores";
+import DebugOnly from "./DebugOnly.astro";
 
 interface Props {
   slug: string;
@@ -38,9 +39,11 @@ const widths = [Math.round(width / 2), width, width * 2].filter((w) => !photo ||
       </div>
     )
   ) : (
-    <div class:list={["slot", "slot--empty", className]} style={`aspect-ratio:${width}/${height}`} role="img" aria-label={`Chỗ trống: ${alt}`}>
-      <span>Ảnh {label} – {width}×{height} – {file}.webp</span>
-    </div>
+    <DebugOnly>
+      <div class:list={["slot", "slot--empty", className]} style={`aspect-ratio:${width}/${height}`} role="img" aria-label={`Chỗ trống: ${alt}`}>
+        <span>Ảnh {label} – {width}×{height} – {file}.webp</span>
+      </div>
+    </DebugOnly>
   )
 }
 

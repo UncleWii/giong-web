@@ -1,0 +1,13 @@
+---
+// Nội dung chỉ để "chỉ chỗ cần điền" (khung ảnh trống, chữ còn [ngoặc vuông]).
+// Trên web thật: nằm trong <template> nên KHÔNG hiển thị và không nằm trong nội dung trang.
+// Mở bản Vercel với ?debug_tracking=1: script (src/lib/debug-placeholders.ts) bung ra để thấy chỗ cần điền.
+// hide=false → hiện bình thường (dùng khi dữ liệu đã đủ).
+interface Props {
+  hide?: boolean;
+}
+
+const { hide = true } = Astro.props;
+---
+
+{hide ? <template data-debug-only><slot /></template> : <slot />}
