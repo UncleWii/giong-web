@@ -1,5 +1,5 @@
 ---
-// Khối "Cà phê rang xay nguyên chất" cho trang quán: 3 thẻ sản phẩm + nút Zalo mua lẻ.
+// Khối "Cà phê rang xay nguyên chất" cho trang quán: 3 thẻ sản phẩm nhỏ gọn (cùng cỡ với thẻ món) + ô Zalo mua lẻ.
 // Tên, dòng, hạt, hương vị, giá, link Shopee đều đọc từ src/lib/products.ts (không gõ tay).
 // Ảnh: ưu tiên ảnh gói nền trắng src/assets/products/nen-trang/<slug>-nen-trang.webp (800×800);
 // chưa có file thì dùng ảnh gói tách nền của sản phẩm, đặt trên thẻ trắng.
@@ -19,10 +19,11 @@ interface Props {
   detailLabel: string;
   vatNote: string;
   zaloLabel: string;
+  zaloNote: string;
   zaloHref: string;
 }
 
-const { products, title, lead, chiNhanh, viTri = "trang_quan", detailLabel, vatNote, zaloLabel, zaloHref } = Astro.props;
+const { products, title, lead, chiNhanh, viTri = "trang_quan", detailLabel, vatNote, zaloLabel, zaloNote, zaloHref } = Astro.props;
 
 const whiteFiles = import.meta.glob<{ default: ImageMetadata }>("../assets/products/nen-trang/*-nen-trang.{webp,jpg,png}", {
   eager: true,
@@ -45,20 +46,22 @@ const whiteBg = (slug: string) =>
               <Image
                 src={packshot ?? p.image}
                 alt={`Gói cà phê ${p.name} – ${p.seriesTitle}`}
-                widths={[240, 400, 640]}
-                sizes="(min-width: 900px) 320px, 130px"
+                widths={[200, 320, 480]}
+                sizes="(min-width: 900px) 240px, 45vw"
                 loading="lazy"
                 decoding="async"
               />
             </div>
-            <div class="fp-card__body">
-              <h3 class="fp-card__name font-heading">{p.name}</h3>
-              <p class="fp-card__series">{p.seriesTitle}</p>
-              <p class="fp-card__bean">{p.bean}</p>
-              <p class="fp-card__notes">Hương vị: {p.notes.join(", ")}</p>
-              <p class="fp-card__price">{formatPrice(p.price)}</p>
-              <p class="fp-card__vat">{vatNote}</p>
-            </div>
+            <h3 class="fp-card__name font-heading">{p.name}</h3>
+            <p class="fp-card__meta">
+              <span class="fp-card__series">{p.seriesTitle}</span>
+              <span>{p.bean}</span>
+              <span>Hương vị: {p.notes.join(", ")}</span>
+            </p>
+            <p class="fp-card__price">
+              <strong>{formatPrice(p.price)}</strong>
+              <small>{vatNote}</small>
+            </p>
             <div class="fp-card__actions">
               <ShopeeButton product={p} chiNhanh={chiNhanh} viTri={viTri} />
               <a
@@ -76,21 +79,21 @@ const whiteBg = (slug: string) =>
         );
       })
     }
+    <li class="fp-zalo">
+      <p class="fp-zalo__note">{zaloNote}</p>
+      <a
+        class="fp-zalo__btn"
+        href={zaloHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-track="click_zalo"
+        data-loai="le"
+        data-vi-tri={viTri}
+      >
+        {zaloLabel}
+      </a>
+    </li>
   </ul>
-
-  <p class="fp__zalo">
-    <a
-      class="fp__zalo-btn"
-      href={zaloHref}
-      target="_blank"
-      rel="noopener noreferrer"
-      data-track="click_zalo"
-      data-loai="le"
-      data-vi-tri={viTri}
-    >
-      {zaloLabel}
-    </a>
-  </p>
 </section>
 
 <style>
@@ -110,25 +113,26 @@ const whiteBg = (slug: string) =>
     margin-bottom: var(--space-sm);
   }
 
+  /* Cùng lưới với thẻ món: 2 cột trên điện thoại, 4 cột từ máy tính bảng (3 sản phẩm + ô Zalo). */
   .fp__grid {
     display: grid;
-    gap: var(--space-xs);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm) var(--space-xs);
   }
 
-  /* Mobile: ảnh gói bên trái, chữ bên phải, nút trải rộng bên dưới. */
   .fp-card {
-    display: grid;
-    grid-template-columns: 112px minmax(0, 1fr);
-    gap: var(--space-2xs) var(--space-xs);
-    align-items: center;
-    padding: var(--space-xs);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    min-width: 0;
+    padding: var(--space-2xs);
     background: #fff;
     border: 1px solid var(--color-border);
   }
 
   .fp-card__media {
     position: relative;
-    aspect-ratio: 1;
+    aspect-ratio: 5 / 4;
     overflow: hidden;
     background: #fff;
   }
@@ -143,107 +147,106 @@ const whiteBg = (slug: string) =>
 
   .fp-card__name {
     font-size: var(--text-body-lg);
-    color: var(--color-primary);
     line-height: 1.15;
+    color: var(--color-primary);
   }
 
-  .fp-card__series {
-    font-size: var(--text-small);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+  .fp-card__meta {
+    display: grid;
+    gap: 0.1em;
+    font-size: 0.8rem;
+    line-height: 1.35;
     color: var(--color-text-muted);
   }
 
-  .fp-card__bean,
-  .fp-card__notes {
-    font-size: var(--text-small);
+  .fp-card__series {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink);
   }
 
   .fp-card__price {
-    margin-top: var(--space-3xs);
-    font-size: var(--text-body-lg);
-    font-weight: 700;
+    display: grid;
+    margin-top: auto;
+    padding-top: var(--space-3xs);
   }
 
-  .fp-card__vat {
-    font-size: 0.78rem;
+  .fp-card__price strong {
+    font-size: var(--text-body-lg);
+  }
+
+  .fp-card__price small {
+    font-size: 0.72rem;
     color: var(--color-text-muted);
   }
 
   .fp-card__actions {
-    grid-column: 1 / -1;
     display: grid;
-    gap: var(--space-3xs);
-    justify-items: stretch;
+    gap: 0.1em;
   }
 
   .fp-card__actions :global(.shopee-btn) {
     width: 100%;
+    min-height: 40px;
+    padding: 0.45em 0.6em;
+    font-size: 0.8rem;
+    gap: 0.4em;
   }
 
   .fp-card__detail {
     justify-self: center;
-    padding: 0.5em 0.75em;
-    font-size: var(--text-small);
+    padding: 0.55em 0.6em;
+    font-size: 0.8rem;
     font-weight: 700;
     color: var(--color-primary);
     text-underline-offset: 0.2em;
   }
 
-  .fp__zalo {
-    margin-top: var(--space-sm);
+  .fp-zalo {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: var(--space-2xs);
+    padding: var(--space-xs);
     text-align: center;
+    background: var(--color-paper-deep);
   }
 
-  .fp__zalo-btn {
+  .fp-zalo__note {
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .fp-zalo__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 52px;
-    padding: 0.6em 1.6em;
+    min-height: 44px;
+    padding: 0.5em 1em;
+    font-size: 0.85rem;
     font-weight: 700;
+    text-align: center;
     text-decoration: none;
     color: var(--color-primary);
     border: var(--border-width) solid var(--color-primary);
     transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
   }
 
-  .fp__zalo-btn:hover,
-  .fp__zalo-btn:focus-visible {
+  .fp-zalo__btn:hover,
+  .fp-zalo__btn:focus-visible {
     color: var(--color-accent);
     background: var(--color-primary);
   }
 
-  @media (min-width: 720px) {
+  @media (min-width: 640px) {
     .fp__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-sm);
-    }
-
-    .fp-card {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      padding: var(--space-sm);
-      gap: var(--space-xs);
-    }
-
-    .fp-card__media {
-      width: 100%;
-    }
-
-    .fp-card__body {
-      flex: 1;
-    }
-
-    .fp-card__actions {
-      margin-top: auto;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .fp__zalo-btn {
+    .fp-zalo__btn {
       transition: none;
     }
   }

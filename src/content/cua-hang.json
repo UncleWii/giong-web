@@ -5,6 +5,28 @@
     "subtitle": "Mỗi không gian của Gióng không chỉ là nơi thưởng thức cà phê, mà là một điểm chạm văn hóa độc bản nơi kiến trúc hòa quyện trọn vẹn vào nhịp thở đặc trưng của từng vùng đất."
   },
   "hotlineFallback": "028 7300 2883",
+  "dishes": [
+    {
+      "name": "Cà phê sữa",
+      "price": "55.000đ",
+      "description": "Robusta Việt đậm vị với sữa đặc, dùng kèm bánh ngọt từ 40.000đ."
+    },
+    {
+      "name": "Pha phin Artisan",
+      "price": "100.000đ",
+      "description": "Chọn hạt Gióng rang tại chỗ, pha phin chậm từng giọt."
+    },
+    {
+      "name": "V60 Artisan",
+      "price": "95.000đ",
+      "description": "Pha tay bằng V60, vị sạch, nhẹ, rõ hương của hạt bạn chọn."
+    },
+    {
+      "name": "Coldbrew chanh",
+      "price": "95.000đ",
+      "description": "Cà phê ủ lạnh với chanh tươi và lá dứa, mát và thơm."
+    }
+  ],
   "cities": [
     "Hồ Chí Minh",
     "Hà Nội",
@@ -57,29 +79,12 @@
       "lat": 21.032254,
       "lng": 105.854365,
       "locationHint": "Cà phê Việt cao cấp giữa lòng 36 phố phường, vài phút đi bộ tới Hồ Gươm.",
-      "dishes": [
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        }
-      ],
-      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
+      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]",
+      "featuredProducts": [
+        "giong-gia",
+        "nang-can",
+        "cheo"
+      ]
     },
     {
       "id": "nguyen-du",
@@ -104,29 +109,12 @@
       "lat": 10.7792701,
       "lng": 106.7003996,
       "locationHint": "Cà phê Việt cao cấp trong tòa nhà Imprimerie de l'Union 100 tuổi, cách Nhà thờ Đức Bà 30 giây đi bộ.",
-      "dishes": [
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        }
-      ],
-      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
+      "introEn": "Premium Vietnamese coffee in the 100-year-old Imprimerie de l'Union building, a 30-second walk from Notre-Dame Cathedral.",
+      "featuredProducts": [
+        "giong-gia",
+        "nang-can",
+        "cheo"
+      ]
     },
     {
       "id": "diamond-plaza",
@@ -149,29 +137,12 @@
       "lat": 10.780987,
       "lng": 106.6984947,
       "locationHint": "Cà phê Việt cao cấp trên tầng 5 Diamond Plaza, view toàn cảnh trung tâm, ngay cạnh Nhà thờ Đức Bà.",
-      "dishes": [
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        }
-      ],
-      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
+      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]",
+      "featuredProducts": [
+        "giong-gia",
+        "nang-can",
+        "cheo"
+      ]
     },
     {
       "id": "hoi-an",
@@ -195,29 +166,12 @@
       "lat": 15.8767123,
       "lng": 108.330781,
       "locationHint": "Cà phê Việt cao cấp trong ngôi nhà cổ mái ngói rêu phong, giữa phố cổ.",
-      "dishes": [
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        },
-        {
-          "name": "[Tên món]",
-          "price": "[Giá]",
-          "description": "[Mô tả ngắn 1 dòng]"
-        }
-      ],
-      "introEn": "[Giới thiệu ngắn 1 câu bằng tiếng Anh]"
+      "introEn": "Premium Vietnamese coffee in an old tiled-roof house with mossy walls, in the heart of Hoi An Ancient Town.",
+      "featuredProducts": [
+        "giong-gia",
+        "nang-can",
+        "cheo"
+      ]
     },
     {
       "id": "nha-trang",
@@ -243,28 +197,6 @@
       "lat": 12.2428249,
       "lng": 109.194833,
       "locationHint": "Cà phê Việt cao cấp, hạt tươi rang tại chỗ, cách biển trung tâm 250m.",
-      "dishes": [
-        {
-          "name": "Cà phê sữa",
-          "price": "55.000đ",
-          "description": "Robusta Việt đậm vị với sữa đặc, dùng kèm bánh ngọt từ 40.000đ."
-        },
-        {
-          "name": "Pha phin Artisan",
-          "price": "100.000đ",
-          "description": "Chọn hạt Gióng rang tại chỗ, pha phin chậm từng giọt."
-        },
-        {
-          "name": "V60 Artisan",
-          "price": "95.000đ",
-          "description": "Pha tay bằng V60, vị sạch, nhẹ, rõ hương của hạt bạn chọn."
-        },
-        {
-          "name": "Coldbrew chanh",
-          "price": "95.000đ",
-          "description": "Cà phê ủ lạnh với chanh tươi và lá dứa, mát và thơm."
-        }
-      ],
       "introEn": "Premium Vietnamese coffee, freshly roasted in-house, just 250m from Nha Trang's central beach.",
       "featuredProducts": [
         "giong-gia",
@@ -298,7 +230,9 @@
     "featuredLead": "Hạt tươi rang tại chỗ ở {city} — mua tại quầy hoặc đặt online để mang hương vị Gióng về nhà.",
     "featuredDetail": "Xem chi tiết",
     "featuredVat": "Giá đã bao gồm VAT",
-    "featuredZalo": "Hỏi mua qua Zalo"
+    "featuredZalo": "Hỏi mua qua Zalo",
+    "othersTitle": "Các quán Gióng khác",
+    "featuredZaloNote": "Nhắn Zalo mua lẻ"
   },
   "zaloRetail": "0901499914"
 }

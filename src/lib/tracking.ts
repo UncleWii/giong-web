@@ -11,6 +11,15 @@
 const env = import.meta.env;
 const META_PIXEL_ID = String(env.PUBLIC_META_PIXEL_ID || "2234096230469629");
 const GA4_ID = String(env.PUBLIC_GA4_ID || "G-XJDS7W9MTZ");
+// Google Ads (tùy chọn): có mã AW-… thì nạp thẻ Google Ads (remarketing) và gửi chuyển đổi cho 4 hành động chính.
+// Không đặt thì web hoạt động y như cũ. Nhãn chuyển đổi lấy ở Google Ads > Mục tiêu > Chuyển đổi > Thẻ Google.
+const GADS_ID = String(env.PUBLIC_GOOGLE_ADS_ID || "");
+const GADS_LABELS: Record<string, string | undefined> = {
+  click_chi_duong: env.PUBLIC_GADS_LABEL_CHI_DUONG,
+  click_goi_chi_nhanh: env.PUBLIC_GADS_LABEL_GOI,
+  click_zalo: env.PUBLIC_GADS_LABEL_ZALO,
+  click_mua_ngay: env.PUBLIC_GADS_LABEL_MUA_NGAY,
+};
 const TRACKING_ENABLED = String(env.PUBLIC_TRACKING_ENABLED ?? "true").toLowerCase() !== "false";
 const PROD_HOSTS = ["giong.cafe", "www.giong.cafe"];
 const DEBUG_KEY = "giong-debug-tracking";
@@ -32,6 +41,8 @@ const EVENTS: Record<string, { meta: string; custom?: boolean; ga?: boolean }> =
   loc_thanh_pho: { meta: "LocThanhPho", custom: true },
   xem_menu: { meta: "ViewContent" },
   xem_trang_quan: { meta: "ViewContent" },
+  click_quan_khac: { meta: "ClickQuanKhac", custom: true },
+  xem_anh_khong_gian: { meta: "XemAnhKhongGian", custom: true },
   xem_danh_gia: { meta: "ViewContent" },
   xem_tren_30s: { meta: "XemTren30s", custom: true },
   // Trang Câu chuyện / Farm / Thiên Lý / Kiến thức: GA4 đã có page_view tự động → chỉ gửi ViewContent cho Meta.
@@ -91,6 +102,7 @@ function loadGoogleAnalytics() {
   document.head.appendChild(s);
   w.gtag("js", new Date());
   w.gtag("config", GA4_ID, { send_page_view: false, ...(debug ? { debug_mode: true } : {}) });
+  if (GADS_ID) w.gtag("config", GADS_ID);
 }
 
 /** Gửi một sự kiện về cả Meta Pixel và GA4. Sự kiện không có trong bảng sẽ bị bỏ qua. */
@@ -105,6 +117,14 @@ export function track(event: string, params: Params = {}) {
     const ga: Params = { ...data };
     if (Array.isArray(ga.content_ids)) ga.content_ids = ga.content_ids.join(",");
     w.gtag("event", event, { ...ga, ...(debug ? { debug_mode: true } : {}) });
+  }
+  // Google Ads: chuyển đổi cho hành động chính (chỉ khi đã đặt mã + nhãn).
+  const label = GADS_ID ? GADS_LABELS[event] : undefined;
+  if (label && w.gtag) {
+    const conv: Params = { send_to: `${GADS_ID}/${label}` };
+    if (event === "click_mua_ngay" && data.value) Object.assign(conv, { value: data.value, currency: "VND" });
+    if (debug) console.info("[tracking] Google Ads conversion", JSON.stringify(conv));
+    w.gtag("event", "conversion", conv);
   }
   if (w.fbq) w.fbq(spec.custom ? "trackCustom" : "track", spec.meta, data);
 }
@@ -152,6 +172,11 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
       return { content_category: "menu", chi_nhanh: d.chiNhanh };
     case "xem_danh_gia":
       return { content_category: "danh_gia", chi_nhanh: d.chiNhanh };
+    case "click_quan_khac":
+      // chi_nhanh = quán đang xem, den_chi_nhanh = quán khách bấm sang.
+      return { chi_nhanh: d.chiNhanh, den_chi_nhanh: d.denChiNhanh };
+    case "xem_anh_khong_gian":
+      return { chi_nhanh: document.querySelector<HTMLElement>("[data-view-store]")?.dataset.chiNhanh };
     default:
       return {};
   }

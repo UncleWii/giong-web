@@ -22,7 +22,7 @@ const tel = telHref(s);
 const hotline = hotlineOf(s);
 const others = stores.filter((o) => o.slug !== s.slug);
 const heroShot = storePhoto(s.slug, "hero") ?? storeImage(s.image);
-const dishes = (s.dishes ?? []).slice(0, 4);
+const dishes = (s.dishes ?? data.dishes).slice(0, 4);
 const featured = (s.featuredProducts ?? []).map(getProduct);
 // Quán đã có ảnh không gian thì chỉ hiện các ô có ảnh; chưa có ảnh nào thì hiện đủ 6 khung giữ chỗ.
 const allSpace = [1, 2, 3, 4, 5, 6];
@@ -184,6 +184,7 @@ const amenityIcon: Record<string, string> = {
           detailLabel={labels.featuredDetail}
           vatNote={labels.featuredVat}
           zaloLabel={labels.featuredZalo}
+          zaloNote={labels.featuredZaloNote}
           zaloHref={`https://zalo.me/${data.zaloRetail}`}
         />
       )
@@ -301,15 +302,18 @@ const amenityIcon: Record<string, string> = {
 
     <!-- H. CÁC QUÁN GIÓNG KHÁC -->
     <nav class="container lp-sec" aria-labelledby="others-title">
-      <h2 id="others-title" class="font-heading lp-h2">Các quán Gióng khác</h2>
+      <h2 id="others-title" class="font-heading lp-h2">{labels.othersTitle}</h2>
       <ul class="lp-others">
         {
           others.map((o) => (
             <li>
-              <a href={storePath(o)}>
-                <Image src={storeImage(o.image)} alt="" widths={[240, 480]} sizes="(min-width: 900px) 240px, 45vw" loading="lazy" />
-                <span class="lp-others__city">{o.cityShort}</span>
-                <span class="lp-others__name">{o.name}</span>
+              <a href={storePath(o)} data-track="click_quan_khac" data-chi-nhanh={s.trackId} data-den-chi-nhanh={o.trackId}>
+                <Image class="lp-others__img" src={storeImage(o.image)} alt="" width={160} height={160} widths={[160, 320]} sizes="80px" loading="lazy" />
+                <span class="lp-others__text">
+                  <span class="lp-others__city">{o.cityShort}</span>
+                  <span class="lp-others__name">{o.name}</span>
+                </span>
+                <span class="lp-others__arrow" aria-hidden="true">→</span>
               </a>
             </li>
           ))
@@ -712,24 +716,46 @@ const amenityIcon: Record<string, string> = {
   }
 
   /* ---------- H. quán khác ---------- */
+  /* Quán khác: thẻ ngang nhỏ gọn (ảnh vuông 64px + tên), dễ bấm sang trang quán khác. */
   .lp-others {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-xs);
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2xs);
+  }
+
+  .lp-others li {
+    display: flex;
   }
 
   .lp-others a {
+    flex: 1;
     display: grid;
-    gap: 0.15em;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 72px;
+    padding: 4px var(--space-xs) 4px 4px;
     text-decoration: none;
     color: inherit;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    transition: border-color var(--duration-fast) var(--ease-standard);
   }
 
-  .lp-others :global(img) {
-    width: 100%;
-    aspect-ratio: 4 / 3;
+  .lp-others a:hover,
+  .lp-others a:focus-visible {
+    border-color: var(--color-primary);
+  }
+
+  .lp-others :global(.lp-others__img) {
+    width: 64px;
+    height: 64px;
     object-fit: cover;
-    margin-bottom: var(--space-3xs);
+  }
+
+  .lp-others__text {
+    display: grid;
+    min-width: 0;
   }
 
   .lp-others__city {
@@ -745,9 +771,9 @@ const amenityIcon: Record<string, string> = {
     color: var(--color-primary);
   }
 
-  .lp-others a:hover .lp-others__name,
-  .lp-others a:focus-visible .lp-others__name {
-    text-decoration: underline;
+  .lp-others__arrow {
+    font-size: 1.25rem;
+    color: var(--color-primary);
   }
 
   /* ---------- I. thanh nút đáy (chỉ điện thoại) ---------- */
@@ -873,7 +899,7 @@ const amenityIcon: Record<string, string> = {
     }
 
     .lp-others {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .lp-space {
@@ -894,6 +920,10 @@ const amenityIcon: Record<string, string> = {
   }
 
   @media (min-width: 900px) {
+    .lp-others {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
     .lp-hero__inner {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
       align-items: center;

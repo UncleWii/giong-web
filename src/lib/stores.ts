@@ -10,6 +10,8 @@ export interface Store extends RawStore {
   embedUrl?: string;
   /** Danh sách slug sản phẩm (src/lib/products.ts) hiện ở khối "Cà phê rang xay nguyên chất". Không có = ẩn khối. */
   featuredProducts?: string[];
+  /** Món đặc trưng riêng của quán. Không có = dùng danh sách chung "dishes" ở đầu cua-hang.json. */
+  dishes?: { name: string; price: string; description: string }[];
 }
 export const stores = data.stores as Store[];
 
@@ -44,10 +46,17 @@ const photoFiles = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 
-/** Ảnh riêng của quán: src/assets/cua-hang/<slug>/<tên>.webp (hoặc jpg/png). Chưa có file → undefined. */
-export const storePhoto = (slug: string, name: string): ImageMetadata | undefined => {
+const findPhoto = (folder: string, name: string): ImageMetadata | undefined => {
   for (const ext of ["webp", "jpg", "jpeg", "png"]) {
-    const f = photoFiles[`../assets/cua-hang/${slug}/${name}.${ext}`];
+    const f = photoFiles[`../assets/cua-hang/${folder}/${name}.${ext}`];
     if (f) return f.default;
   }
 };
+
+/**
+ * Ảnh của quán: src/assets/cua-hang/<slug>/<tên>.webp (hoặc jpg/png). Chưa có file → undefined.
+ * Ảnh món (mon-1…mon-4) dùng chung cho mọi quán: chép vào src/assets/cua-hang/_chung/.
+ * Quán nào có file mon-N riêng trong thư mục của mình thì dùng file riêng.
+ */
+export const storePhoto = (slug: string, name: string): ImageMetadata | undefined =>
+  findPhoto(slug, name) ?? (name.startsWith("mon-") ? findPhoto("_chung", name) : undefined);

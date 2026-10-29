@@ -29,7 +29,7 @@ const widths = [Math.round(width / 2), width, width * 2].filter((w) => !photo ||
 {
   photo ? (
     zoom ? (
-      <button type="button" class:list={["slot", "slot--photo", className]} data-lightbox data-full={full!.src} data-alt={alt} aria-label={`Xem lớn: ${alt}`} style={`aspect-ratio:${width}/${height}`}>
+      <button type="button" class:list={["slot", "slot--photo", className]} data-lightbox data-track="xem_anh_khong_gian" data-full={full!.src} data-alt={alt} aria-label={`Xem lớn: ${alt}`} style={`aspect-ratio:${width}/${height}`}>
         <Image src={photo} alt={alt} widths={widths} sizes={sizes} loading={loading} decoding="async" />
       </button>
     ) : (
