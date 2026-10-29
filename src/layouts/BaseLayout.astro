@@ -12,11 +12,13 @@ interface Props {
   ogType?: "website" | "article" | "product";
   /** Nhóm nội dung để đo lường Meta ViewContent: "cau_chuyen" | "hanh_trinh_thien_ly" | "farm" | "kien_thuc". */
   pageCategory?: "cau_chuyen" | "hanh_trinh_thien_ly" | "farm" | "kien_thuc";
+  /** Tiêu đề đã có sẵn tên thương hiệu (vd. trang từng quán) → không thêm hậu tố " · Gióng". */
+  brandedTitle?: boolean;
 }
 
-const { title, description, image = "/og-default.jpg", ogType = "website", pageCategory } = Astro.props;
+const { title, description, image = "/og-default.jpg", ogType = "website", pageCategory, brandedTitle = false } = Astro.props;
 const siteName = "Gióng";
-const fullTitle = title === siteName ? title : `${title} · ${siteName}`;
+const fullTitle = brandedTitle || title === siteName ? title : `${title} · ${siteName}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
 ---

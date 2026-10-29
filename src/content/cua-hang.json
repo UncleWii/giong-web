@@ -32,6 +32,7 @@
   "stores": [
     {
       "id": "hang-thung",
+      "slug": "ha-noi-hang-thung",
       "name": "Gióng Hàng Thùng",
       "city": "Hà Nội",
       "image": "Giong-caphe-cuahang-20hangthung.jpg",
@@ -45,10 +46,16 @@
         "ac"
       ],
       "mapUrl": "https://maps.app.goo.gl/2G4gSupLnXEgsANG8",
-      "trackId": "HangThung"
+      "trackId": "HangThung",
+      "h1": "Gióng Hàng Thùng – 20 Hàng Thùng, Hà Nội",
+      "shortAddress": "20 Hàng Thùng",
+      "cityShort": "Hà Nội",
+      "lat": 21.032254,
+      "lng": 105.854365
     },
     {
       "id": "nguyen-du",
+      "slug": "sai-gon-nguyen-du",
       "name": "Gióng 57 Nguyễn Du",
       "city": "Hồ Chí Minh",
       "image": "Giong-caphe-cuahang-57nguyendu.jpg",
@@ -62,10 +69,16 @@
         "ac"
       ],
       "mapUrl": "https://maps.app.goo.gl/bSVzZrS8diVsFBPb7",
-      "trackId": "57NguyenDu"
+      "trackId": "57NguyenDu",
+      "h1": "Gióng 57 Nguyễn Du – Sài Gòn",
+      "shortAddress": "57 Nguyễn Du",
+      "cityShort": "Sài Gòn",
+      "lat": 10.7792701,
+      "lng": 106.7003996
     },
     {
       "id": "diamond-plaza",
+      "slug": "sai-gon-diamond-plaza",
       "name": "Gióng Diamond Plaza",
       "city": "Hồ Chí Minh",
       "image": "Giong-caphe-cuahang-34LeDuan.jpg",
@@ -77,10 +90,16 @@
         "ac"
       ],
       "mapUrl": "https://maps.app.goo.gl/qPKzzVfBuAuVraUw8",
-      "trackId": "DiamondPlaza"
+      "trackId": "DiamondPlaza",
+      "h1": "Gióng Diamond Plaza – 34 Lê Duẩn, Sài Gòn",
+      "shortAddress": "34 Lê Duẩn",
+      "cityShort": "Sài Gòn",
+      "lat": 10.780987,
+      "lng": 106.6984947
     },
     {
       "id": "hoi-an",
+      "slug": "hoi-an-nguyen-thai-hoc",
       "name": "Gióng Hội An",
       "city": "Hội An",
       "image": "Giong-caphe-cuahang-09nguyenthaihoc2.jpg",
@@ -93,10 +112,16 @@
         "pet"
       ],
       "mapUrl": "https://maps.app.goo.gl/mxYkJH9tB4MKiaAg9",
-      "trackId": "HoiAn"
+      "trackId": "HoiAn",
+      "h1": "Gióng Hội An – 09 Nguyễn Thái Học",
+      "shortAddress": "09 Nguyễn Thái Học",
+      "cityShort": "Hội An",
+      "lat": 15.8767123,
+      "lng": 108.330781
     },
     {
       "id": "nha-trang",
+      "slug": "nha-trang-tran-hung-dao",
       "name": "Gióng Nha Trang",
       "city": "Nha Trang",
       "image": "Giong-caphe-cuahang-15tranhungdao2.png",
@@ -111,7 +136,12 @@
         "ac"
       ],
       "mapUrl": "https://maps.app.goo.gl/DwMnTLqznRpifuAMA",
-      "trackId": "NhaTrang"
+      "trackId": "NhaTrang",
+      "h1": "Gióng Nha Trang – 15 Trần Hưng Đạo",
+      "shortAddress": "15 Trần Hưng Đạo",
+      "cityShort": "Nha Trang",
+      "lat": 12.2428249,
+      "lng": 109.194833
     }
   ],
   "labels": {
@@ -124,6 +154,10 @@
     "map": "Chỉ đường tới quán",
     "directions": "Chỉ đường tới quán",
     "call": "Gọi quán",
-    "menu": "Xem menu"
+    "menu": "Xem menu",
+    "detail": "Xem trang quán",
+    "reviews": "Xem đánh giá trên Google",
+    "address": "Địa chỉ",
+    "amenities": "Tiện ích"
   }
 }

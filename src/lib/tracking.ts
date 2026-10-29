@@ -30,6 +30,8 @@ const EVENTS: Record<string, { meta: string; custom?: boolean; ga?: boolean }> =
   click_lien_he_si: { meta: "Contact" },
   loc_thanh_pho: { meta: "LocThanhPho", custom: true },
   xem_menu: { meta: "ViewContent" },
+  xem_trang_quan: { meta: "ViewContent" },
+  xem_danh_gia: { meta: "ViewContent" },
   xem_tren_30s: { meta: "XemTren30s", custom: true },
   // Trang Câu chuyện / Farm / Thiên Lý / Kiến thức: GA4 đã có page_view tự động → chỉ gửi ViewContent cho Meta.
   xem_trang_noi_dung: { meta: "ViewContent", ga: false },
@@ -135,6 +137,8 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
       return { thanh_pho: d.thanhPho };
     case "xem_menu":
       return { content_category: "menu", chi_nhanh: d.chiNhanh };
+    case "xem_danh_gia":
+      return { content_category: "danh_gia", chi_nhanh: d.chiNhanh };
     default:
       return {};
   }
@@ -185,6 +189,10 @@ function init() {
       dong_san_pham: d.dongSanPham,
     });
   }
+
+  // Trang riêng của từng quán (/cua-hang/<quán>): đúng 1 xem_trang_quan, ngoài PageView.
+  const store = document.querySelector<HTMLElement>("[data-view-store]");
+  if (store) track("xem_trang_quan", { chi_nhanh: store.dataset.chiNhanh, content_category: "trang_quan" });
 
   // Trang Câu chuyện / Farm / Kiến thức (BaseLayout gắn data-page-category).
   const category = document.body.dataset.pageCategory;
