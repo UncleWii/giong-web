@@ -26,7 +26,7 @@
      },
      {
       "lines": [
-       "Không đầy đủ tem nhãn theo quy định của Mio"
+       "Không đầy đủ tem nhãn theo quy định của Gióng"
       ]
      },
      {
@@ -86,7 +86,7 @@
     "items": [
      {
       "lines": [
-       "Khách hàng nhận được tiền hoàn từ 3 đến 6 ngày (trừ thứ 7, chủ nhật và ngày lễ). Nếu quá thời gian này không nhận được tiền, Mio sẽ hỗ trợ liên hệ ngân hàng của khách hàng để giải quyết."
+       "Khách hàng nhận được tiền hoàn từ 3 đến 6 ngày (trừ thứ 7, chủ nhật và ngày lễ). Nếu quá thời gian này không nhận được tiền, Gióng sẽ hỗ trợ liên hệ ngân hàng của khách hàng để giải quyết."
       ]
      },
      {
@@ -145,25 +145,25 @@
  },
  "van-chuyen": {
   "title": "Chính sách vận chuyển và kiểm tra hàng",
-  "description": "Chính sách vận chuyển và kiểm tra hàng của Gióng (Shipping and inspection policy).",
-  "h1": "SHIPPING AND INSPECTION POLICY",
+  "description": "Chính sách vận chuyển và kiểm tra hàng của Gióng: phạm vi giao hàng, thời gian giao nhận, phương thức giao hàng và quyền kiểm tra hàng khi nhận.",
+  "h1": "CHÍNH SÁCH VẬN CHUYỂN VÀ KIỂM TRA HÀNG",
   "blocks": [
    {
     "t": "h2",
     "lines": [
-     "Scope of Application"
+     "Phạm vi áp dụng"
     ]
    },
    {
     "t": "p",
     "lines": [
-     "Applies to deliveries within all areas of Ho Chi Minh City (except for Nhà Bè, Hóc Môn, Củ Chi, and Cần Giờ)"
+     "Áp dụng cho việc giao hàng trong tất cả các khu vực của Thành phố Hồ Chí Minh (trừ Nhà Bè, Hóc Môn, Củ Chi và Cần Giờ)"
     ]
    },
    {
     "t": "h2",
     "lines": [
-     "Delivery and Receipt Time"
+     "Thời gian giao và nhận hàng"
     ]
    },
    {
@@ -171,12 +171,12 @@
     "items": [
      {
       "lines": [
-       "All orders placed from 7 AM to 7 PM will be delivered on the same day, with a maximum time of 2 hours."
+       "Tất cả đơn hàng đặt từ 7 giờ sáng đến 7 giờ tối sẽ được giao trong ngày, thời gian giao tối đa là 2 giờ."
       ]
      },
      {
       "lines": [
-       "All orders placed after 7 PM will be delivered at 7 AM the next day."
+       "Tất cả đơn hàng đặt sau 7 giờ tối sẽ được giao vào 7 giờ sáng ngày hôm sau."
       ]
      }
     ]
@@ -184,31 +184,31 @@
    {
     "t": "h2",
     "lines": [
-     "Delivery Method"
+     "Phương thức giao hàng"
     ]
    },
    {
     "t": "p",
     "lines": [
-     "By road, including but not limited to vehicles such as motorcycles, trucks, pickup trucks, and cars."
+     "Giao bằng đường bộ, bao gồm nhưng không giới hạn các phương tiện như xe máy, xe tải, xe bán tải và ô tô."
     ]
    },
    {
     "t": "p",
     "lines": [
-     "During the delivery process, if the customer requires an invoice or document, the company will send it via email or provide it when purchasing directly at the store."
+     "Trong quá trình giao hàng, nếu khách hàng yêu cầu hóa đơn hoặc chứng từ, công ty sẽ gửi qua email hoặc cung cấp khi khách mua hàng trực tiếp tại cửa hàng."
     ]
    },
    {
     "t": "h2",
     "lines": [
-     "Inspection Policy"
+     "Chính sách kiểm tra hàng"
     ]
    },
    {
     "t": "p",
     "lines": [
-     "Upon receiving the goods, the customer has the right to request the delivery staff to open and inspect the items."
+     "Khi nhận hàng, khách hàng có quyền yêu cầu nhân viên giao hàng mở và kiểm tra hàng hóa."
     ]
    },
    {
@@ -216,18 +216,17 @@
     "items": [
      {
       "lines": [
-       "If the seller delivers the wrong type of product, the customer has the right to return the goods and not make payment."
+       "Nếu bên bán giao sai loại sản phẩm, khách hàng có quyền trả lại hàng và không phải thanh toán."
       ]
      },
      {
       "lines": [
-       "If the order is incorrect after payment, the customer has the right to request a refund or the correct order to be delivered."
+       "Nếu đơn hàng bị sai sau khi đã thanh toán, khách hàng có quyền yêu cầu hoàn tiền hoặc yêu cầu giao lại đúng đơn hàng."
       ]
      }
     ]
    }
-  ],
-  "lang": "en"
+  ]
  },
  "ho-so-tu-cong-bo": {
   "title": "Hồ sơ tự công bố sản phẩm",
@@ -241,103 +240,103 @@
       "lines": [
        "TCB CÀ PHÊ HẠT RANG NHÂN"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e572bb5acb32be9d5f2_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20NHA%CC%82N.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-nhan.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG LỄ"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57bb74400817cf6b0e_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20LE%CC%82%CC%83.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-le.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG NGHĨA"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57b4cbff72f22df4eb_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20NGHI%CC%83A.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-nghia.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG TRÍ"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e572f6c368f4ee5db76_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20TRI%CC%81.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-tri.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG TÍN"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e575cb7243495a1dde1_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20TI%CC%81N.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-tin.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG GIÓNG GIẢ"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e5788987b70d8dfc2eb_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20GIO%CC%81NG%20GIA%CC%89.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-giong-gia.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG NĂNG CÁN"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57b86d9a286b898792_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20NA%CC%86NG%20CA%CC%81N.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-nang-can.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG THIÊN LÝ"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57437879f2eca76d97_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20THIE%CC%82N%20LY%CC%81.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-thien-ly.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG ARABICA 1"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e575d59d33f46cddc50_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%201.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-arabica-1.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG ARABICA 2"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e58a3238d25fd256fc4_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%202.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-arabica-2.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG ARABICA 3"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e58d104585acd862af5_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%203.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-arabica-3.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG ARABICA 4"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e571ac762c65490a8d9_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%204.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-arabica-4.pdf"
      },
      {
       "lines": [
        "TCB CÀ PHÊ HẠT RANG ARABICA 5"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d19e57351d2bf73d1b492e_TCB%20CA%CC%80%20PHE%CC%82%20HA%CC%A3T%20RANG%20ARABICA%205.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-hat-rang-arabica-5.pdf"
      },
      {
       "lines": [
        "TCB Cà phê túi lọc Nhân"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d1a0732f6c368f4ee7ace7_TCB%20Ca%CC%80%20phe%CC%82%20tu%CC%81i%20lo%CC%A3c%20Nha%CC%82n.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-tui-loc-nhan.pdf"
      },
      {
       "lines": [
        "TCB Cà phê túi lọc Thiên Lý"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d1a0733acdaf4745499aa6_TCB%20Ca%CC%80%20phe%CC%82%20tu%CC%81i%20lo%CC%A3c%20Thie%CC%82n%20Ly%CC%81.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-tui-loc-thien-ly.pdf"
      },
      {
       "lines": [
        "TCB Cà phê túi lọc Ngũ Thường Robusta"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d1a073fb5adca4666fa32d_TCB%20Ca%CC%80%20phe%CC%82%20tu%CC%81i%20lo%CC%A3c%20Ngu%CC%83%20Thu%CC%9Bo%CC%9B%CC%80ng%20Robusta.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-tui-loc-ngu-thuong-robusta.pdf"
      },
      {
       "lines": [
        "TCB Cà phê túi lọc Bản Giao Hưởng Arabica"
       ],
-      "href": "https://cdn.prod.website-files.com/5eb3c0c0f59523ae8de1f63b/66d1a073f5cbedd0cf725151_TCB%20Ca%CC%80%20phe%CC%82%20tu%CC%81i%20lo%CC%A3c%20Ba%CC%89n%20Giao%20Hu%CC%9Bo%CC%9B%CC%89ng%20Arabica.pdf"
+      "href": "/ho-so-tu-cong-bo/tcb-ca-phe-tui-loc-ban-giao-huong-arabica.pdf"
      }
     ]
    }
