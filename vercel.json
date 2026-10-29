@@ -6,7 +6,17 @@
       "statusCode": 301
     },
     {
+      "source": "/cafe-giong/",
+      "destination": "/san-pham",
+      "statusCode": 301
+    },
+    {
       "source": "/classic-single-origin",
+      "destination": "/san-pham",
+      "statusCode": 301
+    },
+    {
+      "source": "/classic-single-origin/",
       "destination": "/san-pham",
       "statusCode": 301
     },
@@ -16,7 +26,17 @@
       "statusCode": 301
     },
     {
+      "source": "/ngu-thuong-robusta/",
+      "destination": "/san-pham",
+      "statusCode": 301
+    },
+    {
       "source": "/ban-giao-huong-cao-nguyen-arabica",
+      "destination": "/san-pham",
+      "statusCode": 301
+    },
+    {
+      "source": "/ban-giao-huong-cao-nguyen-arabica/",
       "destination": "/san-pham",
       "statusCode": 301
     },
@@ -26,7 +46,17 @@
       "statusCode": 301
     },
     {
+      "source": "/cua-hang-giong/",
+      "destination": "/cua-hang",
+      "statusCode": 301
+    },
+    {
       "source": "/ngua-o-cafe-si",
+      "destination": "/ngua-o",
+      "statusCode": 301
+    },
+    {
+      "source": "/ngua-o-cafe-si/",
       "destination": "/ngua-o",
       "statusCode": 301
     },
@@ -36,7 +66,17 @@
       "statusCode": 301
     },
     {
+      "source": "/chinh-sach-bao-mat/",
+      "destination": "/chinh-sach-quyen-rieng-tu",
+      "statusCode": 301
+    },
+    {
       "source": "/dieu-khoan-chinh-sach-quyen-rieng-tu",
+      "destination": "/dieu-khoan",
+      "statusCode": 301
+    },
+    {
+      "source": "/dieu-khoan-chinh-sach-quyen-rieng-tu/",
       "destination": "/dieu-khoan",
       "statusCode": 301
     },
@@ -46,7 +86,17 @@
       "statusCode": 301
     },
     {
+      "source": "/chinh-sach-doi-tra-va-hoan-tien/",
+      "destination": "/chinh-sach/doi-tra",
+      "statusCode": 301
+    },
+    {
       "source": "/chinh-sach-thanh-toan",
+      "destination": "/chinh-sach/thanh-toan",
+      "statusCode": 301
+    },
+    {
+      "source": "/chinh-sach-thanh-toan/",
       "destination": "/chinh-sach/thanh-toan",
       "statusCode": 301
     },
@@ -56,7 +106,17 @@
       "statusCode": 301
     },
     {
+      "source": "/chinh-sach-van-chuyen-va-kiem-tra-hang/",
+      "destination": "/chinh-sach/van-chuyen",
+      "statusCode": 301
+    },
+    {
       "source": "/ho-so-tu-cong-bo-san-pham",
+      "destination": "/ho-so-tu-cong-bo",
+      "statusCode": 301
+    },
+    {
+      "source": "/ho-so-tu-cong-bo-san-pham/",
       "destination": "/ho-so-tu-cong-bo",
       "statusCode": 301
     },
@@ -66,7 +126,17 @@
       "statusCode": 301
     },
     {
+      "source": "/dich-vu-thue-phong-hop-khong-gian-workshop-event/",
+      "destination": "/cua-hang",
+      "statusCode": 301
+    },
+    {
       "source": "/tai-app-bagang",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tai-app-bagang/",
       "destination": "/",
       "statusCode": 301
     },
