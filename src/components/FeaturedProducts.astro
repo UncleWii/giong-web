@@ -23,7 +23,7 @@ interface Props {
   zaloHref: string;
 }
 
-const { products, title, lead, chiNhanh, viTri = "trang_quan", detailLabel, vatNote, zaloLabel, zaloNote, zaloHref } = Astro.props;
+const { products, title, lead, chiNhanh, viTri = "trang_quan_san_pham", detailLabel, vatNote, zaloLabel, zaloNote, zaloHref } = Astro.props;
 
 const whiteFiles = import.meta.glob<{ default: ImageMetadata }>("../assets/products/nen-trang/*-nen-trang.{webp,jpg,png}", {
   eager: true,
@@ -32,7 +32,7 @@ const whiteBg = (slug: string) =>
   Object.entries(whiteFiles).find(([path]) => path.includes(`/${slug}-nen-trang.`))?.[1].default;
 ---
 
-<section class="container fp" aria-labelledby="fp-title">
+<section class="container fp" aria-labelledby="fp-title" data-vi-tri={viTri}>
   <h2 id="fp-title" class="font-heading fp__title">{title}</h2>
   <p class="fp__lead">{lead}</p>
 
@@ -63,14 +63,13 @@ const whiteBg = (slug: string) =>
               <small>{vatNote}</small>
             </p>
             <div class="fp-card__actions">
-              <ShopeeButton product={p} chiNhanh={chiNhanh} viTri={viTri} />
+              <ShopeeButton product={p} chiNhanh={chiNhanh} />
               <a
                 class="fp-card__detail"
                 href={productUrl(p)}
                 data-track="xem_chi_tiet_sp"
                 data-product-id={p.slug}
                 data-chi-nhanh={chiNhanh}
-                data-vi-tri={viTri}
               >
                 {detailLabel}
               </a>
@@ -88,7 +87,6 @@ const whiteBg = (slug: string) =>
         rel="noopener noreferrer"
         data-track="click_zalo"
         data-loai="le"
-        data-vi-tri={viTri}
       >
         {zaloLabel}
       </a>

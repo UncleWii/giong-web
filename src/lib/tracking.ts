@@ -69,6 +69,35 @@ const active = TRACKING_ENABLED && (isProduction || debug);
 const clean = (p: Params): Params =>
   Object.fromEntries(Object.entries(p).filter(([, v]) => v !== undefined && v !== ""));
 
+// Tên tham số và giá trị tự đặt: chữ thường, không dấu, gạch dưới (chi_nhanh giữ nguyên HangThung, 57NguyenDu…).
+const slug = (v: string) =>
+  v
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/gi, "d")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+const SLUG_KEYS = ["vi_tri", "thanh_pho", "kenh", "loai", "khu_vuc", "nhu_cau", "dong_san_pham", "content_category"];
+const normalize = (p: Params): Params => {
+  const out: Params = { ...p };
+  for (const k of SLUG_KEYS) if (typeof out[k] === "string") out[k] = slug(out[k] as string);
+  return out;
+};
+
+// Vùng khách điền ở form sỉ là chữ tự do (có thể lẫn tên, địa chỉ): KHÔNG gửi nguyên văn, chỉ gửi nhóm khu vực.
+const REGIONS: [string, RegExp][] = [
+  ["ho_chi_minh", /\b(ho chi minh|hcm|tphcm|sai gon|saigon)\b/],
+  ["ha_noi", /\b(ha noi|hanoi)\b/],
+  ["da_nang", /\b(da nang|danang|hoi an)\b/],
+  ["khanh_hoa", /\b(khanh hoa|nha trang|cam ranh)\b/],
+  ["lam_dong", /\b(lam dong|da lat|dalat)\b/],
+];
+const regionBucket = (raw: string) => {
+  const s = slug(raw).replace(/_/g, " ");
+  return REGIONS.find(([, re]) => re.test(s))?.[0] ?? "khac";
+};
+
 function loadMetaPixel() {
   if (w.fbq) return;
   const fbq: any = function (...args: unknown[]) {
@@ -106,17 +135,26 @@ function loadGoogleAnalytics() {
 }
 
 /** Gửi một sự kiện về cả Meta Pixel và GA4. Sự kiện không có trong bảng sẽ bị bỏ qua. */
-export function track(event: string, params: Params = {}) {
+export function track(event: string, params: Params = {}, done?: () => void) {
   const spec = EVENTS[event];
-  if (!spec) return;
-  const data = clean(params);
+  if (!spec) return done?.();
+  const data = clean(normalize(params));
   if (debug) console.info("[tracking]", event, "→ Meta:", spec.meta, "| GA4:", spec.ga === false ? "(không)" : event, JSON.stringify(data), "| URL:", location.href);
-  if (!active) return;
+  if (!active) return done?.();
+
+  // `done` chạy đúng 1 lần: khi GA4 báo đã gửi xong, hoặc sau tối đa 350ms (phòng GA bị chặn).
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    done?.();
+  };
+  if (done) window.setTimeout(finish, 350);
 
   if (spec.ga !== false && w.gtag) {
     const ga: Params = { ...data };
     if (Array.isArray(ga.content_ids)) ga.content_ids = ga.content_ids.join(",");
-    w.gtag("event", event, { ...ga, ...(debug ? { debug_mode: true } : {}) });
+    w.gtag("event", event, { ...ga, ...(debug ? { debug_mode: true } : {}), ...(done ? { event_callback: finish, event_timeout: 350 } : {}) });
   }
   // Google Ads: chuyển đổi cho hành động chính (chỉ khi đã đặt mã + nhãn).
   const label = GADS_ID ? GADS_LABELS[event] : undefined;
@@ -129,20 +167,29 @@ export function track(event: string, params: Params = {}) {
   if (w.fbq) w.fbq(spec.custom ? "trackCustom" : "track", spec.meta, data);
 }
 
-// ---- tham số từ data-* của phần tử được bấm ----
+// ---- vị trí của nút (vi_tri) ----
+// Ưu tiên: data-vi-tri của phần tử hoặc khối chứa nó (trang quán đặt ở từng khối) → chân trang → theo đường dẫn trang.
+function viTriOf(el: HTMLElement): string {
+  const own = el.closest<HTMLElement>("[data-vi-tri]")?.dataset.viTri;
+  if (own) return own;
+  if (el.closest("footer")) return "footer";
+  const path = location.pathname.replace(/\/+$/, "") || "/";
+  if (path === "/") return "trang_chu";
+  if (path === "/san-pham") return "san_pham_danh_sach";
+  if (path.startsWith("/san-pham/")) return "san_pham_chi_tiet";
+  if (path === "/cua-hang") return "cua_hang_danh_sach";
+  if (path === "/ngua-o") return "ngua_o";
+  return slug(path.split("/")[1] ?? "");
+}
+
+const storeId = () => document.querySelector<HTMLElement>("[data-view-store]")?.dataset.chiNhanh;
+
+// ---- tham số từ data-* của phần tử được bấm (vi_tri, page_path, chi_nhanh trang quán thêm ở bộ lắng nghe chung) ----
 function paramsFromElement(event: string, el: HTMLElement): Params {
   const d = el.dataset;
-  const page_path = location.pathname;
   switch (event) {
     case "click_zalo":
-      return {
-        kenh: "zalo",
-        loai: d.loai,
-        vi_tri: d.viTri ?? "nut_noi",
-        page_path,
-        // Trang riêng của quán: gắn thêm chi_nhanh để biết khách nhắn Zalo từ quán nào.
-        chi_nhanh: document.querySelector<HTMLElement>("[data-view-store]")?.dataset.chiNhanh,
-      };
+      return { kenh: "zalo", loai: d.loai };
     case "click_mua_ngay":
       return {
         content_name: d.productName,
@@ -152,14 +199,11 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
         currency: "VND",
         content_type: "product",
         dong_san_pham: d.dongSanPham,
-        // Chỉ có khi nút nằm trên trang quán (khối cà phê rang xay).
-        chi_nhanh: d.chiNhanh,
-        vi_tri: d.viTri,
       };
     case "xem_chi_tiet_sp":
-      return { content_ids: d.productId ? [d.productId] : undefined, chi_nhanh: d.chiNhanh, vi_tri: d.viTri };
+      return { content_ids: d.productId ? [d.productId] : undefined };
     case "click_chi_duong":
-      return { chi_nhanh: d.chiNhanh, vi_tri: d.viTri };
+      return { chi_nhanh: d.chiNhanh };
     case "click_goi_chi_nhanh":
       return { chi_nhanh: d.chiNhanh, kenh: "phone" };
     case "click_goi_van_phong":
@@ -175,8 +219,6 @@ function paramsFromElement(event: string, el: HTMLElement): Params {
     case "click_quan_khac":
       // chi_nhanh = quán đang xem, den_chi_nhanh = quán khách bấm sang.
       return { chi_nhanh: d.chiNhanh, den_chi_nhanh: d.denChiNhanh };
-    case "xem_anh_khong_gian":
-      return { chi_nhanh: document.querySelector<HTMLElement>("[data-view-store]")?.dataset.chiNhanh };
     default:
       return {};
   }
@@ -208,7 +250,35 @@ function init() {
     (e) => {
       const el = (e.target as Element | null)?.closest<HTMLElement>("[data-track]");
       if (!el?.dataset.track) return;
-      track(el.dataset.track, paramsFromElement(el.dataset.track, el));
+      const params = paramsFromElement(el.dataset.track, el);
+      // Mọi sự kiện bấm đều có vi_tri + page_path; trên trang quán luôn có chi_nhanh của quán đó.
+      const data: Params = {
+        ...params,
+        chi_nhanh: (params.chi_nhanh as string | undefined) ?? storeId(),
+        vi_tri: viTriOf(el),
+        page_path: location.pathname,
+      };
+
+      // Link mở CÙNG TAB: trình duyệt có thể huỷ yêu cầu đo lường khi trang chuyển đi. Giữ lại chuyển trang
+      // đến khi sự kiện đã gửi (tối đa 350ms) rồi mới đi tiếp. Link mở tab mới, tel:, mailto:, #… không bị ảnh hưởng.
+      const link = el instanceof HTMLAnchorElement ? el : null;
+      const me = e as MouseEvent;
+      const sameTab =
+        active &&
+        link &&
+        !e.defaultPrevented &&
+        me.button === 0 &&
+        !(me.metaKey || me.ctrlKey || me.shiftKey || me.altKey) &&
+        (!link.target || link.target === "_self") &&
+        !link.hasAttribute("download") &&
+        /^https?:$/.test(link.protocol) &&
+        link.href.split("#")[0] !== location.href.split("#")[0];
+      if (sameTab) {
+        e.preventDefault();
+        track(el.dataset.track, data, () => location.assign(link.href));
+      } else {
+        track(el.dataset.track, data);
+      }
     },
     true
   );
@@ -239,7 +309,7 @@ function init() {
   // Gửi form sỉ THÀNH CÔNG (trang Ngựa Ô phát sự kiện này chỉ khi dịch vụ gửi mail báo thành công).
   window.addEventListener("giong:lead-success", (e) => {
     const detail = (e as CustomEvent<{ khu_vuc?: string; nhu_cau?: string }>).detail ?? {};
-    track("generate_lead", { khu_vuc: detail.khu_vuc, nhu_cau: detail.nhu_cau });
+    track("generate_lead", { khu_vuc: regionBucket(detail.khu_vuc ?? ""), nhu_cau: detail.nhu_cau });
   });
 
   // Ở lại trang quá 30 giây (chỉ tính lúc tab đang hiện).
@@ -250,7 +320,7 @@ function init() {
     visibleSeconds += 1;
     if (visibleSeconds >= 30) {
       sent = true;
-      track("xem_tren_30s", { page_path: location.pathname });
+      track("xem_tren_30s", { page_path: location.pathname, chi_nhanh: storeId() });
     }
   }, 1000);
 }

@@ -72,7 +72,7 @@ const amenityIcon: Record<string, string> = {
 
   <article class="lp" data-view-store data-chi-nhanh={s.trackId}>
     <!-- A. HERO: tên quán · trạng thái mở cửa · vị trí · nút Chỉ đường -->
-    <section class="lp-hero">
+    <section class="lp-hero" data-vi-tri="trang_quan_hero">
       <div class="container lp-hero__inner">
         <a class="lp-en" href="#english" lang="en" aria-label="English information">EN</a>
         <div class="lp-hero__art">
@@ -99,7 +99,6 @@ const amenityIcon: Record<string, string> = {
               rel="noopener noreferrer"
               data-track="click_chi_duong"
               data-chi-nhanh={s.trackId}
-              data-vi-tri="hero"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
@@ -144,7 +143,7 @@ const amenityIcon: Record<string, string> = {
     <!-- D. MÓN ĐẶC TRƯNG -->
     {
       dishes.length > 0 && (
-        <section class="container lp-sec" aria-labelledby="dishes-title">
+        <section class="container lp-sec" aria-labelledby="dishes-title" data-vi-tri="trang_quan_mon">
           <h2 id="dishes-title" class="font-heading lp-h2">{labels.dishesTitle}</h2>
           <ul class="lp-dishes">
             {dishes.map((d, i) => (
@@ -191,7 +190,7 @@ const amenityIcon: Record<string, string> = {
     }
 
     <!-- E. KHÔNG GIAN QUÁN -->
-    <section class="container lp-sec" aria-labelledby="space-title">
+    <section class="container lp-sec" aria-labelledby="space-title" data-vi-tri="trang_quan_khong_gian">
       <h2 id="space-title" class="font-heading lp-h2">{labels.spaceTitle}</h2>
       <ul class="lp-space">
         {
@@ -214,7 +213,7 @@ const amenityIcon: Record<string, string> = {
     </section>
 
     <!-- F. THÔNG TIN & BẢN ĐỒ -->
-    <section class="container lp-sec" aria-labelledby="info-title">
+    <section class="container lp-sec" aria-labelledby="info-title" data-vi-tri="trang_quan_thong_tin">
       <h2 id="info-title" class="font-heading lp-h2">{labels.infoTitle}</h2>
       <div class="lp-info">
         <div>
@@ -240,7 +239,6 @@ const amenityIcon: Record<string, string> = {
               rel="noopener noreferrer"
               data-track="click_chi_duong"
               data-chi-nhanh={s.trackId}
-              data-vi-tri="thong_tin"
             >
               <span>{labels.directions}</span>
             </a>
@@ -266,7 +264,7 @@ const amenityIcon: Record<string, string> = {
     </section>
 
     <!-- G. FOR INTERNATIONAL GUESTS -->
-    <section class="container lp-sec" id="english" lang="en" aria-labelledby="en-title">
+    <section class="container lp-sec" id="english" lang="en" aria-labelledby="en-title" data-vi-tri="trang_quan_en">
       <div class="lp-en-box">
         <p class="eyebrow">For international guests</p>
         <h2 id="en-title" class="font-heading">{s.name}</h2>
@@ -289,7 +287,6 @@ const amenityIcon: Record<string, string> = {
             rel="noopener noreferrer"
             data-track="click_chi_duong"
             data-chi-nhanh={s.trackId}
-            data-vi-tri="en"
           >
             <span>Get directions</span>
           </a>
@@ -301,7 +298,7 @@ const amenityIcon: Record<string, string> = {
     </section>
 
     <!-- H. CÁC QUÁN GIÓNG KHÁC -->
-    <nav class="container lp-sec" aria-labelledby="others-title">
+    <nav class="container lp-sec" aria-labelledby="others-title" data-vi-tri="trang_quan_khac">
       <h2 id="others-title" class="font-heading lp-h2">{labels.othersTitle}</h2>
       <ul class="lp-others">
         {
@@ -323,7 +320,7 @@ const amenityIcon: Record<string, string> = {
   </article>
 
   <!-- I. THANH NÚT CỐ ĐỊNH ĐÁY MÀN HÌNH (chỉ điện thoại) -->
-  <nav class="stickybar" aria-label="Thao tác nhanh">
+  <nav class="stickybar" aria-label="Thao tác nhanh" data-vi-tri="trang_quan_thanh_day">
     <a
       class="stickybar__btn stickybar__btn--primary"
       href={maps}
@@ -331,7 +328,6 @@ const amenityIcon: Record<string, string> = {
       rel="noopener noreferrer"
       data-track="click_chi_duong"
       data-chi-nhanh={s.trackId}
-      data-vi-tri="thanh_day"
     >Chỉ đường</a>
     <a class="stickybar__btn" href={tel} data-track="click_goi_chi_nhanh" data-chi-nhanh={s.trackId}>Gọi</a>
     <a class="stickybar__btn" href="/menu" data-track="xem_menu" data-chi-nhanh={s.trackId}>Menu</a>

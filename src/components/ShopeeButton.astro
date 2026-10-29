@@ -6,12 +6,11 @@ import { dongSanPham, type Product } from "../lib/products";
 interface Props {
   product: Product;
   class?: string;
-  /** Chỉ dùng ở trang quán: đo xem khách mua từ quán nào, từ khối nào (chi_nhanh, vi_tri). */
+  /** Chỉ dùng ở trang quán: đo xem khách mua từ quán nào (chi_nhanh). vi_tri do khối chứa nút (data-vi-tri) hoặc đường dẫn trang quyết định. */
   chiNhanh?: string;
-  viTri?: string;
 }
 
-const { product, class: className = "", chiNhanh, viTri } = Astro.props;
+const { product, class: className = "", chiNhanh } = Astro.props;
 ---
 
 <a
@@ -27,7 +26,6 @@ const { product, class: className = "", chiNhanh, viTri } = Astro.props;
   data-price={product.price}
   data-dong-san-pham={dongSanPham(product)}
   data-chi-nhanh={chiNhanh}
-  data-vi-tri={viTri}
 >
   <svg class="shopee-btn__icon" width="18" height="18" viewBox="0 0 44 44" aria-hidden="true">
     <rect width="44" height="44" rx="10" fill="#EE4D2D"></rect>
