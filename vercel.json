@@ -7,17 +7,17 @@
     },
     {
       "source": "/classic-single-origin",
-      "destination": "/san-pham/dong/classic",
+      "destination": "/san-pham",
       "statusCode": 301
     },
     {
       "source": "/ngu-thuong-robusta",
-      "destination": "/san-pham/dong/robusta",
+      "destination": "/san-pham",
       "statusCode": 301
     },
     {
       "source": "/ban-giao-huong-cao-nguyen-arabica",
-      "destination": "/san-pham/dong/arabica",
+      "destination": "/san-pham",
       "statusCode": 301
     },
     {
