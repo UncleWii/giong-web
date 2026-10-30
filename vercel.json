@@ -1,6 +1,54 @@
 {
   "redirects": [
     {
+      "source": "/cua-hang/nha-trang-tran-hung-dao",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "ko"
+        }
+      ],
+      "destination": "/ko/cua-hang/nha-trang/",
+      "permanent": false
+    },
+    {
+      "source": "/cua-hang/nha-trang-tran-hung-dao/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "ko"
+        }
+      ],
+      "destination": "/ko/cua-hang/nha-trang/",
+      "permanent": false
+    },
+    {
+      "source": "/cua-hang/nha-trang-tran-hung-dao",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "en"
+        }
+      ],
+      "destination": "/en/cua-hang/nha-trang/",
+      "permanent": false
+    },
+    {
+      "source": "/cua-hang/nha-trang-tran-hung-dao/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "en"
+        }
+      ],
+      "destination": "/en/cua-hang/nha-trang/",
+      "permanent": false
+    },
+    {
       "source": "/cafe-giong",
       "destination": "/san-pham",
       "statusCode": 301

@@ -202,9 +202,7 @@
         "giong-gia",
         "nang-can",
         "cheo"
-      ],
-      "nameKo": "Gióng(지옹) 나트랑",
-      "introKo": "프리미엄 베트남 커피를 매장에서 직접 로스팅한 신선한 원두로 즐겨 보세요. 나트랑 시내 해변에서 단 250m 거리에 있습니다."
+      ]
     }
   ],
   "labels": {
@@ -234,14 +232,7 @@
     "featuredVat": "Giá đã bao gồm VAT",
     "featuredZalo": "Hỏi mua qua Zalo",
     "othersTitle": "Các quán Gióng khác",
-    "featuredZaloNote": "Nhắn Zalo mua lẻ",
-    "ko": {
-      "eyebrow": "한국어 안내",
-      "address": "주소",
-      "hours": "영업시간",
-      "directions": "길찾기",
-      "call": "전화하기"
-    }
+    "featuredZaloNote": "Nhắn Zalo mua lẻ"
   },
   "zaloRetail": "0901499914"
 }

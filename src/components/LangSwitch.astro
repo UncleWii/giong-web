@@ -1,0 +1,238 @@
+---
+// Nút chọn ngôn ngữ ở header. Desktop: nhóm 3 nút [cờ VI] [cờ EN] [cờ 한국어]. Mobile: nút gọn [cờ KO ▾] mở danh sách.
+// Chỉ hiện ở trang có bản dịch (alternates). Bấm là sang ĐÚNG trang tương ứng, giữ nguyên tham số URL (gclid, utm…).
+import Flag from "./Flag.astro";
+import { LANGS, type Alternates, type Lang } from "../lib/lang";
+
+interface Props {
+  lang: Lang;
+  alternates: Alternates;
+}
+
+const { lang, alternates } = Astro.props;
+const names: Record<Lang, { code: string; name: string }> = {
+  vi: { code: "VI", name: "Tiếng Việt" },
+  en: { code: "EN", name: "English" },
+  ko: { code: "KO", name: "한국어" },
+};
+const available = LANGS.filter((l) => alternates[l]);
+const shortLabel = (l: Lang) => (l === "ko" ? "한국어" : names[l].code);
+---
+
+{
+  available.length > 1 && (
+    <div class="langswitch" data-lang-switch data-vi-tri="header">
+      <ul class="langswitch__group" aria-label="Language · Ngôn ngữ · 언어">
+        {available.map((l) => (
+          <li>
+            {l === lang ? (
+              <span class="pill is-active" aria-current="true" lang={l}>
+                <Flag code={l} uid={`d-${l}`} />
+                <span>{shortLabel(l)}</span>
+              </span>
+            ) : (
+              <a
+                class="pill"
+                href={alternates[l]}
+                hreflang={l}
+                lang={l}
+                aria-label={names[l].name}
+                data-lang-link
+                data-track="doi_ngon_ngu"
+                data-tu={lang}
+                data-den={l}
+              >
+                <Flag code={l} uid={`d-${l}`} />
+                <span>{shortLabel(l)}</span>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <div class="langswitch__menu" data-lang-menu>
+        <button type="button" class="langswitch__btn" aria-expanded="false" aria-haspopup="true" aria-controls="lang-list" aria-label={`Language: ${names[lang].name}`}>
+          <Flag code={lang} uid="m-cur" />
+          <span>{names[lang].code}</span>
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <ul id="lang-list" class="langswitch__list" hidden>
+          {available.map((l) => (
+            <li>
+              {l === lang ? (
+                <span class="langswitch__item is-active" aria-current="true" lang={l}>
+                  <Flag code={l} uid={`m-${l}`} />
+                  <span>{names[l].name}</span>
+                </span>
+              ) : (
+                <a
+                  class="langswitch__item"
+                  href={alternates[l]}
+                  hreflang={l}
+                  lang={l}
+                  data-lang-link
+                  data-track="doi_ngon_ngu"
+                  data-tu={lang}
+                  data-den={l}
+                >
+                  <Flag code={l} uid={`m-${l}`} />
+                  <span>{names[l].name}</span>
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  // Giữ nguyên tham số URL (gclid, utm_…) khi đổi ngôn ngữ: gắn ?query hiện tại vào mọi link ngôn ngữ.
+  document.querySelectorAll<HTMLAnchorElement>("[data-lang-link]").forEach((a) => {
+    a.search = location.search;
+  });
+
+  // Danh sách ngôn ngữ trên mobile.
+  const menu = document.querySelector<HTMLElement>("[data-lang-menu]");
+  const btn = menu?.querySelector<HTMLButtonElement>(".langswitch__btn");
+  const list = menu?.querySelector<HTMLElement>(".langswitch__list");
+  const close = () => {
+    if (!btn || !list) return;
+    list.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+  };
+  btn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const open = btn.getAttribute("aria-expanded") === "true";
+    if (open) return close();
+    list!.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+  });
+  document.addEventListener("click", (e) => {
+    if (menu && !menu.contains(e.target as Node)) close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+</script>
+
+<style>
+  .langswitch {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  /* ---- Desktop: nhóm nút viên thuốc ---- */
+  .langswitch__group {
+    display: none;
+    gap: 6px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 40px;
+    padding-inline: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--color-ink);
+    background: var(--color-white);
+    border: 2px solid var(--color-paper);
+    border-radius: 999px;
+    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  a.pill:hover,
+  a.pill:focus-visible {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* Ngôn ngữ đang xem: nền đỏ thương hiệu, chữ trắng, viền sáng để không chìm vào header cùng màu đỏ. */
+  .pill.is-active {
+    color: #fff;
+    background: #8a181a;
+    border-color: #fff;
+  }
+
+  /* ---- Mobile: nút gọn + danh sách ---- */
+  .langswitch__menu {
+    position: relative;
+  }
+
+  .langswitch__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    min-width: 44px;
+    padding-inline: 12px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-ink);
+    background: var(--color-white);
+    border: 2px solid var(--color-paper);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .langswitch__list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 70;
+    min-width: 190px;
+    padding: 6px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+  }
+
+  .langswitch__list[hidden] {
+    display: none;
+  }
+
+  .langswitch__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding-inline: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-ink);
+    border-radius: 10px;
+  }
+
+  a.langswitch__item:hover,
+  a.langswitch__item:focus-visible {
+    background: var(--color-paper-deep);
+  }
+
+  .langswitch__item.is-active {
+    color: #fff;
+    background: #8a181a;
+  }
+
+  /* Nhóm 3 nút chỉ hiện khi header đủ rộng (menu chính + 3 nút); hẹp hơn thì dùng nút gọn + danh sách như trên mobile. */
+  @media (min-width: 1240px) {
+    .langswitch__group {
+      display: flex;
+    }
+
+    .langswitch__menu {
+      display: none;
+    }
+  }
+</style>

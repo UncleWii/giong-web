@@ -1,5 +1,14 @@
 ---
 import { images } from "../lib/images";
+import LangSwitch from "./LangSwitch.astro";
+import type { Alternates, Lang } from "../lib/lang";
+
+interface Props {
+  lang?: Lang;
+  alternates?: Alternates;
+}
+
+const { lang = "vi", alternates = {} } = Astro.props;
 
 type NavItem = {
   label: string;
@@ -80,6 +89,7 @@ const currentPath = Astro.url.pathname;
     </nav>
 
     <div class="site-header__actions">
+      <LangSwitch lang={lang} alternates={alternates} />
       <button
         class="site-header__toggle"
         id="nav-toggle"
@@ -382,6 +392,18 @@ const currentPath = Astro.url.pathname;
     font-size: 1.2rem;
     padding: var(--space-2xs) 0;
     border-bottom: none;
+  }
+
+  /* 1024–1239px: thu gọn menu một chút để chừa chỗ cho nút ngôn ngữ ở góc phải. */
+  @media (min-width: 1024px) and (max-width: 1239px) {
+    .site-header__nav ul {
+      gap: 1rem;
+    }
+    .site-header__nav a,
+    .dropdown-trigger {
+      font-size: 0.8125rem;
+      letter-spacing: 0;
+    }
   }
 
   @media (min-width: 1024px) {

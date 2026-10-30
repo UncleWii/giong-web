@@ -1,0 +1,1032 @@
+---
+// Landing page của từng quán (dùng chung cho tiếng Việt / English / 한국어) — trang đích quảng cáo Google / Facebook,
+// mục tiêu chính: khách bấm "Chỉ đường tới quán". Các trang mỏng gọi component này: src/pages/cua-hang/[slug].astro (vi)
+// và src/pages/[lang]/cua-hang/[slug].astro (en, ko). Bản dịch ở src/content/cua-hang-i18n.json.
+// Nội dung lấy từ src/content/cua-hang.json (chữ trong [ngoặc vuông] là chỗ chưa có, điền tại file đó).
+// Ảnh riêng từng quán: src/assets/cua-hang/<slug>/ (hero.webp, mon-1..4.webp, khong-gian-1..6.webp) — xem README ở đó.
+import { Image, getImage } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FloatingArtwork from "./FloatingArtwork.astro";
+import PhotoSlot from "./PhotoSlot.astro";
+import FeaturedProducts from "./FeaturedProducts.astro";
+import DebugOnly from "./DebugOnly.astro";
+import data from "../content/cua-hang.json";
+import { getProduct } from "../lib/products";
+import i18n from "../content/cua-hang-i18n.json";
+import { stores, storeImage, mapsUrl, embedUrl, storePath, hotlineOf, telHref, amenityLabel, storePhoto, type Store } from "../lib/stores";
+import { storeLangPaths, type Lang } from "../lib/lang";
+
+interface Props {
+  store: Store;
+  lang?: Lang;
+}
+
+const { store: s, lang = "vi" } = Astro.props;
+const t = i18n.ui[lang];
+const fill = (tpl: string, vars: Record<string, string | number>) => tpl.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
+// Bản dịch riêng của quán (en / ko). Tiếng Việt dùng thẳng dữ liệu gốc trong cua-hang.json.
+type StoreTr = { name: string; h1: string; city: string; locationHint: string; description: string; amenities: Record<string, string>; products: Record<string, { bean?: string; notes?: string[] }> };
+const trs = (i18n.stores as Record<string, { en: StoreTr; ko: StoreTr }>)[s.slug];
+const tr = lang === "vi" ? undefined : trs?.[lang];
+const hasTranslations = Boolean(trs);
+const alternates = storeLangPaths[s.slug];
+const pagePath = alternates?.[lang] ?? storePath(s);
+const name = tr?.name ?? s.name;
+const cityName = t.cities[s.cityShort as keyof typeof t.cities] ?? s.cityShort;
+const maps = mapsUrl(s);
+const tel = telHref(s);
+const hotline = hotlineOf(s);
+const others = stores.filter((o) => o.slug !== s.slug);
+const heroShot = storePhoto(s.slug, "hero") ?? storeImage(s.image);
+const dishes = (s.dishes ?? data.dishes).slice(0, 4);
+// Chữ còn [ngoặc vuông] hoặc để trống = chưa điền: ẩn trên web thật, chỉ hiện khi kiểm tra (?debug_tracking=1).
+const isPlaceholder = (v?: string | null) => !v || /\[[^\]]*\]/.test(v);
+const dishesReady = dishes.length > 0 && dishes.every((d) => !isPlaceholder(d.name) && !isPlaceholder(d.price) && !isPlaceholder(d.description));
+const dishTr = lang === "vi" ? undefined : i18n.dishes[lang];
+const dishesView = dishes.map((d, i) => ({
+  name: d.name,
+  sub: dishTr?.[i]?.sub,
+  price: dishTr?.[i]?.price ?? d.price,
+  description: dishTr?.[i]?.description ?? d.description,
+}));
+const featured = (s.featuredProducts ?? []).map(getProduct);
+// Quán đã có ảnh không gian thì chỉ hiện các ô có ảnh; chưa có ảnh nào thì ẩn cả khối (bản kiểm tra hiện đủ 6 khung giữ chỗ).
+const allSpace = [1, 2, 3, 4, 5, 6];
+const haveSpace = allSpace.filter((n) => storePhoto(s.slug, `khong-gian-${n}`));
+const spaceSlots = haveSpace.length > 0 ? haveSpace : allSpace;
+const spaceReady = haveSpace.length > 0;
+const highlight = (id: string) => tr?.amenities?.[id] ?? data.amenities.find((a) => a.id === id)?.highlight ?? amenityLabel(id);
+
+const meta = { name, shortAddress: s.shortAddress, city: cityName, hours: s.hours, hotline };
+const title = fill(t.metaTitle, meta);
+const description = fill(t.metaDescription, meta);
+
+const og = await getImage({ src: heroShot, width: 1200, height: 630, fit: "cover", format: "jpg", quality: 80 });
+
+const hours = s.hours.match(/(\d{1,2}:\d{2})\s*[–-]\s*(\d{1,2}:\d{2})/);
+const pad = (t: string) => t.padStart(5, "0");
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  name,
+  description: tr?.description ?? s.description,
+  inLanguage: lang,
+  image: new URL(og.src, Astro.site).toString(),
+  url: new URL(pagePath, Astro.site).toString(),
+  telephone: hotline.replace(/[^+\d]/g, ""),
+  hasMap: maps,
+  address: { "@type": "PostalAddress", streetAddress: s.address, addressLocality: s.cityShort, addressCountry: "VN" },
+  geo: { "@type": "GeoCoordinates", latitude: s.lat, longitude: s.lng },
+  ...(hours && {
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      opens: pad(hours[1]),
+      closes: pad(hours[2]),
+    },
+  }),
+};
+
+// Biểu tượng tiện ích (nét đơn giản, vẽ bằng stroke).
+const amenityIcon: Record<string, string> = {
+  outside: '<path d="M3 12a9 9 0 0 1 18 0H3Z"/><path d="M12 12v6.5a2 2 0 0 0 4 0"/>',
+  pet: '<circle cx="6.5" cy="10" r="2"/><circle cx="10.5" cy="6.5" r="2"/><circle cx="15.5" cy="6.5" r="2"/><circle cx="19" cy="10" r="2"/><path d="M12.8 11.5c-3 0-5.3 3-5.3 5.2 0 2 2 2.3 5.3 2.3s5.3-.3 5.3-2.3c0-2.2-2.3-5.2-5.3-5.2Z"/>',
+  ac: '<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="m9.5 4.5 2.5 2 2.5-2M9.5 19.5l2.5-2 2.5 2"/>',
+  roastery: '<path d="M5 8h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V8Z"/><path d="M16 9h2a2.5 2.5 0 0 1 0 5h-2M8 3.5v2M12 3.5v2"/>',
+};
+---
+
+<BaseLayout title={title} description={description} image={og.src} brandedTitle lang={lang} alternates={alternates}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article class="lp" data-view-store data-chi-nhanh={s.trackId}>
+    <!-- A. HERO: tên quán · trạng thái mở cửa · vị trí · nút Chỉ đường -->
+    <section class="lp-hero" data-vi-tri="trang_quan_hero">
+      <div class="container lp-hero__inner">
+        {!hasTranslations && (
+          <div class="lp-langs">
+            <a class="lp-lang" href="#english" lang="en" aria-label="English information">English ↓</a>
+          </div>
+        )}
+        <div class="lp-hero__art">
+          <FloatingArtwork alt={t.artworkAlt} />
+        </div>
+        <div class="lp-hero__copy">
+          <p class="eyebrow">{tr?.city ?? s.city}</p>
+          <h1 class="font-heading lp-hero__title">{tr?.h1 ?? s.h1}</h1>
+          <p
+            class="lp-status"
+            data-open-status
+            data-open={hours ? pad(hours[1]) : undefined}
+            data-close={hours ? pad(hours[2]) : undefined}
+            data-tpl-open={t.statusOpen}
+            data-tpl-closed={t.statusClosed}
+          >
+            <span class="lp-status__dot" aria-hidden="true"></span>
+            <span data-status-text>{t.hours}: {s.hours}</span>
+          </p>
+          <DebugOnly hide={isPlaceholder(tr?.locationHint ?? s.locationHint)}><p class="lp-hint">{tr?.locationHint ?? s.locationHint}</p></DebugOnly>
+          <div class="lp-hero__cta">
+            <a
+              class="big-btn big-btn--primary big-btn--xl"
+              href={maps}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track="click_chi_duong"
+              data-chi-nhanh={s.trackId}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                <circle cx="12" cy="10" r="2.6" stroke="currentColor" stroke-width="1.8" />
+              </svg>
+              <span>{t.directions}</span>
+            </a>
+            <a class="big-btn big-btn--outline" href={tel} data-track="click_goi_chi_nhanh" data-chi-nhanh={s.trackId}>
+              <span>{t.call}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- B. ẢNH QUÁN LỚN + ĐIỂM NỔI BẬT -->
+    <section class="container lp-sec lp-photo" aria-label={t.photoAria}>
+      <PhotoSlot
+        slug={s.slug}
+        file="hero"
+        label="hero quán"
+        width={1600}
+        height={1000}
+        alt={fill(t.photoAlt, { name })}
+        sizes="(min-width: 1320px) 1280px, 100vw"
+        loading="eager"
+      />
+      {
+        s.tags.length > 0 && (
+          <ul class="lp-amenities" aria-label={t.amenities}>
+            {s.tags.map((t) => (
+              <li>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={amenityIcon[t]} />
+                <span>{highlight(t)}</span>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+
+    <!-- D. MÓN ĐẶC TRƯNG -->
+    {
+      dishes.length > 0 && (
+        <DebugOnly hide={!dishesReady}>
+        <section class="container lp-sec" aria-labelledby="dishes-title" data-vi-tri="trang_quan_mon">
+          <h2 id="dishes-title" class="font-heading lp-h2">{t.dishesTitle}</h2>
+          <ul class="lp-dishes">
+            {dishesView.map((d, i) => (
+              <li class="dish">
+                <PhotoSlot
+                  slug={s.slug}
+                  file={`mon-${i + 1}`}
+                  label="món"
+                  width={800}
+                  height={800}
+                  alt={d.name}
+                  sizes="(min-width: 900px) 300px, 45vw"
+                />
+                <h3 class="dish__name">{d.name}</h3>
+                {d.sub && <p class="dish__sub">{d.sub}</p>}
+                <p class="dish__price">{d.price}</p>
+                <p class="dish__desc">{d.description}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="lp-center">
+            <a class="big-btn big-btn--outline" href="/menu" data-track="xem_menu" data-chi-nhanh={s.trackId}>
+              <span>{t.menuFull}</span>
+            </a>
+          </p>
+        </section>
+        </DebugOnly>
+      )
+    }
+
+    <!-- D2. CÀ PHÊ RANG XAY NGUYÊN CHẤT (chỉ hiện nếu quán có "featuredProducts" trong cua-hang.json) -->
+    {
+      featured.length > 0 && (
+        <FeaturedProducts
+          products={featured}
+          title={t.featuredTitle}
+          lead={fill(t.featuredLead, { city: cityName })}
+          chiNhanh={s.trackId}
+          detailLabel={t.featuredDetail}
+          vatNote={t.featuredVat}
+          zaloLabel={t.featuredZalo}
+          zaloNote={t.featuredZaloNote}
+          zaloHref={`https://zalo.me/${data.zaloRetail}`}
+          text={
+            lang === "vi"
+              ? undefined
+              : {
+                  shopee: t.featuredShopee,
+                  shopeeAria: t.featuredShopeeAria,
+                  productAlt: t.productAlt,
+                  notes: t.featuredNotes,
+                  currency: t.currency,
+                  thousands: t.thousands,
+                  overrides: tr?.products,
+                }
+          }
+        />
+      )
+    }
+
+    <!-- E. KHÔNG GIAN QUÁN -->
+    <DebugOnly hide={!spaceReady}>
+    <section class="container lp-sec" aria-labelledby="space-title" data-vi-tri="trang_quan_khong_gian">
+      <h2 id="space-title" class="font-heading lp-h2">{t.spaceTitle}</h2>
+      <ul class="lp-space">
+        {
+          spaceSlots.map((n) => (
+            <li>
+              <PhotoSlot
+                slug={s.slug}
+                file={`khong-gian-${n}`}
+                label="không gian"
+                width={1200}
+                height={900}
+                alt={fill(t.spaceAlt, { name, n })}
+                sizes="(min-width: 900px) 400px, 78vw"
+                zoom
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+    </DebugOnly>
+
+    <!-- F. THÔNG TIN & BẢN ĐỒ -->
+    <section class="container lp-sec" aria-labelledby="info-title" data-vi-tri="trang_quan_thong_tin">
+      <h2 id="info-title" class="font-heading lp-h2">{t.infoTitle}</h2>
+      <div class="lp-info">
+        <div>
+          <dl class="lp-facts">
+            <div>
+              <dt>{t.address}</dt>
+              <dd>{s.address}</dd>
+            </div>
+            <div>
+              <dt>{t.hours}</dt>
+              <dd>{s.hours}</dd>
+            </div>
+            <div>
+              <dt>{t.hotline}</dt>
+              <dd><a href={tel} data-track="click_goi_chi_nhanh" data-chi-nhanh={s.trackId}>{hotline}</a></dd>
+            </div>
+          </dl>
+          <div class="lp-cta">
+            <a
+              class="big-btn big-btn--primary"
+              href={maps}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track="click_chi_duong"
+              data-chi-nhanh={s.trackId}
+            >
+              <span>{t.directions}</span>
+            </a>
+            <a
+              class="big-btn big-btn--outline"
+              href={maps}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track="xem_danh_gia"
+              data-chi-nhanh={s.trackId}
+            >
+              <span>{t.reviews}</span>
+            </a>
+          </div>
+        </div>
+        <div class="lp-map">
+          <iframe data-src={embedUrl(s)} title={fill(t.mapTitle, { name })} referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          <noscript>
+            <iframe src={embedUrl(s)} title={fill(t.mapTitle, { name })} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </noscript>
+        </div>
+      </div>
+    </section>
+
+    <!-- G. Khối tiếng Anh ngắn: chỉ quán chưa có trang EN / KO riêng -->
+    {
+      !hasTranslations && (
+    <section class="container lp-sec" id="english" lang="en" aria-labelledby="en-title" data-vi-tri="trang_quan_thong_tin">
+      <div class="lp-en-box">
+        <p class="eyebrow">For international guests</p>
+        <h2 id="en-title" class="font-heading">{s.name}</h2>
+        <DebugOnly hide={isPlaceholder(s.introEn)}><p class="lp-en-box__intro">{s.introEn}</p></DebugOnly>
+        <dl class="lp-facts">
+          <div>
+            <dt>Address</dt>
+            <dd>{s.address}</dd>
+          </div>
+          <div>
+            <dt>Opening hours</dt>
+            <dd>{s.hours}</dd>
+          </div>
+        </dl>
+        <div class="lp-cta">
+          <a
+            class="big-btn big-btn--primary"
+            href={maps}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="click_chi_duong"
+            data-chi-nhanh={s.trackId}
+          >
+            <span>Get directions</span>
+          </a>
+          <a class="big-btn big-btn--outline" href={tel} data-track="click_goi_chi_nhanh" data-chi-nhanh={s.trackId}>
+            <span>Call</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+      )
+    }
+
+    <!-- H. CÁC QUÁN GIÓNG KHÁC -->
+    <nav class="container lp-sec" aria-labelledby="others-title" data-vi-tri="trang_quan_khac">
+      <h2 id="others-title" class="font-heading lp-h2">{t.othersTitle}</h2>
+      <ul class="lp-others">
+        {
+          others.map((o) => (
+            <li>
+              <a href={(lang !== "vi" && storeLangPaths[o.slug]?.[lang]) || storePath(o)} data-track="click_quan_khac" data-chi-nhanh={s.trackId} data-den-chi-nhanh={o.trackId}>
+                <Image class="lp-others__img" src={storeImage(o.image)} alt="" width={160} height={160} widths={[160, 320]} sizes="80px" loading="lazy" />
+                <span class="lp-others__text">
+                  <span class="lp-others__city">{t.cities[o.cityShort as keyof typeof t.cities] ?? o.cityShort}</span>
+                  <span class="lp-others__name">{o.name}</span>
+                </span>
+                <span class="lp-others__arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </article>
+
+  <!-- I. THANH NÚT CỐ ĐỊNH ĐÁY MÀN HÌNH (chỉ điện thoại) -->
+  <nav class="stickybar" aria-label={t.stickyAria} data-vi-tri="trang_quan_thanh_day">
+    <a
+      class="stickybar__btn stickybar__btn--primary"
+      href={maps}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-track="click_chi_duong"
+      data-chi-nhanh={s.trackId}
+    >{t.stickyDirections}</a>
+    <a class="stickybar__btn" href={tel} data-track="click_goi_chi_nhanh" data-chi-nhanh={s.trackId}>{t.stickyCall}</a>
+    <a class="stickybar__btn" href="/menu" data-track="xem_menu" data-chi-nhanh={s.trackId}>{t.stickyMenu}</a>
+  </nav>
+
+  <dialog class="lightbox" data-lightbox-dialog aria-label={t.lightbox}>
+    <button type="button" class="lightbox__close" data-lightbox-close aria-label={t.lightboxClose}>×</button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label={t.lightboxPrev}>‹</button>
+    <img alt="" data-lightbox-img />
+    <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label={t.lightboxNext}>›</button>
+  </dialog>
+</BaseLayout>
+
+<script>
+  // Trạng thái mở cửa — tính theo giờ Việt Nam và giờ mở cửa của quán.
+  const status = document.querySelector<HTMLElement>("[data-open-status]");
+  if (status?.dataset.open && status.dataset.close) {
+    const { open, close } = status.dataset as { open: string; close: string };
+    const text = status.querySelector<HTMLElement>("[data-status-text]")!;
+    const toMin = (t: string) => {
+      const [h, m] = t.split(":").map(Number);
+      return h * 60 + m;
+    };
+    const update = () => {
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        hour: "2-digit",
+        minute: "2-digit",
+        hourCycle: "h23",
+      }).formatToParts(new Date());
+      const now = Number(parts.find((p) => p.type === "hour")?.value) * 60 + Number(parts.find((p) => p.type === "minute")?.value);
+      const isOpen = now >= toMin(open) && now < toMin(close);
+      status.dataset.state = isOpen ? "open" : "closed";
+      const tpl = (isOpen ? status.dataset.tplOpen : status.dataset.tplClosed) ?? "";
+      text.textContent = tpl.replace("{t}", isOpen ? close : open);
+    };
+    update();
+    window.setInterval(update, 60_000);
+  }
+
+  // Bản đồ nhúng chỉ tải khi sắp cuộn tới (không tranh băng thông với ảnh và chữ ở màn hình đầu).
+  const mapFrame = document.querySelector<HTMLIFrameElement>("iframe[data-src]");
+  if (mapFrame) {
+    const load = () => {
+      mapFrame.src = mapFrame.dataset.src ?? "";
+    };
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            load();
+            io.disconnect();
+          }
+        },
+        { rootMargin: "300px 0px" }
+      );
+      io.observe(mapFrame);
+    } else {
+      load();
+    }
+  }
+
+  // Xem ảnh không gian lớn.
+  const dialog = document.querySelector<HTMLDialogElement>("[data-lightbox-dialog]");
+  const big = dialog?.querySelector<HTMLImageElement>("[data-lightbox-img]");
+  const shots = Array.from(document.querySelectorAll<HTMLElement>("[data-lightbox]"));
+  let current = 0;
+  const show = (i: number) => {
+    if (!dialog || !big || shots.length === 0) return;
+    current = (i + shots.length) % shots.length;
+    big.src = shots[current].dataset.full ?? "";
+    big.alt = shots[current].dataset.alt ?? "";
+  };
+  shots.forEach((el, i) =>
+    el.addEventListener("click", () => {
+      show(i);
+      dialog?.showModal();
+    })
+  );
+  dialog?.querySelector("[data-lightbox-close]")?.addEventListener("click", () => dialog.close());
+  dialog?.querySelector("[data-lightbox-prev]")?.addEventListener("click", () => show(current - 1));
+  dialog?.querySelector("[data-lightbox-next]")?.addEventListener("click", () => show(current + 1));
+  dialog?.addEventListener("click", (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+  dialog?.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") show(current - 1);
+    if (e.key === "ArrowRight") show(current + 1);
+  });
+</script>
+
+<style>
+  /* ---------- khung chung ---------- */
+  .lp-sec {
+    padding-block: var(--space-md);
+  }
+
+  .lp-h2 {
+    font-size: var(--text-h2);
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .lp-center {
+    margin-top: var(--space-sm);
+    text-align: center;
+  }
+
+  /* ---------- nút ---------- */
+  .big-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    min-height: 56px;
+    padding: 0.7em 1.6em;
+    font: inherit;
+    font-weight: 700;
+    font-size: var(--text-body);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: var(--border-width) solid var(--color-primary);
+    transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .big-btn--xl {
+    min-height: 64px;
+    font-size: 1.1rem;
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--color-primary) 35%, transparent);
+  }
+
+  .big-btn--primary {
+    color: var(--color-accent);
+    background: var(--color-primary);
+  }
+
+  .big-btn--primary:hover,
+  .big-btn--primary:focus-visible {
+    color: var(--color-ink);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .big-btn--outline {
+    color: var(--color-primary);
+    background: transparent;
+  }
+
+  .big-btn--outline:hover,
+  .big-btn--outline:focus-visible {
+    color: var(--color-accent);
+    background: var(--color-primary);
+  }
+
+  .big-btn--ink {
+    color: var(--color-accent);
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  .big-btn--ink:hover,
+  .big-btn--ink:focus-visible {
+    background: var(--color-primary-strong);
+    border-color: var(--color-primary-strong);
+  }
+
+  /* ---------- A. hero ---------- */
+  .lp-hero {
+    background: var(--color-paper-deep);
+    overflow: hidden;
+  }
+
+  .lp-hero__inner {
+    position: relative;
+    display: grid;
+    gap: var(--space-xs);
+    /* Chừa chỗ phía trên cho hai nút ngôn ngữ (English ↓ / 한국어 ↓) để không đè lên artwork. */
+    padding-block: calc(var(--space-xs) + 44px) var(--space-md);
+  }
+
+  .lp-langs {
+    position: absolute;
+    top: var(--space-xs);
+    right: var(--gutter);
+    z-index: 1;
+    display: flex;
+    gap: var(--space-3xs);
+  }
+
+  .lp-lang {
+    display: inline-grid;
+    place-items: center;
+    min-height: 36px;
+    padding-inline: 0.9em;
+    white-space: nowrap;
+    font-size: var(--text-small);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+    color: var(--color-primary);
+    border: var(--border-width) solid var(--color-primary);
+    border-radius: 999px;
+  }
+
+  .lp-lang:hover,
+  .lp-lang:focus-visible {
+    color: var(--color-accent);
+    background: var(--color-primary);
+  }
+
+  /* Điện thoại: artwork nhỏ ở trên, nút Chỉ đường nằm trong màn hình đầu. */
+  .lp-hero__art {
+    width: min(58vw, 260px);
+    margin-inline: auto;
+  }
+
+  .lp-hero__title {
+    font-size: var(--text-h1);
+    line-height: var(--leading-snug);
+    color: var(--color-primary);
+    margin-block: var(--space-3xs) var(--space-2xs);
+  }
+
+  .lp-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
+    font-weight: 700;
+    font-size: var(--text-small);
+    margin-bottom: var(--space-3xs);
+  }
+
+  .lp-status__dot {
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 50%;
+    background: #9a9a92;
+  }
+
+  .lp-status[data-state="open"] .lp-status__dot {
+    background: #2e9e4f;
+    box-shadow: 0 0 0 4px color-mix(in srgb, #2e9e4f 25%, transparent);
+  }
+
+  .lp-status[data-state="closed"] .lp-status__dot {
+    background: var(--color-primary);
+  }
+
+  .lp-hint {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .lp-hero__cta {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  /* ---------- B. ảnh lớn + tiện ích ---------- */
+  .lp-photo {
+    padding-top: var(--space-sm);
+  }
+
+  .lp-amenities {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+  }
+
+  .lp-amenities li {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .lp-amenities svg {
+    flex: none;
+  }
+
+  /* ---------- D. món ---------- */
+  .lp-dishes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm) var(--space-xs);
+  }
+
+  .dish__name {
+    font-size: var(--text-body-lg);
+    color: var(--color-primary);
+    margin-top: var(--space-2xs);
+  }
+
+  .dish__sub {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    margin-top: var(--space-3xs);
+  }
+
+  .dish__price {
+    font-weight: 700;
+  }
+
+  .dish__desc {
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  /* ---------- E. không gian ---------- */
+  .lp-space {
+    display: flex;
+    gap: var(--space-2xs);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    padding-bottom: var(--space-3xs);
+  }
+
+  .lp-space li {
+    flex: 0 0 78%;
+    scroll-snap-align: center;
+  }
+
+  /* ---------- F. thông tin & bản đồ / G. tiếng Anh ---------- */
+  .lp-info {
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .lp-facts {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-bottom: var(--space-sm);
+  }
+
+  .lp-facts dt {
+    display: inline;
+    font-weight: 700;
+    margin-right: 0.3em;
+  }
+
+  .lp-facts dt::after {
+    content: ":";
+  }
+
+  .lp-facts dd {
+    display: inline;
+    margin: 0;
+  }
+
+  .lp-facts a {
+    color: inherit;
+  }
+
+  .lp-cta {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .lp-map {
+    min-height: 320px;
+    border: var(--border-width) solid var(--color-border);
+    background: var(--color-bg-deep);
+  }
+
+  .lp-map iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    border: 0;
+  }
+
+  #english {
+    scroll-margin-top: 88px;
+  }
+
+  .lp-en-box {
+    padding: var(--space-sm);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-left: 6px solid var(--color-primary);
+    scroll-margin-top: 80px;
+  }
+
+  .lp-en-box h2 {
+    font-size: var(--text-h3);
+    color: var(--color-primary);
+    margin-block: var(--space-3xs) var(--space-2xs);
+  }
+
+  .lp-en-box__intro {
+    margin-bottom: var(--space-xs);
+  }
+
+  /* ---------- H. quán khác ---------- */
+  /* Quán khác: thẻ ngang nhỏ gọn (ảnh vuông 64px + tên), dễ bấm sang trang quán khác. */
+  .lp-others {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2xs);
+  }
+
+  .lp-others li {
+    display: flex;
+  }
+
+  .lp-others a {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 72px;
+    padding: 4px var(--space-xs) 4px 4px;
+    text-decoration: none;
+    color: inherit;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .lp-others a:hover,
+  .lp-others a:focus-visible {
+    border-color: var(--color-primary);
+  }
+
+  .lp-others :global(.lp-others__img) {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+  }
+
+  .lp-others__text {
+    display: grid;
+    min-width: 0;
+  }
+
+  .lp-others__city {
+    font-size: var(--text-label);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .lp-others__name {
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .lp-others__arrow {
+    font-size: 1.25rem;
+    color: var(--color-primary);
+  }
+
+  /* ---------- I. thanh nút đáy (chỉ điện thoại) ---------- */
+  .stickybar {
+    display: none;
+  }
+
+  .lightbox {
+    width: min(96vw, 1100px);
+    max-width: none;
+    max-height: 92vh;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .lightbox::backdrop {
+    background: rgba(0, 0, 0, 0.82);
+  }
+
+  .lightbox img {
+    display: block;
+    width: 100%;
+    max-height: 88vh;
+    object-fit: contain;
+  }
+
+  .lightbox__close,
+  .lightbox__nav {
+    position: absolute;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    font: inherit;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.55);
+    border: 0;
+    border-radius: 50%;
+  }
+
+  .lightbox__close {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .lightbox__nav {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lightbox__nav--prev {
+    left: 0.5rem;
+  }
+
+  .lightbox__nav--next {
+    right: 0.5rem;
+  }
+
+  @media (max-width: 767px) {
+    .stickybar {
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 40;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 0.5rem;
+      padding: 0.6rem 0.75rem calc(0.6rem + env(safe-area-inset-bottom));
+      background: var(--color-surface);
+      border-top: var(--border-width) solid var(--color-border);
+      box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .stickybar__btn {
+      display: grid;
+      place-items: center;
+      min-height: 48px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--color-primary);
+      border: var(--border-width) solid var(--color-primary);
+    }
+
+    .stickybar__btn--primary {
+      color: var(--color-accent);
+      background: var(--color-primary);
+    }
+
+    /* Chừa chỗ cho thanh đáy; 2 nút Zalo thu thành icon nhỏ, nằm phía trên thanh. */
+    :global(body:has(.stickybar)) {
+      padding-bottom: 72px;
+    }
+
+    :global(body:has(.stickybar) .zalo-float) {
+      bottom: calc(72px + env(safe-area-inset-bottom) + 0.5rem);
+    }
+
+    :global(body:has(.stickybar) .zalo-float__btn) {
+      min-height: 40px;
+      width: 40px;
+      padding: 0;
+      justify-content: center;
+    }
+
+    :global(body:has(.stickybar) .zalo-float__label) {
+      display: none;
+    }
+  }
+
+  /* ---------- máy tính bảng / desktop ---------- */
+  @media (min-width: 640px) {
+    .lp-dishes {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .lp-amenities {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .lp-others {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lp-space {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow: visible;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+
+    .lp-space li {
+      flex: none;
+    }
+
+    .lp-hero__cta {
+      grid-template-columns: 1.6fr 1fr;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .lp-others {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .lp-hero__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      align-items: center;
+      gap: var(--space-lg);
+      padding-block: var(--space-lg);
+    }
+
+    .lp-hero__art {
+      order: 2;
+      width: 100%;
+      max-width: 600px;
+      margin-inline: 0;
+    }
+
+    .lp-hero__copy {
+      order: 1;
+      padding-top: var(--space-md);
+    }
+
+    .lp-info {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: var(--space-lg);
+      align-items: start;
+    }
+
+    .lp-cta {
+      grid-template-columns: repeat(2, max-content);
+    }
+
+    .lp-map,
+    .lp-map iframe {
+      min-height: 440px;
+    }
+  }
+</style>

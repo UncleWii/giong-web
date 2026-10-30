@@ -21,9 +21,22 @@ interface Props {
   zaloLabel: string;
   zaloNote: string;
   zaloHref: string;
+  /** Bản dịch (en / ko): chữ trên nút, nhãn, định dạng giá và chữ riêng từng sản phẩm. Không truyền = tiếng Việt. */
+  text?: {
+    shopee: string;
+    shopeeAria: string;
+    productAlt: string;
+    notes: string;
+    currency: string;
+    thousands: string;
+    overrides?: Record<string, { bean?: string; notes?: string[] }>;
+  };
 }
 
-const { products, title, lead, chiNhanh, viTri = "trang_quan_san_pham", detailLabel, vatNote, zaloLabel, zaloNote, zaloHref } = Astro.props;
+const { products, title, lead, chiNhanh, viTri = "trang_quan_san_pham", detailLabel, vatNote, zaloLabel, zaloNote, zaloHref, text } = Astro.props;
+
+const price = (vnd: number) =>
+  text ? `${new Intl.NumberFormat("en-US").format(vnd).replace(/,/g, text.thousands)}${text.currency}` : formatPrice(vnd);
 
 const whiteFiles = import.meta.glob<{ default: ImageMetadata }>("../assets/products/nen-trang/*-nen-trang.{webp,jpg,png}", {
   eager: true,
@@ -45,7 +58,7 @@ const whiteBg = (slug: string) =>
             <div class="fp-card__media">
               <Image
                 src={packshot ?? p.image}
-                alt={`Gói cà phê ${p.name} – ${p.seriesTitle}`}
+                alt={text ? text.productAlt.replace("{name}", p.name).replace("{series}", p.seriesTitle) : `Gói cà phê ${p.name} – ${p.seriesTitle}`}
                 widths={[200, 320, 480]}
                 sizes="(min-width: 900px) 240px, 45vw"
                 loading="lazy"
@@ -55,15 +68,15 @@ const whiteBg = (slug: string) =>
             <h3 class="fp-card__name font-heading">{p.name}</h3>
             <p class="fp-card__meta">
               <span class="fp-card__series">{p.seriesTitle}</span>
-              <span>{p.bean}</span>
-              <span>Hương vị: {p.notes.join(", ")}</span>
+              <span>{text?.overrides?.[p.slug]?.bean ?? p.bean}</span>
+              <span>{text?.notes ?? "Hương vị"}: {(text?.overrides?.[p.slug]?.notes ?? p.notes).join(", ")}</span>
             </p>
             <p class="fp-card__price">
-              <strong>{formatPrice(p.price)}</strong>
+              <strong>{price(p.price)}</strong>
               <small>{vatNote}</small>
             </p>
             <div class="fp-card__actions">
-              <ShopeeButton product={p} chiNhanh={chiNhanh} />
+              <ShopeeButton product={p} chiNhanh={chiNhanh} label={text?.shopee} ariaLabel={text ? text.shopeeAria.replace("{name}", p.name) : undefined} />
               <a
                 class="fp-card__detail"
                 href={productUrl(p)}

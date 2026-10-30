@@ -288,3 +288,8 @@ ol {
 .skip-link:focus {
   top: var(--space-xs);
 }
+
+/* Tiếng Hàn: xuống dòng theo từ (khoảng trắng), không cắt giữa từ. */
+html[lang="ko"] body {
+  word-break: keep-all;
+}

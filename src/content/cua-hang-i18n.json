@@ -1,0 +1,278 @@
+{
+ "ui": {
+  "vi": {
+   "hours": "Giờ mở cửa",
+   "hotline": "Hotline",
+   "directions": "Chỉ đường tới quán",
+   "call": "Gọi quán",
+   "reviews": "Xem đánh giá trên Google",
+   "address": "Địa chỉ",
+   "amenities": "Tiện ích",
+   "dishesTitle": "Món đặc trưng",
+   "menuFull": "Xem menu đầy đủ",
+   "spaceTitle": "Không gian quán",
+   "infoTitle": "Thông tin & bản đồ",
+   "othersTitle": "Các quán Gióng khác",
+   "statusOpen": "Đang mở cửa · đến {t}",
+   "statusClosed": "Đã đóng cửa · mở lại {t}",
+   "featuredTitle": "Cà phê rang xay nguyên chất",
+   "featuredLead": "Hạt tươi rang tại chỗ ở {city} — mua tại quầy hoặc đặt online để mang hương vị Gióng về nhà.",
+   "featuredDetail": "Xem chi tiết",
+   "featuredVat": "Giá đã bao gồm VAT",
+   "featuredShopee": "Mua trên Shopee",
+   "featuredShopeeAria": "Mua {name} trên Shopee",
+   "featuredNotes": "Hương vị",
+   "featuredZalo": "Hỏi mua qua Zalo",
+   "featuredZaloNote": "Nhắn Zalo mua lẻ",
+   "stickyDirections": "Chỉ đường",
+   "stickyCall": "Gọi",
+   "stickyMenu": "Menu",
+   "stickyAria": "Thao tác nhanh",
+   "lightbox": "Xem ảnh lớn",
+   "lightboxClose": "Đóng",
+   "lightboxPrev": "Ảnh trước",
+   "lightboxNext": "Ảnh sau",
+   "lightboxOpen": "Xem lớn: {alt}",
+   "photoAria": "Ảnh quán",
+   "photoAlt": "Không gian {name}",
+   "spaceAlt": "{name} – không gian {n}",
+   "mapTitle": "Bản đồ {name}",
+   "artworkAlt": "Artwork Gióng: thuyền rồng, múa dân gian và cà phê Việt",
+   "currency": "đ",
+   "thousands": ".",
+   "metaTitle": "{name} – Cà phê Việt tại {shortAddress}, {city}",
+   "metaDescription": "{name} – cà phê Việt tại {shortAddress}, {city}. Mở cửa {hours}. Hotline {hotline}. Chỉ đường Google Maps, xem menu.",
+   "ogLocale": "vi_VN",
+   "cities": {
+    "Hà Nội": "Hà Nội",
+    "Sài Gòn": "Sài Gòn",
+    "Hội An": "Hội An",
+    "Nha Trang": "Nha Trang"
+   },
+   "productAlt": "Gói cà phê {name} – {series}"
+  },
+  "en": {
+   "hours": "Opening hours",
+   "hotline": "Hotline",
+   "directions": "Get directions",
+   "call": "Call",
+   "reviews": "Google reviews",
+   "address": "Address",
+   "amenities": "Amenities",
+   "dishesTitle": "Signature drinks",
+   "menuFull": "View full menu",
+   "spaceTitle": "The space",
+   "infoTitle": "Info & map",
+   "othersTitle": "Other Gióng stores",
+   "statusOpen": "Open now · until {t}",
+   "statusClosed": "Closed · opens {t}",
+   "featuredTitle": "Pure roasted & ground coffee",
+   "featuredLead": "Beans freshly roasted on-site in {city} — buy at the counter or order online to take the Gióng flavor home.",
+   "featuredDetail": "View details",
+   "featuredVat": "Price includes VAT",
+   "featuredShopee": "Buy on Shopee",
+   "featuredShopeeAria": "Buy {name} on Shopee",
+   "featuredNotes": "Flavor notes",
+   "featuredZalo": "Ask via Zalo",
+   "featuredZaloNote": "Chat on Zalo to buy",
+   "stickyDirections": "Directions",
+   "stickyCall": "Call",
+   "stickyMenu": "Menu",
+   "stickyAria": "Quick actions",
+   "lightbox": "Large photo",
+   "lightboxClose": "Close",
+   "lightboxPrev": "Previous photo",
+   "lightboxNext": "Next photo",
+   "lightboxOpen": "View larger: {alt}",
+   "photoAria": "Store photo",
+   "photoAlt": "{name} store",
+   "spaceAlt": "{name} – photo {n}",
+   "mapTitle": "{name} map",
+   "artworkAlt": "Gióng artwork: dragon boat, folk dance and Vietnamese coffee",
+   "currency": " VND",
+   "thousands": ",",
+   "metaTitle": "{name} – Premium Vietnamese coffee at {shortAddress}, {city}",
+   "metaDescription": "{name} – premium Vietnamese coffee, beans freshly roasted on-site, 250m from the central beach. Open {hours}. Hotline {hotline}. Directions on Google Maps and menu.",
+   "ogLocale": "en_US",
+   "cities": {
+    "Hà Nội": "Hanoi",
+    "Sài Gòn": "Saigon",
+    "Hội An": "Hoi An",
+    "Nha Trang": "Nha Trang"
+   },
+   "productAlt": "{name} coffee bag – {series}"
+  },
+  "ko": {
+   "hours": "영업시간",
+   "hotline": "전화번호",
+   "directions": "길찾기",
+   "call": "전화하기",
+   "reviews": "Google 리뷰 보기",
+   "address": "주소",
+   "amenities": "편의시설",
+   "dishesTitle": "대표 메뉴",
+   "menuFull": "메뉴 보기",
+   "spaceTitle": "매장 분위기",
+   "infoTitle": "매장 정보 및 지도",
+   "othersTitle": "다른 Gióng 매장",
+   "statusOpen": "영업 중 · {t}까지",
+   "statusClosed": "영업 종료 · {t} 오픈",
+   "featuredTitle": "순수 로스팅 분쇄 커피",
+   "featuredLead": "{city} 매장에서 직접 로스팅한 신선한 원두 — 매장에서 구매하시거나 온라인으로 주문해 Gióng의 맛을 집으로 가져가세요.",
+   "featuredDetail": "자세히 보기",
+   "featuredVat": "부가세(VAT) 포함 가격",
+   "featuredShopee": "Shopee에서 구매",
+   "featuredShopeeAria": "Shopee에서 {name} 구매",
+   "featuredNotes": "풍미",
+   "featuredZalo": "Zalo로 문의하기",
+   "featuredZaloNote": "Zalo로 소매 구매 문의",
+   "stickyDirections": "길찾기",
+   "stickyCall": "전화하기",
+   "stickyMenu": "메뉴 보기",
+   "stickyAria": "빠른 메뉴",
+   "lightbox": "사진 크게 보기",
+   "lightboxClose": "닫기",
+   "lightboxPrev": "이전 사진",
+   "lightboxNext": "다음 사진",
+   "lightboxOpen": "크게 보기: {alt}",
+   "photoAria": "매장 사진",
+   "photoAlt": "{name} 매장",
+   "spaceAlt": "{name} – 사진 {n}",
+   "mapTitle": "{name} 지도",
+   "artworkAlt": "Gióng 아트워크: 용선, 전통 춤, 베트남 커피",
+   "currency": " VND",
+   "thousands": ",",
+   "metaTitle": "{name} – {shortAddress} 프리미엄 베트남 커피, {city}",
+   "metaDescription": "{name} – 매장에서 직접 로스팅한 신선한 원두의 프리미엄 베트남 커피, 시내 해변에서 250m. 영업시간 {hours}. 전화 {hotline}. 구글 지도 길찾기와 메뉴.",
+   "ogLocale": "ko_KR",
+   "cities": {
+    "Hà Nội": "하노이",
+    "Sài Gòn": "사이공(호찌민)",
+    "Hội An": "호이안",
+    "Nha Trang": "나트랑"
+   },
+   "productAlt": "{name} 커피 원두 패키지 – {series}"
+  }
+ },
+ "stores": {
+  "nha-trang-tran-hung-dao": {
+   "pathSlug": "nha-trang",
+   "en": {
+    "name": "Gióng Nha Trang",
+    "h1": "Gióng Nha Trang – 15 Trần Hưng Đạo",
+    "city": "Nha Trang",
+    "locationHint": "Premium Vietnamese coffee, freshly roasted in-house, just 250m from Nha Trang's central beach.",
+    "description": "A symphony of ocean breeze and the sound of beans roasting on-site, where you can taste coffee in its original form.",
+    "amenities": {
+     "outside": "Outdoor seating",
+     "pet": "Pet-friendly",
+     "roastery": "Roasted on-site",
+     "ac": "Air-conditioned"
+    },
+    "products": {
+     "giong-gia": {
+      "bean": "Robusta blend from the Central Highlands",
+      "notes": [
+       "Chocolate"
+      ]
+     },
+     "nang-can": {
+      "bean": "Arabica blend from the Central Highlands",
+      "notes": [
+       "Fruity",
+       "caramel"
+      ]
+     },
+     "cheo": {
+      "bean": "Arabica – Điện Biên",
+      "notes": [
+       "Cashew",
+       "wild apricot"
+      ]
+     }
+    }
+   },
+   "ko": {
+    "name": "Gióng(지옹) 나트랑",
+    "h1": "Gióng(지옹) 나트랑 – 15 Trần Hưng Đạo",
+    "city": "나트랑",
+    "locationHint": "프리미엄 베트남 커피를 매장에서 직접 로스팅한 신선한 원두로 즐겨 보세요. 나트랑 시내 해변에서 단 250m 거리에 있습니다.",
+    "description": "바닷바람과 매장에서 직접 로스팅하는 소리가 어우러지는 공간에서 커피 본연의 맛을 만나보세요.",
+    "amenities": {
+     "outside": "야외 좌석",
+     "pet": "반려동물 동반 가능",
+     "roastery": "매장 직접 로스팅",
+     "ac": "에어컨 완비"
+    },
+    "products": {
+     "giong-gia": {
+      "bean": "중부 고원(떠이응우옌)산 로부스타 블렌드",
+      "notes": [
+       "초콜릿"
+      ]
+     },
+     "nang-can": {
+      "bean": "중부 고원(떠이응우옌)산 아라비카 블렌드",
+      "notes": [
+       "과일",
+       "카라멜"
+      ]
+     },
+     "cheo": {
+      "bean": "아라비카 – Điện Biên",
+      "notes": [
+       "캐슈넛",
+       "야생 살구"
+      ]
+     }
+    }
+   }
+  }
+ },
+ "dishes": {
+  "en": [
+   {
+    "sub": "Vietnamese iced milk coffee",
+    "price": "55,000 VND",
+    "description": "Rich Vietnamese Robusta with sweetened condensed milk; pastries available from 40,000 VND."
+   },
+   {
+    "sub": "Artisan phin brew",
+    "price": "100,000 VND",
+    "description": "Choose Gióng beans roasted on-site and brew them slowly, drop by drop, in a traditional phin filter."
+   },
+   {
+    "sub": "Artisan V60 pour-over",
+    "price": "95,000 VND",
+    "description": "Hand-brewed with a V60 for a clean, light cup that brings out the character of the beans you choose."
+   },
+   {
+    "sub": "Lemon cold brew",
+    "price": "95,000 VND",
+    "description": "Cold brew coffee with fresh lemon and pandan leaf — cool and fragrant."
+   }
+  ],
+  "ko": [
+   {
+    "sub": "베트남식 연유 커피(카페 쓰어)",
+    "price": "55,000 VND",
+    "description": "진한 베트남 로부스타에 연유를 더한 커피. 페이스트리는 40,000 VND부터."
+   },
+   {
+    "sub": "아티잔 핀 드립",
+    "price": "100,000 VND",
+    "description": "매장에서 직접 로스팅한 Gióng 원두를 골라, 전통 핀 필터로 한 방울씩 천천히 내려 드립니다."
+   },
+   {
+    "sub": "아티잔 V60 핸드드립",
+    "price": "95,000 VND",
+    "description": "V60으로 핸드 드립하여 깔끔하고 가벼우며, 선택한 원두의 향을 살린 한 잔입니다."
+   },
+   {
+    "sub": "레몬 콜드브루",
+    "price": "95,000 VND",
+    "description": "신선한 레몬과 판단 잎을 더한 콜드브루. 시원하고 향긋합니다."
+   }
+  ]
+ }
+}

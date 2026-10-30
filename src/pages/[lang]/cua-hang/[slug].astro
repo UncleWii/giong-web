@@ -1,0 +1,19 @@
+---
+// Trang quán bản English và 한국어: /en/cua-hang/<quán> và /ko/cua-hang/<quán>.
+// Quán nào có bản dịch trong src/content/cua-hang-i18n.json (khoá "stores") thì tự có hai trang này.
+import StorePage from "../../../components/StorePage.astro";
+import i18n from "../../../content/cua-hang-i18n.json";
+import { stores } from "../../../lib/stores";
+
+export function getStaticPaths() {
+  const langs = ["en", "ko"] as const;
+  const translated = i18n.stores as Record<string, { pathSlug: string }>;
+  return stores
+    .filter((store) => translated[store.slug])
+    .flatMap((store) => langs.map((lang) => ({ params: { lang, slug: translated[store.slug].pathSlug }, props: { store, lang } })));
+}
+
+const { store, lang } = Astro.props;
+---
+
+<StorePage store={store} lang={lang} />

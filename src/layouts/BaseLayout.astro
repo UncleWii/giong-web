@@ -3,6 +3,8 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import ZaloFloat from "../components/ZaloFloat.astro";
+import LangSuggest from "../components/LangSuggest.astro";
+import type { Alternates, Lang } from "../lib/lang";
 
 interface Props {
   title: string;
@@ -14,9 +16,16 @@ interface Props {
   pageCategory?: "cau_chuyen" | "hanh_trinh_thien_ly" | "farm" | "kien_thuc";
   /** Tiêu đề đã có sẵn tên thương hiệu (vd. trang từng quán) → không thêm hậu tố " · Gióng". */
   brandedTitle?: boolean;
+  /** Ngôn ngữ trang (mặc định vi). */
+  lang?: Lang;
+  /** Các bản ngôn ngữ của cùng trang (đường dẫn). Có thì hiện nút chọn ngôn ngữ, thanh gợi ý và thẻ hreflang. */
+  alternates?: Alternates;
 }
 
-const { title, description, image = "/og-default.jpg", ogType = "website", pageCategory, brandedTitle = false } = Astro.props;
+const { title, description, image = "/og-default.jpg", ogType = "website", pageCategory, brandedTitle = false, lang = "vi", alternates = {} } = Astro.props;
+const ogLocale = { vi: "vi_VN", en: "en_US", ko: "ko_KR" } as const;
+const altEntries = Object.entries(alternates) as [Lang, string][];
+const hasAlternates = altEntries.length > 1;
 const siteName = "Gióng";
 const fullTitle = brandedTitle || title === siteName ? title : `${title} · ${siteName}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -24,7 +33,7 @@ const ogImageURL = new URL(image, Astro.site);
 ---
 
 <!doctype html>
-<html lang="vi">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,6 +41,8 @@ const ogImageURL = new URL(image, Astro.site);
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#8a181a" />
     <link rel="canonical" href={canonicalURL} />
+    {hasAlternates && altEntries.map(([l, path]) => <link rel="alternate" hreflang={l} href={new URL(path, Astro.site)} />)}
+    {hasAlternates && alternates.vi && <link rel="alternate" hreflang="x-default" href={new URL(alternates.vi, Astro.site)} />}
     <meta name="generator" content={Astro.generator} />
 
     <title>{fullTitle}</title>
@@ -43,7 +54,8 @@ const ogImageURL = new URL(image, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageURL} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    {hasAlternates && altEntries.filter(([l]) => l !== lang).map(([l]) => <meta property="og:locale:alternate" content={ogLocale[l]} />)}
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
@@ -53,7 +65,8 @@ const ogImageURL = new URL(image, Astro.site);
   </head>
   <body data-page-category={pageCategory}>
     <a href="#main" class="skip-link">Bỏ qua đến nội dung chính</a>
-    <Header />
+    <Header lang={lang} alternates={alternates} />
+    <LangSuggest lang={lang} alternates={alternates} />
     <main id="main">
       <slot />
     </main>

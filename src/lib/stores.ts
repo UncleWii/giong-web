@@ -10,9 +10,6 @@ export interface Store extends RawStore {
   embedUrl?: string;
   /** Danh sách slug sản phẩm (src/lib/products.ts) hiện ở khối "Cà phê rang xay nguyên chất". Không có = ẩn khối. */
   featuredProducts?: string[];
-  /** Khối tiếng Hàn (한국어 안내): chỉ quán nào có introKo mới hiện khối và nút 한국어 ở đầu trang. */
-  nameKo?: string;
-  introKo?: string;
   /** Món đặc trưng riêng của quán. Không có = dùng danh sách chung "dishes" ở đầu cua-hang.json. */
   dishes?: { name: string; price: string; description: string }[];
 }

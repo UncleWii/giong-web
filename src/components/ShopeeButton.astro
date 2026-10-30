@@ -8,9 +8,12 @@ interface Props {
   class?: string;
   /** Chỉ dùng ở trang quán: đo xem khách mua từ quán nào (chi_nhanh). vi_tri do khối chứa nút (data-vi-tri) hoặc đường dẫn trang quyết định. */
   chiNhanh?: string;
+  /** Chữ trên nút và nhãn đọc màn hình (mặc định tiếng Việt). */
+  label?: string;
+  ariaLabel?: string;
 }
 
-const { product, class: className = "", chiNhanh } = Astro.props;
+const { product, class: className = "", chiNhanh, label = "Mua trên Shopee", ariaLabel = `Mua ${product.name} trên Shopee` } = Astro.props;
 ---
 
 <a
@@ -18,7 +21,7 @@ const { product, class: className = "", chiNhanh } = Astro.props;
   href={product.shopeeUrl}
   target="_blank"
   rel="noopener noreferrer"
-  aria-label={`Mua ${product.name} trên Shopee`}
+  aria-label={ariaLabel}
   data-track="click_mua_ngay"
   data-product-id={product.slug}
   data-product-name={product.name}
@@ -32,7 +35,7 @@ const { product, class: className = "", chiNhanh } = Astro.props;
     <path d="M14 17h16l-1.2 12a2 2 0 0 1-2 1.8H17.2a2 2 0 0 1-2-1.8L14 17Z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"></path>
     <path d="M18 17v-1.5a4 4 0 0 1 8 0V17" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"></path>
   </svg>
-  <span>Mua trên Shopee</span>
+  <span>{label}</span>
 </a>
 
 <style>

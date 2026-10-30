@@ -1,0 +1,128 @@
+---
+// Thanh gợi ý nhỏ dưới header khi ngôn ngữ trình duyệt của khách (ko / en) khác ngôn ngữ trang đang xem.
+// Không phải popup, không che nội dung; bấm ✕ thì không hiện lại (nhớ trong localStorage).
+import Flag from "./Flag.astro";
+import type { Alternates, Lang } from "../lib/lang";
+
+interface Props {
+  lang: Lang;
+  alternates: Alternates;
+}
+
+const { lang, alternates } = Astro.props;
+---
+
+{
+  Object.keys(alternates).length > 1 && (
+    <div
+      class="langbar"
+      data-lang-suggest
+      data-page-lang={lang}
+      data-alt-en={alternates.en}
+      data-alt-ko={alternates.ko}
+      data-vi-tri="goi_y_trinh_duyet"
+      hidden
+    >
+      <div class="container langbar__inner">
+        <a class="langbar__link" href="#" data-lang-suggest-link data-track="doi_ngon_ngu" data-tu={lang} data-den="">
+          <span class="langbar__flag" data-flag="ko"><Flag code="ko" uid="s-ko" /></span>
+          <span class="langbar__flag" data-flag="en"><Flag code="en" uid="s-en" /></span>
+          <span data-lang-suggest-text></span>
+          <span aria-hidden="true">→</span>
+        </a>
+        <button type="button" class="langbar__close" aria-label="Close" data-lang-suggest-close data-track="dong_goi_y_ngon_ngu" data-ngon-ngu-goi-y="">
+          ✕
+        </button>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  const bar = document.querySelector<HTMLElement>("[data-lang-suggest]");
+  if (bar) {
+    const pageLang = bar.dataset.pageLang ?? "vi";
+    const browser = (navigator.languages?.[0] ?? navigator.language ?? "").toLowerCase();
+    const want = browser.startsWith("ko") ? "ko" : browser.startsWith("en") ? "en" : "";
+    const target = want ? (want === "ko" ? bar.dataset.altKo : bar.dataset.altEn) : undefined;
+    const key = `giong-lang-dismiss-${want}`;
+    let dismissed = false;
+    try {
+      dismissed = localStorage.getItem(key) === "1";
+    } catch {}
+    if (want && want !== pageLang && target && !dismissed) {
+      const text = { ko: "한국어 페이지로 보기", en: "View in English" }[want];
+      const link = bar.querySelector<HTMLAnchorElement>("[data-lang-suggest-link]")!;
+      link.href = target;
+      link.search = location.search; // giữ gclid, utm…
+      link.dataset.den = want;
+      link.lang = want;
+      bar.querySelector<HTMLElement>("[data-lang-suggest-text]")!.textContent = text;
+      bar.querySelectorAll<HTMLElement>("[data-flag]").forEach((f) => (f.hidden = f.dataset.flag !== want));
+      const close = bar.querySelector<HTMLButtonElement>("[data-lang-suggest-close]")!;
+      close.dataset.ngonNguGoiY = want;
+      close.addEventListener("click", () => {
+        try {
+          localStorage.setItem(key, "1");
+        } catch {}
+        bar.hidden = true;
+      });
+      bar.hidden = false;
+    }
+  }
+</script>
+
+<style>
+  .langbar {
+    background: var(--color-paper-deep);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .langbar[hidden] {
+    display: none;
+  }
+
+  .langbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    min-height: 44px;
+  }
+
+  .langbar__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .langbar__link:hover,
+  .langbar__link:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .langbar__flag[hidden] {
+    display: none;
+  }
+
+  .langbar__flag {
+    display: inline-flex;
+  }
+
+  .langbar__close {
+    min-width: 44px;
+    min-height: 44px;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--color-ink);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+</style>
