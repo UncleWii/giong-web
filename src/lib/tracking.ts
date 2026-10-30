@@ -78,7 +78,7 @@ const slug = (v: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_+|_+$/g, "");
-const SLUG_KEYS = ["vi_tri", "thanh_pho", "kenh", "loai", "khu_vuc", "nhu_cau", "dong_san_pham", "content_category"];
+const SLUG_KEYS = ["vi_tri", "ngon_ngu", "thanh_pho", "kenh", "loai", "khu_vuc", "nhu_cau", "dong_san_pham", "content_category"];
 const normalize = (p: Params): Params => {
   const out: Params = { ...p };
   for (const k of SLUG_KEYS) if (typeof out[k] === "string") out[k] = slug(out[k] as string);
@@ -134,11 +134,20 @@ function loadGoogleAnalytics() {
   if (GADS_ID) w.gtag("config", GADS_ID);
 }
 
+// Ngôn ngữ khách đang xem (chỉ trang quán): vi / en / ko. Lấy theo ?lang, mặc định vi.
+const langParam = (): string => {
+  const q = new URLSearchParams(location.search).get("lang")?.toLowerCase();
+  return q === "en" || q === "ko" ? q : "vi";
+};
+const isStorePage = () => Boolean(document.querySelector("[data-view-store]"));
+
 /** Gửi một sự kiện về cả Meta Pixel và GA4. Sự kiện không có trong bảng sẽ bị bỏ qua. */
 export function track(event: string, params: Params = {}, done?: () => void) {
   const spec = EVENTS[event];
   if (!spec) return done?.();
   const data = clean(normalize(params));
+  // Trang quán: MỌI sự kiện đều kèm ngon_ngu (sự kiện bấm nút đã có theo khối chứa nút; còn lại lấy theo ?lang).
+  if (!data.ngon_ngu && isStorePage()) data.ngon_ngu = langParam();
   if (debug) console.info("[tracking]", event, "→ Meta:", spec.meta, "| GA4:", spec.ga === false ? "(không)" : event, JSON.stringify(data), "| URL:", location.href);
   if (!active) return done?.();
 
@@ -233,13 +242,16 @@ function init() {
   if (active) {
     loadMetaPixel();
     loadGoogleAnalytics();
-    // 1 lần xem trang = 1 PageView + 1 page_view.
-    if (debug) console.info("[tracking] PageView / page_view → URL:", location.href);
-    w.fbq("track", "PageView");
+    // 1 lần xem trang = 1 PageView + 1 page_view (trang quán kèm ngon_ngu).
+    const pageLang = isStorePage() ? { ngon_ngu: langParam() } : undefined;
+    if (debug) console.info("[tracking] PageView / page_view", pageLang ? JSON.stringify(pageLang) : "", "→ URL:", location.href);
+    if (pageLang) w.fbq("track", "PageView", pageLang);
+    else w.fbq("track", "PageView");
     w.gtag("event", "page_view", {
       page_title: document.title,
       page_location: location.href,
       page_path: location.pathname,
+      ...pageLang,
       ...(debug ? { debug_mode: true } : {}),
     });
   }
@@ -257,6 +269,8 @@ function init() {
         chi_nhanh: (params.chi_nhanh as string | undefined) ?? storeId(),
         vi_tri: viTriOf(el),
         page_path: location.pathname,
+        // Theo khối chứa nút (vi / en / ko); nút ngoài mọi khối (Zalo nổi, chân trang...) lấy theo ?lang.
+        ngon_ngu: isStorePage() ? el.closest<HTMLElement>("[data-ngon-ngu]")?.dataset.ngonNgu ?? langParam() : undefined,
       };
 
       // Link mở CÙNG TAB: trình duyệt có thể huỷ yêu cầu đo lường khi trang chuyển đi. Giữ lại chuyển trang

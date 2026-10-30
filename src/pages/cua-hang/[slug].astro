@@ -18,6 +18,8 @@ export function getStaticPaths() {
 
 const { store: s } = Astro.props;
 const { labels } = data;
+const ko = data.labels.ko;
+const hasKo = Boolean(s.introKo);
 const maps = mapsUrl(s);
 const tel = telHref(s);
 const hotline = hotlineOf(s);
@@ -75,11 +77,14 @@ const amenityIcon: Record<string, string> = {
 <BaseLayout title={title} description={description} image={og.src} brandedTitle>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-  <article class="lp" data-view-store data-chi-nhanh={s.trackId}>
+  <article class="lp" data-view-store data-chi-nhanh={s.trackId} data-ngon-ngu="vi">
     <!-- A. HERO: tên quán · trạng thái mở cửa · vị trí · nút Chỉ đường -->
     <section class="lp-hero" data-vi-tri="trang_quan_hero">
       <div class="container lp-hero__inner">
-        <a class="lp-en" href="#english" lang="en" aria-label="English information">English info ↓</a>
+        <div class="lp-langs">
+          <a class="lp-lang" href="#english" lang="en" aria-label="English information">English ↓</a>
+          {hasKo && <a class="lp-lang" href="#korean" lang="ko" aria-label="한국어 안내">한국어 ↓</a>}
+        </div>
         <div class="lp-hero__art">
           <FloatingArtwork />
         </div>
@@ -273,7 +278,7 @@ const amenityIcon: Record<string, string> = {
     </section>
 
     <!-- G. FOR INTERNATIONAL GUESTS -->
-    <section class="container lp-sec" id="english" lang="en" aria-labelledby="en-title" data-vi-tri="trang_quan_en">
+    <section class="container lp-sec" id="english" lang="en" aria-labelledby="en-title" data-vi-tri="trang_quan_en" data-ngon-ngu="en">
       <div class="lp-en-box">
         <p class="eyebrow">For international guests</p>
         <h2 id="en-title" class="font-heading">{s.name}</h2>
@@ -305,6 +310,44 @@ const amenityIcon: Record<string, string> = {
         </div>
       </div>
     </section>
+
+    <!-- G2. 한국어 안내 (chỉ quán có introKo) -->
+    {
+      hasKo && (
+        <section class="container lp-sec" id="korean" lang="ko" aria-labelledby="ko-title" data-vi-tri="trang_quan_ko" data-ngon-ngu="ko">
+          <div class="lp-en-box">
+            <p class="eyebrow">{ko.eyebrow}</p>
+            <h2 id="ko-title" class="font-heading">{s.nameKo ?? s.name}</h2>
+            <DebugOnly hide={isPlaceholder(s.introKo)}><p class="lp-en-box__intro">{s.introKo}</p></DebugOnly>
+            <dl class="lp-facts">
+              <div>
+                <dt>{ko.address}</dt>
+                <dd>{s.address}</dd>
+              </div>
+              <div>
+                <dt>{ko.hours}</dt>
+                <dd>{s.hours}</dd>
+              </div>
+            </dl>
+            <div class="lp-cta">
+              <a
+                class="big-btn big-btn--primary"
+                href={maps}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track="click_chi_duong"
+                data-chi-nhanh={s.trackId}
+              >
+                <span>{ko.directions}</span>
+              </a>
+              <a class="big-btn big-btn--outline" href={tel} data-track="click_goi_chi_nhanh" data-chi-nhanh={s.trackId}>
+                <span>{ko.call}</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      )
+    }
 
     <!-- H. CÁC QUÁN GIÓNG KHÁC -->
     <nav class="container lp-sec" aria-labelledby="others-title" data-vi-tri="trang_quan_khac">
@@ -351,6 +394,22 @@ const amenityIcon: Record<string, string> = {
 </BaseLayout>
 
 <script>
+  // ?lang=en / ?lang=ko: mở trang là tự cuộn tới khối tiếng Anh / tiếng Hàn (không có hoặc ?lang=vi thì giữ nguyên đầu trang).
+  // Không sửa URL nên gclid và mọi tham số khác giữ nguyên.
+  {
+    const lang = new URLSearchParams(location.search).get("lang")?.toLowerCase();
+    const target = lang === "en" ? "english" : lang === "ko" ? "korean" : "";
+    const block = target ? document.getElementById(target) : null;
+    if (block) {
+      let touched = false;
+      for (const type of ["wheel", "touchstart", "keydown", "mousedown"]) window.addEventListener(type, () => (touched = true), { once: true, passive: true });
+      // Cuộn lại một lần nữa khi ảnh tải xong (ảnh làm trang dịch xuống), trừ khi khách đã tự cuộn.
+      const go = () => !touched && block.scrollIntoView({ behavior: "auto", block: "start" });
+      go();
+      window.addEventListener("load", go, { once: true });
+    }
+  }
+
   // Trạng thái mở cửa — tính theo giờ Việt Nam và giờ mở cửa của quán.
   const status = document.querySelector<HTMLElement>("[data-open-status]");
   if (status?.dataset.open && status.dataset.close) {
@@ -513,18 +572,24 @@ const amenityIcon: Record<string, string> = {
     position: relative;
     display: grid;
     gap: var(--space-xs);
-    padding-block: var(--space-sm) var(--space-md);
+    /* Chừa chỗ phía trên cho hai nút ngôn ngữ (English ↓ / 한국어 ↓) để không đè lên artwork. */
+    padding-block: calc(var(--space-xs) + 44px) var(--space-md);
   }
 
-  .lp-en {
+  .lp-langs {
     position: absolute;
     top: var(--space-xs);
     right: var(--gutter);
     z-index: 1;
+    display: flex;
+    gap: var(--space-3xs);
+  }
+
+  .lp-lang {
     display: inline-grid;
     place-items: center;
     min-height: 36px;
-    padding-inline: 1em;
+    padding-inline: 0.9em;
     white-space: nowrap;
     font-size: var(--text-small);
     font-weight: 700;
@@ -535,8 +600,8 @@ const amenityIcon: Record<string, string> = {
     border-radius: 999px;
   }
 
-  .lp-en:hover,
-  .lp-en:focus-visible {
+  .lp-lang:hover,
+  .lp-lang:focus-visible {
     color: var(--color-accent);
     background: var(--color-primary);
   }
@@ -700,6 +765,16 @@ const amenityIcon: Record<string, string> = {
     height: 100%;
     min-height: 320px;
     border: 0;
+  }
+
+  #english,
+  #korean {
+    scroll-margin-top: 88px;
+  }
+
+  #korean {
+    font-family: var(--font-body), "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    word-break: keep-all;
   }
 
   .lp-en-box {
